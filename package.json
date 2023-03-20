@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.9.0"
@@ -23,6 +24,7 @@
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.5",
     "typescript": "5.0.2",
     "vite": "4.2.0"
   }
