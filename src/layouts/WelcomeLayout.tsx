@@ -36,7 +36,7 @@ export const WelcomeLayout: FC = () => {
     <div h-full flex flex-col items-center gradient-primary>
       <header flex shrink-0 items-center justify-center flex-col h='1/4'>
         <img w-44px aspect-square src={logo} alt='PocketPurse' />
-        <h1 mt-8px text-primary>
+        <h1 mt-8px text-primary font-bold>
           PocketPurse
         </h1>
       </header>
@@ -47,7 +47,7 @@ export const WelcomeLayout: FC = () => {
         </animated.div>
       ))}
 
-      <footer flex shrink-0 flex-col items-center w-full h='1/5'>
+      <footer flex shrink-0 flex-col items-center w-full h='1/6'>
         <Link
           text-center
           h-44px
@@ -57,14 +57,20 @@ export const WelcomeLayout: FC = () => {
           font-bold
           rounded-22px
           w='1/2'
-          text-14px
+          text-16px
           to={nextMap[pathname]}
         >
           {pathname === '/welcome/4' ? '进入' : '下一页'}
         </Link>
 
         {pathname === '/welcome/4' ? null : (
-          <Link p-8px mt-12px className='text-#0007' to='/welcome/xxx'>
+          <Link
+            text-14px
+            p-8px
+            mt-12px
+            className='text-#0005'
+            to='/welcome/xxx'
+          >
             跳过
           </Link>
         )}

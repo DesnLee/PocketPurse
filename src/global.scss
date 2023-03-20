@@ -1,14 +1,20 @@
+:root {
+  --color-primary: #ffaa5a;
+  --color-purple: #beb8eb;
+  --color-black: #424b54;
+}
+
 html,
 body {
   height: 100%;
+  font-family: 'PingFang SC', 'Roboto', sans-serif;
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
-
-*,
 *::before,
 *::after {
   box-sizing: border-box;
@@ -20,12 +26,15 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
-#root {
-  height: 100%;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
 }
 
-:root {
-  --color-primary: #ffaa5a;
-  --color-purple: #beb8eb;
-  --color-black: #424b54;
+#root {
+  height: 100%;
 }
