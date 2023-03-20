@@ -22,5 +22,14 @@ export default defineConfig({
     }),
     presetTypography(),
   ],
+  rules: [
+    [
+      'gradient-primary',
+      { background: 'linear-gradient(135deg, #ffefba88 0%, #ffffff 100%)' },
+    ],
+    ['bg-primary', { background: 'var(--color-primary)' }],
+    ['text-black', { color: 'var(--color-black)' }],
+    ['text-primary', { color: 'var(--color-primary)' }],
+  ],
   transformers: [transformerAttributifyJsx()],
 });

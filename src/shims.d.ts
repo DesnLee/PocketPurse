@@ -4,5 +4,7 @@ declare module 'react' {
   interface HTMLAttributes<T> extends AttributifyAriaAttributes {
     // extends React  HTMLAttributes
     flex?: boolean;
+    h?: string;
+    w?: string;
   }
 }
