@@ -1,10 +1,14 @@
 import type { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import saveMoney from '../../assets/images/welcome/save_money.svg';
 
 export const Welcome1: FC = () => {
   return (
     <div>
-      1 <NavLink to='/welcome/2'>下一页</NavLink>
+      <img w-200px src={saveMoney} alt='save money' opacity-92 />
+      <h2 flex flex-col items-center mt-36px text-black text-16px>
+        <span mb-8px>会挣钱</span>
+        <span>还要会省钱</span>
+      </h2>
     </div>
   );
 };

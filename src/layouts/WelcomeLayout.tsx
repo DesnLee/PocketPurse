@@ -1,7 +1,15 @@
 import { animated, useTransition } from '@react-spring/web';
 import { useRef } from 'react';
 import type { FC, ReactNode } from 'react';
-import { useLocation, useOutlet } from 'react-router-dom';
+import { Link, useLocation, useOutlet } from 'react-router-dom';
+import logo from '../assets/images/logo.svg';
+
+const nextMap: Record<string, string> = {
+  '/welcome/1': '/welcome/2',
+  '/welcome/2': '/welcome/3',
+  '/welcome/3': '/welcome/4',
+  '/welcome/4': '/welcome/1',
+};
 
 export const WelcomeLayout: FC = () => {
   const { pathname } = useLocation();
@@ -24,9 +32,43 @@ export const WelcomeLayout: FC = () => {
     config: { duration: 300 },
   });
 
-  return transitions((style, i) => (
-    <animated.div style={style} key={i}>
-      {cacheMap.current[i]}
-    </animated.div>
-  ));
+  return (
+    <div h-full flex flex-col items-center gradient-primary>
+      <header flex shrink-0 items-center justify-center flex-col h='1/4'>
+        <img w-44px aspect-square src={logo} alt='PocketPurse' />
+        <h1 mt-8px text-primary>
+          PocketPurse
+        </h1>
+      </header>
+
+      {transitions((style, i) => (
+        <animated.div style={style} key={i} grow-1 flex shrink-1 items-center>
+          {cacheMap.current[i]}
+        </animated.div>
+      ))}
+
+      <footer flex shrink-0 flex-col items-center w-full h='1/5'>
+        <Link
+          text-center
+          h-44px
+          leading-44px
+          bg-primary
+          text-white
+          font-bold
+          rounded-22px
+          w='1/2'
+          text-14px
+          to={nextMap[pathname]}
+        >
+          {pathname === '/welcome/4' ? '进入' : '下一页'}
+        </Link>
+
+        {pathname === '/welcome/4' ? null : (
+          <Link p-8px mt-12px className='text-#0007' to='/welcome/xxx'>
+            跳过
+          </Link>
+        )}
+      </footer>
+    </div>
+  );
 };
