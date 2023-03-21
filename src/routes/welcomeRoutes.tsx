@@ -1,26 +1,25 @@
+import { lazy } from 'react';
+import { redirect } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
-import { WelcomeLayout } from '../layouts';
-import { Welcome } from '../views/Welcome';
+import { WELCOME_PAGE_NUMS } from '../vars/welcome';
+
+const WelcomeLayout = lazy(() => import('../layouts/WelcomeLayout'));
+const Welcome = lazy(() => import('../views/Welcome'));
 
 export const welcomeRoutes: RouteObject = {
-  path: 'welcome',
+  path: '/welcome',
   element: <WelcomeLayout />,
+  loader: ({ request }) => {
+    const num = request.url.match(/\/welcome\/(\d+)/)?.[1];
+    if (!num || !WELCOME_PAGE_NUMS.includes(num as Welcome.pageNum)) {
+      return redirect('/welcome/1');
+    }
+    return null;
+  },
   children: [
     {
-      path: '1',
-      element: <Welcome num='1' />,
-    },
-    {
-      path: '2',
-      element: <Welcome num='2' />,
-    },
-    {
-      path: '3',
-      element: <Welcome num='3' />,
-    },
-    {
-      path: '4',
-      element: <Welcome num='4' />,
+      path: ':num',
+      element: <Welcome />,
     },
   ],
 };

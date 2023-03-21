@@ -1,10 +1,11 @@
 import type { FC } from 'react';
+import { useParams } from 'react-router-dom';
 import saveMoney from '../assets/images/welcome/save_money.svg';
 import timeReminder from '../assets/images/welcome/time_reminder.svg';
 import dataChart from '../assets/images/welcome/data_chart.svg';
 import cloudBackup from '../assets/images/welcome/cloud_backup.svg';
 
-const contentMap = {
+const contentMap: Record<Welcome.pageNum, Welcome.pageData> = {
   1: {
     title: '会挣钱',
     subTitle: '还要会省钱',
@@ -31,12 +32,9 @@ const contentMap = {
   },
 };
 
-interface Props {
-  num: '1' | '2' | '3' | '4';
-}
-
-export const Welcome: FC<Props> = ({ num }) => {
-  const current = contentMap[num];
+const Welcome: FC = () => {
+  const { num } = useParams();
+  const current = contentMap[num as Welcome.pageNum];
   return (
     <div>
       <img
@@ -53,3 +51,5 @@ export const Welcome: FC<Props> = ({ num }) => {
     </div>
   );
 };
+
+export default Welcome;

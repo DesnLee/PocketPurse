@@ -1,2 +1,2 @@
-export { MainLayout } from './MainLayout';
-export { WelcomeLayout } from './WelcomeLayout';
+export * as MainLayout from './MainLayout';
+export * as WelcomeLayout from './WelcomeLayout';
