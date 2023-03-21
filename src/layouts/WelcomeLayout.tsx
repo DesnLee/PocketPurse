@@ -1,5 +1,5 @@
 import { animated, useTransition } from '@react-spring/web';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import { Link, useLocation, useNavigate, useOutlet } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
@@ -31,9 +31,9 @@ export const WelcomeLayout: FC = () => {
     onTouchStart: (e) => e.preventDefault(),
   });
   // 滑动方向改变时，进行跳转或者返回
-  const isAnimating = useRef(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   useEffect(() => {
-    if (isAnimating.current) return;
+    if (isAnimating) return;
     if (direction === 'left') {
       // 如果不是最后一页才可以使用手势
       if (pathname !== '/welcome/4') {
@@ -50,12 +50,13 @@ export const WelcomeLayout: FC = () => {
   // 根据滑动方向，获取不同的动画配置
   const config = useRef({});
   const getTransitionConfig = useMemo(() => {
-    if (direction && ['left', 'right'].includes(direction)) {
-      const controller = direction === 'left' ? 1 : -1;
+    if ([null, 'left', 'right'].includes(direction)) {
+      const controller = direction === 'right' ? -1 : 1;
+      const isSpecial = pathname === '/welcome/1' && direction !== 'right';
       config.current = {
         from: {
-          opacity: 0,
-          transform: `translate3d(${controller * 100}%, 0, 0)`,
+          opacity: isSpecial ? 1 : 0,
+          transform: `translate3d(${isSpecial ? 0 : controller * 100}%, 0, 0)`,
         },
         leave: {
           opacity: 0,
@@ -64,7 +65,7 @@ export const WelcomeLayout: FC = () => {
       };
     }
     return config.current;
-  }, [direction]);
+  }, [direction, pathname]);
 
   const transitions = useTransition(pathname, {
     ...getTransitionConfig,
@@ -73,12 +74,8 @@ export const WelcomeLayout: FC = () => {
       transform: 'translate3d(0%, 0, 0)',
     },
     config: { duration: 300 },
-    onStart: () => {
-      isAnimating.current = true;
-    },
-    onRest: () => {
-      isAnimating.current = false;
-    },
+    onStart: () => setIsAnimating(true),
+    onRest: () => setIsAnimating(false),
   });
 
   return (
@@ -119,6 +116,10 @@ export const WelcomeLayout: FC = () => {
           w='1/2'
           text-16px
           to={nextMap[pathname]}
+          className={
+            isAnimating ? 'pointer-events-none' : 'pointer-events-auto'
+          }
+          replace={true}
         >
           {pathname === '/welcome/4' ? '进入' : '下一页'}
         </Link>
