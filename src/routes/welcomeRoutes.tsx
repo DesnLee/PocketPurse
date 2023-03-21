@@ -1,7 +1,8 @@
+import type { RouteObject } from 'react-router-dom';
 import { WelcomeLayout } from '../layouts';
 import { Welcome } from '../views/Welcome';
 
-export const welcomeRoutes = {
+export const welcomeRoutes: RouteObject = {
   path: 'welcome',
   element: <WelcomeLayout />,
   children: [

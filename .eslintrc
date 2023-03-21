@@ -2,5 +2,8 @@
   "extends": [
     "@antfu",
     "prettier"
-  ]
+  ],
+  "rules": {
+    "antfu/if-newline": "off"
+  }
 }
