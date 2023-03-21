@@ -40,13 +40,13 @@ export const Welcome: FC<Props> = ({ num }) => {
   return (
     <div>
       <img
-        w-160px
+        w-200px
         aspect-square
         src={current.pic}
         alt={current.alt}
         opacity-92
       />
-      <h2 flex flex-col items-center mt-36px text-black text-22px>
+      <h2 flex flex-col items-center mt-36px text-black text-xl>
         <span mb-8px>{current.title}</span>
         <span>{current.subTitle}</span>
       </h2>

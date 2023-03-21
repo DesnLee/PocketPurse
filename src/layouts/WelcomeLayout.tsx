@@ -114,7 +114,7 @@ export const WelcomeLayout: FC = () => {
           font-bold
           rounded-22px
           w='1/2'
-          text-16px
+          text-lg
           to={nextMap[pathname]}
           className={
             isAnimating ? 'pointer-events-none' : 'pointer-events-auto'
@@ -125,7 +125,7 @@ export const WelcomeLayout: FC = () => {
         </Link>
 
         {pathname === '/welcome/4' ? null : (
-          <Link text-14px p-8px mt-12px className='text-#0005' to='/home'>
+          <Link text-sm p-8px mt-12px className='text-#0005' to='/home'>
             跳过
           </Link>
         )}
