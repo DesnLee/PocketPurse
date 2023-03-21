@@ -39,7 +39,13 @@ export const Welcome: FC<Props> = ({ num }) => {
   const current = contentMap[num];
   return (
     <div>
-      <img w-160px src={current.pic} alt={current.alt} opacity-92 />
+      <img
+        w-160px
+        aspect-square
+        src={current.pic}
+        alt={current.alt}
+        opacity-92
+      />
       <h2 flex flex-col items-center mt-36px text-black text-22px>
         <span mb-8px>{current.title}</span>
         <span>{current.subTitle}</span>

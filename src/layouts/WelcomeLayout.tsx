@@ -19,15 +19,15 @@ export const WelcomeLayout: FC = () => {
   const transitions = useTransition(pathname, {
     from: {
       opacity: pathname === '/welcome/1' ? 1 : 0,
-      transform: `translate3d(${pathname === '/welcome/1' ? 0 : 100}%, 0, 0px)`,
+      transform: `translate3d(${pathname === '/welcome/1' ? 0 : 50}%, 0, 0)`,
     },
     enter: {
       opacity: 1,
-      transform: 'translate3d(0%, 0, 0px)',
+      transform: 'translate3d(0%, 0, 0)',
     },
     leave: {
       opacity: 0,
-      transform: 'translate3d(-50%, 0, -40px)',
+      transform: 'translate3d(-100%, 0, 0)',
     },
     config: { duration: 300 },
   });
@@ -41,11 +41,22 @@ export const WelcomeLayout: FC = () => {
         </h1>
       </header>
 
-      {transitions((style, i) => (
-        <animated.div style={style} key={i} grow-1 flex shrink-1 items-center>
-          {cacheMap.current[i]}
-        </animated.div>
-      ))}
+      <main relative grow-1 shrink-1 w-full overflow-hidden>
+        {transitions((style, i) => (
+          <animated.div
+            style={style}
+            key={i}
+            flex
+            items-center
+            justify-center
+            absolute
+            w-full
+            h-full
+          >
+            {cacheMap.current[i]}
+          </animated.div>
+        ))}
+      </main>
 
       <footer flex shrink-0 flex-col items-center w-full h='1/6'>
         <Link

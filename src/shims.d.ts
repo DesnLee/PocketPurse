@@ -6,5 +6,7 @@ declare module 'react' {
     flex?: boolean;
     h?: string;
     w?: string;
+    absolute?: boolean;
+    relative?: boolean;
   }
 }
