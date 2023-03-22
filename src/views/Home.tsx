@@ -1,8 +1,13 @@
 import type { FC } from 'react';
-import { hasReadWelcomeKey } from '../vars/localStorage';
+import { useLocalStorageStore } from '../stores/useLocalStorageStore';
 
 export const Home: FC = () => {
-  localStorage.setItem(hasReadWelcomeKey, '1');
+  const { hasRead, setHasRead } = useLocalStorageStore();
+  if (!hasRead) setHasRead(true);
 
-  return <div>Home</div>;
+  return (
+    <>
+      <div>Home</div>
+    </>
+  );
 };
