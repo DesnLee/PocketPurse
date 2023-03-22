@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
 import { useItemApi } from '../api/item';
 import { useUserApi } from '../api/user';
@@ -43,14 +44,25 @@ export const Home: FC = () => {
     setHasRead(true);
   }
 
-  const { data: userData, error: userError } = useSWR('user', () =>
-    useUserApi().getUser()
-  );
+  const {
+    data: userData,
+    error: userError,
+    isLoading: userLoading,
+  } = useSWR('user', async () => (await useUserApi().getUser()).resource);
 
-  const { data: itemsData, error: itemsError } = useSWR(
-    userData ? 'items' : null,
-    () => useItemApi().getItems()
-  );
+  const {
+    data: itemsData,
+    error: itemsError,
+    isLoading: itemsLoading,
+  } = useSWR(userData ? 'items' : null, () => useItemApi().getItems());
+
+  if (userLoading || itemsLoading) {
+    return <div>loading...</div>;
+  }
+
+  if (itemsData?.resources && itemsData.resources.length > 0) {
+    return <Navigate to='/items' />;
+  }
 
   return <EmptyView />;
 };
