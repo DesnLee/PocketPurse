@@ -1,6 +1,6 @@
 interface ItemsData {
   succeed: APIResponse.Items;
-  failed: APIResponse.Error;
+  failed: API.Error;
 }
 
 export const itemsData: ItemsData = {
@@ -8,8 +8,14 @@ export const itemsData: ItemsData = {
     resources: [
       {
         id: 0,
-        name: 'item 1',
+        user_id: 0,
         amount: 1000,
+        note: '吃饭',
+        tag_ids: [0, 1],
+        happen_at: '2020-01-01',
+        created_at: '2020-01-01',
+        updated_at: '2020-01-01',
+        kind: 'expenses',
       },
     ],
     pager: {

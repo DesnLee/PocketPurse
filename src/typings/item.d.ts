@@ -1,16 +1,17 @@
-declare namespace APIResponse {
-  interface Items {
-    resources: Item[];
-    pager: {
-      page: number;
-      size: number;
-      total: number;
-    };
-  }
+interface ItemModel {
+  id: number;
+  user_id: number;
+  amount: number;
+  note?: string;
+  tag_ids: number[];
+  happen_at: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+  kind: 'expenses' | 'incomes';
+}
 
-  interface Item {
-    id: number;
-    name: string;
-    amount: number;
-  }
+declare namespace APIResponse {
+  type Item = API.Resource<ItemModel>;
+  type Items = API.Resources<ItemModel>;
 }

@@ -1,6 +1,11 @@
+interface UserModel {
+  id: number;
+  email: string;
+  name?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 declare namespace APIResponse {
-  interface User {
-    id: number;
-    email: string;
-  }
+  type User = API.Resource<UserModel>;
 }
