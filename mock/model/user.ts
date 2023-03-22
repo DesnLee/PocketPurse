@@ -7,7 +7,7 @@ export const userData: UserData = {
   succeed: {
     resource: {
       id: 0,
-      email: 'jiakun.ui@gmail.com',
+      email: 'test@gmail.com',
       name: 'DesnLee',
       created_at: '2020-01-01',
       updated_at: '2020-01-01',
