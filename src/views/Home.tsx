@@ -1,6 +1,7 @@
-import axios from 'axios';
 import type { FC } from 'react';
 import useSWR from 'swr';
+import { useItemApi } from '../api/item';
+import { useUserApi } from '../api/user';
 import { useLocalStorageStore } from '../stores/useLocalStorageStore';
 import noDataSvg from '../assets/images/home/no_data.svg';
 
@@ -42,18 +43,13 @@ export const Home: FC = () => {
     setHasRead(true);
   }
 
-  const { data: userData, error: userError } = useSWR(
-    '/api/v1/user',
-    (path) => {
-      return axios.get(path).then((res) => res.data);
-    }
+  const { data: userData, error: userError } = useSWR('user', () =>
+    useUserApi().getUser()
   );
 
   const { data: itemsData, error: itemsError } = useSWR(
-    userData ? '/api/v1/items' : null,
-    (path) => {
-      return axios.get(path).then((res) => res.data);
-    }
+    userData ? 'items' : null,
+    () => useItemApi().getItems()
   );
 
   return <EmptyView />;

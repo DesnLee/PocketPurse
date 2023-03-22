@@ -1,4 +1,9 @@
-export const itemsData = {
+interface ItemsData {
+  succeed: APIResponse.Items;
+  failed: APIResponse.Error;
+}
+
+export const itemsData: ItemsData = {
   succeed: {
     resources: [
       {

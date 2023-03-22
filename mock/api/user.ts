@@ -4,8 +4,8 @@ import { userData } from '../model/user';
 export const userAPI: MockMethod = {
   url: '/api/v1/user',
   method: 'get',
-  statusCode: 404,
+  statusCode: 200,
   response: () => {
-    return userData.failed;
+    return userData.succeed;
   },
 };
