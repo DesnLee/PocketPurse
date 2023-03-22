@@ -18,7 +18,7 @@ const lastMap: Record<string, string> = {
   '/welcome/2': '/welcome/1',
 };
 
-const WelcomeLayout: FC = () => {
+export const WelcomeLayout: FC = () => {
   const { pathname } = useLocation();
   const cacheMap = useRef<Record<string, ReactNode>>({});
   cacheMap.current[pathname] = useOutlet();
@@ -133,5 +133,3 @@ const WelcomeLayout: FC = () => {
     </div>
   );
 };
-
-export default WelcomeLayout;

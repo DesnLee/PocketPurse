@@ -1,10 +1,8 @@
-import { lazy } from 'react';
 import { redirect } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
+import { WelcomeLayout } from '../layouts';
 import { WELCOME_PAGE_NUMS } from '../vars/welcome';
-
-const WelcomeLayout = lazy(() => import('../layouts/WelcomeLayout'));
-const Welcome = lazy(() => import('../views/Welcome'));
+import { Welcome } from '../views/Welcome';
 
 export const welcomeRoutes: RouteObject = {
   path: '/welcome',

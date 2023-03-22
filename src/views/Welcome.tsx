@@ -32,7 +32,7 @@ const contentMap: Record<Welcome.pageNum, Welcome.pageData> = {
   },
 };
 
-const Welcome: FC = () => {
+export const Welcome: FC = () => {
   const { num } = useParams();
   const current = contentMap[num as Welcome.pageNum];
   return (
@@ -51,5 +51,3 @@ const Welcome: FC = () => {
     </div>
   );
 };
-
-export default Welcome;
