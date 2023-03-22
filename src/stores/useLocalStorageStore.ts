@@ -11,11 +11,10 @@ export const useLocalStorageStore = create<LocalStorageState>((set) => {
     setHasRead: (newStatus) => {
       if (newStatus) {
         localStorage.setItem('hasRead', '1');
-        set({ hasRead: true });
       } else {
         localStorage.removeItem('hasRead');
-        set({ hasRead: false });
       }
+      set({ hasRead: newStatus });
     },
   };
 });
