@@ -8,5 +8,8 @@ declare module 'react' {
     w?: string;
     absolute?: boolean;
     relative?: boolean;
+    py?: string;
+    px?: string;
+    text?: string;
   }
 }
