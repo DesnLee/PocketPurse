@@ -38,3 +38,25 @@ h6 {
 #root {
   height: 100%;
 }
+
+:where(.pp-icon) {
+  fill: currentColor;
+  stroke: currentColor;
+  width: 70%;
+  height: 70%;
+}
+
+.pp-loading-wrapper {
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  > svg {
+    animation: spin 1.5s ease-in-out infinite;
+  }
+}

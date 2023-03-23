@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
 import { useItemApi } from '../api/item';
 import { useUserApi } from '../api/user';
+import { Loading } from '../components/Loading';
 import { useTitle } from '../hooks/useTitle';
 import { useLocalStorageStore } from '../stores/useLocalStorageStore';
 import noDataSvg from '../assets/images/home/no_data.svg';
@@ -60,7 +61,7 @@ export const Home: FC = () => {
   } = useSWR(userData ? 'items' : null, () => useItemApi().getItems());
 
   if (userLoading || itemsLoading) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
 
   if (itemsData?.resources && itemsData.resources.length > 0) {

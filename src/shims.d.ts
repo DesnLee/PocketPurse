@@ -11,5 +11,6 @@ declare module 'react' {
     py?: string;
     px?: string;
     text?: string;
+    bg?: string;
   }
 }
