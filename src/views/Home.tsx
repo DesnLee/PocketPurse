@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
 import { useItemApi } from '../api/item';
 import { useUserApi } from '../api/user';
+import { useTitle } from '../hooks/useTitle';
 import { useLocalStorageStore } from '../stores/useLocalStorageStore';
 import noDataSvg from '../assets/images/home/no_data.svg';
 
@@ -43,6 +44,8 @@ export const Home: FC = () => {
   if (!hasRead) {
     setHasRead(true);
   }
+
+  useTitle('首页');
 
   const {
     data: userData,

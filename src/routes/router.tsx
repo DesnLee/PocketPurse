@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../views/Home';
+import { Items } from '../views/Items';
 import { root } from './root';
 import { welcomeRoutes } from './welcomeRoutes';
 
@@ -11,7 +12,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/items',
-    element: <div>items</div>,
+    element: <Items />,
   },
   welcomeRoutes,
 ]);
