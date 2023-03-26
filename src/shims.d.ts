@@ -12,5 +12,8 @@ declare module 'react' {
     px?: string;
     text?: string;
     bg?: string;
+    fixed?: boolean;
+    shadow?: string | boolean;
+    sticky?: boolean;
   }
 }
