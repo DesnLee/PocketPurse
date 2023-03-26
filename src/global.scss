@@ -14,10 +14,19 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+input {
+  -webkit-user-select: auto;
 }
 
 a {
