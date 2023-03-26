@@ -1,12 +1,11 @@
 import type { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { useItemApi } from '../api/item';
-import { useUserApi } from '../api/user';
-import { Loading } from '../components/Loading';
-import { useTitle } from '../hooks/useTitle';
-import { useLocalStorageStore } from '../stores/useLocalStorageStore';
-import noDataSvg from '../assets/images/home/no_data.svg';
+import { useItemApi, useUserApi } from '../../api';
+import { Loading } from '../../components';
+import { useTitle } from '../../hooks';
+import { useLocalStorageStore } from '../../stores';
+import noDataSvg from '../../assets/images/home/no_data.svg';
 
 const EmptyView: FC = () => {
   return (

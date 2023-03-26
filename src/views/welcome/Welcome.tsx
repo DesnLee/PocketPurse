@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import saveMoney from '../assets/images/welcome/save_money.svg';
-import timeReminder from '../assets/images/welcome/time_reminder.svg';
-import dataChart from '../assets/images/welcome/data_chart.svg';
-import cloudBackup from '../assets/images/welcome/cloud_backup.svg';
+import saveMoney from '../../assets/images/welcome/save_money.svg';
+import timeReminder from '../../assets/images/welcome/time_reminder.svg';
+import dataChart from '../../assets/images/welcome/data_chart.svg';
+import cloudBackup from '../../assets/images/welcome/cloud_backup.svg';
 
 const contentMap: Record<Welcome.pageNum, Welcome.pageData> = {
   1: {

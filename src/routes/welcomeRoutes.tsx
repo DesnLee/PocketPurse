@@ -2,7 +2,7 @@ import { redirect } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import { WelcomeLayout } from '../layouts';
 import { WELCOME_PAGE_NUMS } from '../vars/welcome';
-import { Welcome } from '../views/Welcome';
+import { Welcome } from '../views/welcome/Welcome';
 
 export const welcomeRoutes: RouteObject = {
   path: '/welcome',

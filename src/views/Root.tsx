@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useLocalStorageStore } from '../stores/useLocalStorageStore';
+import { useLocalStorageStore } from '../stores';
 
 const Root: FC = () => {
   // 如果已经阅读过欢迎页，就跳转到首页，否则跳转到欢迎页

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import { Link, useLocation, useNavigate, useOutlet } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
-import { useSwipe } from '../hooks/useSwipe';
+import { useSwipe } from '../hooks';
 
 // 下一页映射表
 const nextMap: Record<string, string> = {
