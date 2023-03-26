@@ -16,7 +16,7 @@ export const Loading: FC = () => {
         p-12px
         className='pp-loading-wrapper'
       >
-        <Icon name='loading' color-white size='36px' />
+        <Icon name='loading' color='#fff' size='36px' />
         <p mt-8px text-white text-14px>
           loading
         </p>
