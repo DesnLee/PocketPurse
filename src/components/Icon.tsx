@@ -9,7 +9,7 @@ export const Icon: FC<IconProps> = ({ name, color, size }) => {
   return (
     <svg
       className='pp-icon'
-      color={color ?? '#fff'}
+      color={color ?? 'inherit'}
       style={{ width: size, height: size }}
     >
       <use xlinkHref={`#${name}`} />
