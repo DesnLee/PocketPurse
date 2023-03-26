@@ -11,14 +11,14 @@ type TimeRanges = {
   label: string;
 }[];
 
-export const TimeRangePicker: FC<Props> = ({ current, onChange }) => {
-  const ranges: TimeRanges = [
-    { key: 'thisMonth', label: '本月' },
-    { key: 'lastMonth', label: '上月' },
-    { key: 'thisYear', label: '本年' },
-    { key: 'custom', label: '自定义时间' },
-  ];
+const ranges: TimeRanges = [
+  { key: 'thisMonth', label: '本月' },
+  { key: 'lastMonth', label: '上月' },
+  { key: 'thisYear', label: '本年' },
+  { key: 'custom', label: '自定义时间' },
+];
 
+export const TimeRangePicker: FC<Props> = ({ current, onChange }) => {
   return (
     <ol
       flex
