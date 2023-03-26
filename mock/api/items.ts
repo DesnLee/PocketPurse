@@ -5,7 +5,7 @@ export const itemsAPI: MockMethod = {
   url: '/api/v1/items',
   method: 'get',
   statusCode: 200,
-  timeout: 1000,
+  timeout: 500,
   response: () => {
     return itemsData.succeed;
   },
