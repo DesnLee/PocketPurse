@@ -22,17 +22,7 @@ const EmptyView: FC = () => {
       <h1 mt-32px font-bold text='#000a'>
         Welcome!
       </h1>
-      <button
-        w-full
-        h-48px
-        rounded-24px
-        b-none
-        bg-primary
-        text-white
-        text-16px
-        font-bold
-        mt-48px
-      >
+      <button pp-btn-primary mt-48px>
         记一笔
       </button>
     </main>
@@ -47,17 +37,14 @@ export const Home: FC = () => {
 
   useTitle('首页');
 
-  const {
-    data: userData,
-    error: userError,
-    isLoading: userLoading,
-  } = useSWR('user', async () => (await useUserApi().getUser()).resource);
+  const { data: userData, isLoading: userLoading } = useSWR('user', () =>
+    useUserApi().getUser()
+  );
 
-  const {
-    data: itemsData,
-    error: itemsError,
-    isLoading: itemsLoading,
-  } = useSWR(userData ? 'items' : null, () => useItemApi().getItems());
+  const { data: itemsData, isLoading: itemsLoading } = useSWR(
+    userData ? 'items' : null,
+    () => useItemApi().getItems()
+  );
 
   if (userLoading || itemsLoading) {
     return <Loading />;
