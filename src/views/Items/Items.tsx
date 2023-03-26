@@ -3,7 +3,8 @@ import type { FC } from 'react';
 import { AddFloatBtn, TimeRangePicker, Topnav } from '../../components';
 import type { TimeRange } from '../../components/TimeRangePicker';
 import { useTitle } from '../../hooks';
-import { ItemsList } from './ItemsList ';
+import { ItemsList } from './ItemsList';
+import { ItemsSummary } from './ItemsSummary';
 
 export const Items: FC = () => {
   useTitle('项目');
@@ -12,11 +13,14 @@ export const Items: FC = () => {
 
   return (
     <div flex flex-col h-full>
-      <div gradient-topnav shadow-primary px-16px shrink-0>
+      <header gradient-topnav shadow-primary px-16px shrink-0>
         <Topnav />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
-      </div>
-      <ItemsList />
+      </header>
+      <main grow-1 overflow-scroll>
+        <ItemsSummary />
+        <ItemsList />
+      </main>
       <AddFloatBtn />
     </div>
   );

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 export const ItemsList: FC = () => {
   return (
-    <div flex flex-col gap-60px px-16px py-24px grow-1 overflow-scroll>
+    <div flex flex-col gap-60px px-16px py-24px>
       <div>1</div>
       <div>2</div>
       <div>3</div>
