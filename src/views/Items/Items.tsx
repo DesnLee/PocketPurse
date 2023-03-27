@@ -2,9 +2,11 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import useSWR from 'swr';
 import { useItemApi } from '../../api';
-import { AddFloatBtn, TimeRangePicker, Topnav } from '../../components';
+import { AddFloatBtn, TimeRangePicker, TopNav } from '../../components';
 import type { TimeRange } from '../../components/TimeRangePicker';
+import { TopMenu } from '../../components/TopMenu';
 import { useTitle } from '../../hooks';
+import { useMenuStore } from '../../stores/useMenuStore';
 import { ItemList } from './ItemList';
 import { ItemsSummary } from './ItemsSummary';
 
@@ -17,10 +19,12 @@ export const Items: FC = () => {
     useItemApi().getItems()
   );
 
+  const { isVisible } = useMenuStore();
+
   return (
     <div flex flex-col h-full>
       <header gradient-topnav shadow-primary px-16px shrink-0>
-        <Topnav />
+        <TopNav />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </header>
       <main grow-1 overflow-scroll>
@@ -41,6 +45,7 @@ export const Items: FC = () => {
         })()}
       </main>
       <AddFloatBtn />
+      {isVisible && <TopMenu />}
     </div>
   );
 };
