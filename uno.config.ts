@@ -51,6 +51,8 @@ export default defineConfig({
         'color': 'var(--color-primary)',
       },
     ],
+    ['b-b', { 'border-bottom': '1px solid #0001' }],
+    ['b-c-primary', { 'border-color': 'var(--color-primary)' }],
   ],
   transformers: [transformerAttributifyJsx()],
 });
