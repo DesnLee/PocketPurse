@@ -1,11 +1,20 @@
 import type { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
   className?: string;
 }
 export const UserInfo: FC<Props> = ({ className }) => {
   return (
-    <div className={className} pb-24px b-b flex gap-12px items-center>
+    <Link
+      to='/user'
+      className={className}
+      pb-24px
+      b-b
+      flex
+      gap-12px
+      items-center
+    >
       <div w-48px h-48px rounded-24px overflow-hidden b-2px b-solid b-c-primary>
         <img
           w-full
@@ -22,6 +31,6 @@ export const UserInfo: FC<Props> = ({ className }) => {
           点击登录
         </p>
       </div>
-    </div>
+    </Link>
   );
 };

@@ -14,5 +14,25 @@ export const router = createBrowserRouter([
     path: '/items',
     element: <Items />,
   },
+  {
+    path: '/user',
+    element: <div>user</div>,
+  },
+  {
+    path: '/charts',
+    element: <div>charts</div>,
+  },
+  {
+    path: '/export',
+    element: <div>export</div>,
+  },
+  {
+    path: '/tags',
+    element: <div>tags</div>,
+  },
+  {
+    path: '/reminder',
+    element: <div>reminder</div>,
+  },
   welcomeRoutes,
 ]);
