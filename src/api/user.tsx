@@ -1,7 +1,7 @@
-import { instance } from '../lib/request';
+import { request } from '../lib/request';
 
 export const useUserApi = () => ({
   getUser: (): Promise<APIResponse.User> => {
-    return instance('/api/v1/user');
+    return request('/api/v1/user');
   },
 });

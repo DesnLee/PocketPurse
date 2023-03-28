@@ -1,5 +1,5 @@
-import { instance } from '../lib/request';
+import { request } from '../lib/request';
 
 export const useItemApi = () => ({
-  getItems: (): Promise<APIResponse.Items> => instance.get('/api/v1/items'),
+  getItems: (): Promise<APIResponse.Items> => request.get('/api/v1/items'),
 });

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import useSWR from 'swr';
-import { useItemApi } from '../../api';
 import {
   AddFloatBtn,
   TimeRangePicker,
@@ -18,10 +16,6 @@ export const Items: FC = () => {
 
   const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
 
-  const { data, error, isLoading } = useSWR('items', () =>
-    useItemApi().getItems()
-  );
-
   return (
     <div flex flex-col h-full>
       <header gradient-topnav shadow-primary px-16px shrink-0>
@@ -30,20 +24,7 @@ export const Items: FC = () => {
       </header>
       <main grow-1 overflow-scroll>
         <ItemsSummary />
-
-        {(() => {
-          if (isLoading) {
-            return (
-              <p text-center mt-48px color='#909399'>
-                加载数据中...
-              </p>
-            );
-          } else if (error || !data) {
-            return <div>{error?.message}</div>;
-          } else {
-            return <ItemList items={data.resources} />;
-          }
-        })()}
+        <ItemList />
       </main>
       <AddFloatBtn />
       <TopMenu />

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const instance = axios.create({
+const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -9,7 +9,7 @@ const instance = axios.create({
   timeout: 10000,
 });
 
-instance.interceptors.request.use(
+request.interceptors.request.use(
   (config) => {
     config.headers.XXX = 'xxx';
     config.headers.Authorization = 'Bearer xxx';
@@ -20,7 +20,7 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
+request.interceptors.response.use(
   (res) => {
     return Promise.resolve(res.data);
   },
@@ -29,4 +29,4 @@ instance.interceptors.response.use(
   }
 );
 
-export { instance };
+export { request };
