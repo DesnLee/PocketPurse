@@ -10,7 +10,6 @@ import {
 } from '../../components';
 import type { TimeRange } from '../../components/TimeRangePicker';
 import { useTitle } from '../../hooks';
-import { useMenuStore } from '../../stores/useMenuStore';
 import { ItemList } from './ItemList';
 import { ItemsSummary } from './ItemsSummary';
 
@@ -22,8 +21,6 @@ export const Items: FC = () => {
   const { data, error, isLoading } = useSWR('items', () =>
     useItemApi().getItems()
   );
-
-  const { isVisible } = useMenuStore();
 
   return (
     <div flex flex-col h-full>
@@ -49,7 +46,7 @@ export const Items: FC = () => {
         })()}
       </main>
       <AddFloatBtn />
-      {isVisible && <TopMenu />}
+      <TopMenu />
     </div>
   );
 };

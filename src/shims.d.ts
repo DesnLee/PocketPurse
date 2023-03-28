@@ -16,5 +16,6 @@ declare module 'react' {
     shadow?: string | boolean;
     sticky?: boolean;
     grid?: boolean;
+    z?: string;
   }
 }
