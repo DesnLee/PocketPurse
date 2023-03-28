@@ -1,5 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock';
-import { userData } from '../model/user';
+import { userData } from '../model/user.mock.data';
 
 export const userAPI: MockMethod = {
   url: '/api/v1/user',
