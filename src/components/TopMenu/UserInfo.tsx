@@ -7,7 +7,7 @@ interface Props {
 export const UserInfo: FC<Props> = ({ className }) => {
   return (
     <Link
-      to='/user'
+      to='/sign_in'
       className={className}
       pb-24px
       b-b
