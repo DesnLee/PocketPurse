@@ -40,7 +40,9 @@ export const createItemsData = ({
   size = 10,
   total = 100,
 }): APIResponse.Items => {
-  const items = createItems(size);
+  const hasSend = (page - 1) * size;
+  const hasLeft = total - hasSend;
+  const items = hasLeft > 0 ? createItems(Math.min(size, hasLeft)) : [];
   return {
     resources: items,
     pager: {

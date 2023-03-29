@@ -10,7 +10,7 @@ export const itemsAPI: MockMethod = {
     return itemsData.succeed({
       page: parseInt(query.page) || 1,
       size: parseInt(query.limit) || 10,
-      total: 100,
+      total: 24,
     });
   },
 };
