@@ -2,44 +2,29 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import { useCommonApi } from '../../api/common';
+import { Icon } from '../../components';
 
 interface BottomBlockProps {
   type: 'error' | 'next' | 'loading' | 'noMore';
   onClick?: () => void;
 }
 const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
-  if (type === 'loading') {
-    return (
-      <div px-16px pt-16px pb-32px>
-        <p pp-btn-info>加载数据中</p>
-      </div>
-    );
-  } else if (type === 'error') {
-    return (
-      <div px-16px pt-16px pb-32px onClick={onClick}>
-        <p pp-btn-info>加载失败，点击重试</p>
-      </div>
-    );
-  } else if (type === 'noMore') {
-    return (
-      <div px-16px pt-16px pb-32px>
-        <p pp-btn-info>没有更多了</p>
-      </div>
-    );
-  } else if (type === 'next') {
-    return (
-      <div px-16px pt-16px pb-32px>
-        <button pp-btn-info onClick={onClick}>
-          加载更多
-        </button>
-      </div>
-    );
-  }
-  return null;
+  return (
+    <div px-16px pt-16px pb-32px onClick={onClick}>
+      {type === 'next' && <button pp-btn-info>加载更多</button>}
+      {type !== 'next' && (
+        <p h-48px text-center text-14px leading-48px color='#909399'>
+          {type === 'error' && '加载失败，点击重试'}
+          {type === 'loading' && '加载数据中'}
+          {type === 'noMore' && '没有更多了'}
+        </p>
+      )}
+    </div>
+  );
 };
 
 const getKey = (pageIndex: number) => {
-  return `/api/v1/items?page=${pageIndex + 1}&limit=5`;
+  return `/api/v1/items?page=${pageIndex + 1}&limit=10`;
 };
 export const ItemList: FC = () => {
   // 加载更多状态
@@ -144,9 +129,15 @@ export const ItemList: FC = () => {
                     text-16px
                     leading-16px
                     font-bold
-                    color='#22ba58'
+                    color={'#303133'}
+                    flex
+                    items-center
+                    gap-4px
                   >
-                    ¥ {item.amount}
+                    {item.kind === 'expenses' ? (
+                      <Icon name='minus' size='10px' />
+                    ) : null}
+                    <span>{`${item.amount / 100}`}</span>
                   </p>
                 </li>
               ))}
