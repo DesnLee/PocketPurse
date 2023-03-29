@@ -32,7 +32,7 @@ export const Menu: FC<Props> = ({ className }) => {
   return (
     <ul className={className} py-24px>
       {icons.map(({ name, label, to }) => (
-        <li>
+        <li key={name}>
           <NavLink
             to={to}
             grid
