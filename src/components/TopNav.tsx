@@ -7,7 +7,7 @@ interface Props {
   color?: string;
 }
 export const TopNav: FC<Props> = ({
-  title = 'PocketPurse',
+  title = import.meta.env.VITE_APP_NAME,
   leftIcon,
   color,
 }) => {

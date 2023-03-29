@@ -81,9 +81,14 @@ export const WelcomeLayout: FC = () => {
   return (
     <div h-full flex flex-col items-center gradient-primary>
       <header flex shrink-0 items-center justify-center flex-col h='1/4'>
-        <img w-44px aspect-square src={logo} alt='PocketPurse' />
+        <img
+          w-44px
+          aspect-square
+          src={logo}
+          alt={import.meta.env.VITE_APP_NAME}
+        />
         <h1 mt-8px text-primary font-bold>
-          PocketPurse
+          {import.meta.env.VITE_APP_NAME}
         </h1>
       </header>
 
