@@ -1,15 +1,39 @@
-import type { FC, FormEvent } from 'react';
+import type { FC, FormEvent, MouseEventHandler } from 'react';
 import { Icon, TopNav } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { Input } from '../../components/FormInput/Input';
+import { validate } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
 
 export const SignIn: FC = () => {
-  const { data, setData } = useSignInStore();
+  const { data, errors, setData, setErrors } = useSignInStore();
 
-  const onClickSendAuthCode = (e: MouseEvent) => {
+  const onClickSendAuthCode: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     console.log('1');
+  };
+
+  const onBlur = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const error = validate(data, [
+      { key: 'email', type: 'required', message: '请输入邮箱地址' },
+      {
+        key: 'email',
+        type: 'pattern',
+        pattern: /^.+@.+$/,
+        message: '邮箱地址格式不正确',
+      },
+      { key: 'authCode', type: 'required', message: '请输入验证码' },
+      {
+        key: 'authCode',
+        type: 'length',
+        min: 6,
+        max: 6,
+        message: '验证码必须是6个字符',
+      },
+    ]);
+
+    setErrors(error);
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -39,8 +63,11 @@ export const SignIn: FC = () => {
           flex-col
           justify-between
           onSubmit={onSubmit}
+          onBlur={onBlur}
         >
           <div flex flex-col gap-y-24px>
+            <p>{errors.email?.join(',')}</p>
+            <p>{errors.authCode?.join(',')}</p>
             <Input
               label={<Icon name='mail' color='#0004' />}
               type='email'
