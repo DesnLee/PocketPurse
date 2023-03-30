@@ -1,6 +1,6 @@
 import { animated, useSpring } from '@react-spring/web';
 import type { FC } from 'react';
-import { useMenuStore } from '../../stores/useMenuStore';
+import { useMenuStore } from '../../stores';
 import { Menu } from './Menu';
 import { UserInfo } from './UserInfo';
 

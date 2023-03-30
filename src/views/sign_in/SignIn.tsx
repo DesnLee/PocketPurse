@@ -1,11 +1,20 @@
-import type { FC } from 'react';
+import type { FC, FormEvent } from 'react';
 import { Icon, TopNav } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { Input } from '../../components/FormInput/Input';
+import { useSignInStore } from '../../stores';
 
 export const SignIn: FC = () => {
-  const onChange = (value: string) => {
-    console.log(value);
+  const { data, setData } = useSignInStore();
+
+  const onClickSendAuthCode = (e: MouseEvent) => {
+    e.preventDefault();
+    console.log('1');
+  };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(data);
   };
 
   return (
@@ -22,22 +31,33 @@ export const SignIn: FC = () => {
           </h1>
         </div>
 
-        <form shrink-1 grow-1 w-full flex flex-col justify-between>
+        <form
+          shrink-1
+          grow-1
+          w-full
+          flex
+          flex-col
+          justify-between
+          onSubmit={onSubmit}
+        >
           <div flex flex-col gap-y-24px>
             <Input
               label={<Icon name='mail' color='#0004' />}
               type='email'
               labelWidth='22px'
               placeholder='请输入邮箱'
-              onChange={onChange}
+              onChange={(email) => setData({ email })}
             />
             <Input
               label={<Icon name='shield_cat' color='#0004' />}
               labelWidth='24px'
               placeholder='请输入验证码'
-              onChange={onChange}
+              onChange={(authCode) => setData({ authCode })}
               rightBtn={
-                <button className='pp-btn-secondary w-32vw rounded-8px'>
+                <button
+                  className='pp-btn-secondary w-32vw rounded-8px'
+                  onClick={onClickSendAuthCode}
+                >
                   获取验证码
                 </button>
               }
