@@ -17,5 +17,6 @@ declare module 'react' {
     sticky?: boolean;
     grid?: boolean;
     z?: string;
+    block?: boolean;
   }
 }

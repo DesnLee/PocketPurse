@@ -6,6 +6,7 @@ interface Props {
   leftIcon?: ReactNode;
   color?: string;
 }
+
 export const TopNav: FC<Props> = ({
   title = import.meta.env.VITE_APP_NAME,
   leftIcon,

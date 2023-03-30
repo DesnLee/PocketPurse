@@ -42,7 +42,7 @@ export const TopMenu: FC = () => {
         left-0
         w-full
         h-full
-        className='bg-black:75'
+        className='bg-black:56'
         z='[var(--z-index-menu)-1]'
         onClick={() => setVisible(false)}
       />
