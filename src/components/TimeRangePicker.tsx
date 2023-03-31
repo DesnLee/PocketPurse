@@ -32,7 +32,7 @@ export const TimeRangePicker: FC<Props> = ({ current, onChange }) => {
       {ranges.map((range) => (
         <li
           key={range.key}
-          className={current === range.key ? 'time-range-active' : ''}
+          className={current === range.key ? 'tag-active' : ''}
           onClick={() => onChange(range.key)}
         >
           {range.label}

@@ -44,7 +44,14 @@ export const Welcome: FC = () => {
         alt={current.alt}
         opacity-92
       />
-      <h2 flex flex-col items-center mt-36px text-black text-xl>
+      <h2
+        flex
+        flex-col
+        items-center
+        mt-36px
+        text='[var(--color-black)]'
+        text-xl
+      >
         <span mb-8px>{current.title}</span>
         <span>{current.subTitle}</span>
       </h2>

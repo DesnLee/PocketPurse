@@ -42,14 +42,8 @@ export const Menu: FC<Props> = ({ className }) => {
             grid-cols='[auto_1fr_auto]'
             py-16px
           >
-            <Icon
-              key={name}
-              name={name}
-              size='28px'
-              color-primary
-              color='#909399'
-            />
-            <p text-16px text-black>
+            <Icon key={name} name={name} size='28px' color='#909399' />
+            <p text-16px text='[var(--color-black)]'>
               {label}
             </p>
             <Icon

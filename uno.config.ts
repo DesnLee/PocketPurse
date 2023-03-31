@@ -11,8 +11,10 @@ export default defineConfig({
   theme: {},
   shortcuts: {
     'pp-btn': 'w-full h-48px rounded-24px text-16px font-bold b-solid b-1',
-    'pp-btn-primary': 'pp-btn bg-primary text-white b-transparent',
-    'pp-btn-secondary': 'pp-btn bg-transparent text-primary b-primary',
+    'pp-btn-primary':
+      'pp-btn bg-[var(--color-primary)] text-white b-transparent',
+    'pp-btn-secondary':
+      'pp-btn bg-transparent color-[var(--color-primary)] b-[var(--color-primary)]',
     'pp-btn-info': 'pp-btn bg-transparent text-#c0c4cc b-#ddd ',
   },
   safelist: [],
@@ -39,20 +41,13 @@ export default defineConfig({
       },
     ],
     ['shadow-primary', { 'box-shadow': '0 0 24px 0 #0002' }],
-    ['bg-primary', { background: 'var(--color-primary)' }],
-    ['b-primary', { border: '1px solid var(--color-primary)' }],
-    ['color-primary', { color: 'var(--color-primary)' }],
-    ['text-black', { color: 'var(--color-black)' }],
-    ['text-primary', { color: 'var(--color-primary)' }],
     [
-      'time-range-active',
+      'tag-active',
       {
         'border-bottom': '2px solid var(--color-primary)',
         'color': 'var(--color-primary)',
       },
     ],
-    ['b-b', { 'border-bottom': '1px solid #0001' }],
-    ['b-c-primary', { 'border-color': 'var(--color-primary)' }],
   ],
   transformers: [transformerAttributifyJsx()],
 });

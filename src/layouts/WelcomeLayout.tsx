@@ -87,7 +87,7 @@ export const WelcomeLayout: FC = () => {
           src={logo}
           alt={import.meta.env.VITE_APP_NAME}
         />
-        <h1 mt-8px text-primary font-bold>
+        <h1 mt-8px color='[var(--color-primary)]' font-bold>
           {import.meta.env.VITE_APP_NAME}
         </h1>
       </header>
@@ -114,7 +114,7 @@ export const WelcomeLayout: FC = () => {
           text-center
           h-44px
           leading-44px
-          bg-primary
+          bg='[var(--color-primary)]'
           text-white
           font-bold
           rounded-22px

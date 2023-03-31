@@ -75,7 +75,7 @@ export const Input: FC<Props> = ({
         shrink-1
         w-full
         rounded-8px
-        className='bg-white:64  focus:bg-white:92 focus:b-primary'
+        className='bg-white:64  focus:bg-white:92 focus:b-1 focus:b-solid  focus:b-[var(--color-primary)]'
         type={type}
         placeholder={placeholder}
         onChange={_onChange}

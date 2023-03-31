@@ -10,12 +10,22 @@ export const UserInfo: FC<Props> = ({ className }) => {
       to='/sign_in'
       className={className}
       pb-24px
-      b-b
+      b-b-1
+      b-b-solid
+      b-b='#0001'
       flex
       gap-12px
       items-center
     >
-      <div w-48px h-48px rounded-24px overflow-hidden b-2px b-solid b-c-primary>
+      <div
+        w-48px
+        h-48px
+        rounded-24px
+        overflow-hidden
+        b-2px
+        b-solid
+        b='[var(--color-primary)]'
+      >
         <img
           w-full
           h-full

@@ -18,5 +18,6 @@ declare module 'react' {
     grid?: boolean;
     z?: string;
     block?: boolean;
+    b?: string;
   }
 }

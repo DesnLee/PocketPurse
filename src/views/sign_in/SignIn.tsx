@@ -50,7 +50,7 @@ export const SignIn: FC = () => {
       <main shrink-1 grow-1 py-40px flex flex-col items-center gap-56px>
         <div flex flex-col items-center gap-12px shrink-0 grow-0>
           <img w-72px h-72px src={logo} alt='logo' />
-          <h1 color-primary font-bold text-28px>
+          <h1 font-bold text-28px color='[var(--color-primary)]'>
             {import.meta.env.VITE_APP_NAME}
           </h1>
         </div>
