@@ -2,11 +2,6 @@ import type { Partial } from '@react-spring/web';
 import { create } from 'zustand';
 import type { FormErrors } from '../lib/validate';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type SignInData = {
-  email: string;
-  authCode: string;
-};
 interface SignInStore {
   data: SignInData;
   errors: FormErrors<SignInData>;
@@ -24,12 +19,15 @@ export const useSignInStore = create<SignInStore>((set) => ({
     authCode: [],
   },
   setData: (data) => {
-    set((oldData) => ({
-      ...oldData,
-      data: { ...oldData.data, ...data },
+    set((oldState) => ({
+      ...oldState,
+      data: { ...oldState.data, ...data },
     }));
   },
   setErrors: (errors) => {
-    set((oldErrors) => ({ ...oldErrors, errors }));
+    set((oldState) => ({
+      ...oldState,
+      errors: { ...oldState.errors, ...errors },
+    }));
   },
 }));

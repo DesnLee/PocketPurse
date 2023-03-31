@@ -2,43 +2,65 @@ import type { FC, FormEvent, MouseEventHandler } from 'react';
 import { Icon, TopNav } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { Input } from '../../components/FormInput/Input';
-import { validate } from '../../lib/validate';
+import { hasError, validate } from '../../lib/validate';
+import type { Rules } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
+
+const rules: Rules<SignInData> = [
+  {
+    key: 'email',
+    type: 'required',
+    message: '请输入邮箱地址',
+  },
+  {
+    key: 'email',
+    type: 'pattern',
+    pattern: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+    message: '邮箱地址格式不正确',
+  },
+  {
+    key: 'authCode',
+    type: 'required',
+    message: '请输入验证码',
+  },
+  {
+    key: 'authCode',
+    type: 'length',
+    min: 6,
+    max: 6,
+    message: '验证码必须是6位数字',
+  },
+];
 
 export const SignIn: FC = () => {
   const { data, errors, setData, setErrors } = useSignInStore();
 
   const onClickSendAuthCode: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    console.log('1');
+    console.log('发送验证码');
   };
 
-  const onBlur = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const error = validate(data, [
-      { key: 'email', type: 'required', message: '请输入邮箱地址' },
-      {
-        key: 'email',
-        type: 'pattern',
-        pattern: /^.+@.+$/,
-        message: '邮箱地址格式不正确',
-      },
-      { key: 'authCode', type: 'required', message: '请输入验证码' },
-      {
-        key: 'authCode',
-        type: 'length',
-        min: 6,
-        max: 6,
-        message: '验证码必须是6个字符',
-      },
-    ]);
-
+  const checkForm = (key?: keyof typeof data) => {
+    let error;
+    if (key) {
+      error = validate(
+        { [key]: data[key] },
+        rules.filter((rule) => rule.key === key)
+      );
+    } else {
+      error = validate(data, rules);
+    }
     setErrors(error);
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(data);
+    checkForm();
+    if (hasError(errors)) {
+      console.log('error');
+    } else {
+      console.log('提交表单：', data);
+    }
   };
 
   return (
@@ -63,23 +85,27 @@ export const SignIn: FC = () => {
           flex-col
           justify-between
           onSubmit={onSubmit}
-          onBlur={onBlur}
         >
-          <div flex flex-col gap-y-24px>
-            <p>{errors.email?.join(',')}</p>
-            <p>{errors.authCode?.join(',')}</p>
+          <div flex flex-col>
             <Input
               label={<Icon name='mail' color='#0004' />}
               type='email'
               labelWidth='22px'
               placeholder='请输入邮箱'
               onChange={(email) => setData({ email })}
+              onBlur={() => checkForm('email')}
+              errors={errors.email}
+              clearable
             />
             <Input
               label={<Icon name='shield_cat' color='#0004' />}
+              type='number'
               labelWidth='24px'
               placeholder='请输入验证码'
               onChange={(authCode) => setData({ authCode })}
+              onBlur={() => checkForm('authCode')}
+              errors={errors.authCode}
+              clearable
               rightBtn={
                 <button
                   className='pp-btn-secondary w-32vw rounded-8px'

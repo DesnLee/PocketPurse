@@ -29,18 +29,19 @@ const isEmpty = (value: JSONValue) => {
 };
 
 const validateRule = <T extends FormData>(
-  data: T,
+  data: Partial<T>,
   rule: Rule<T>
 ): string | undefined => {
   const { key, message } = rule;
+  if (!(key in data)) return;
   const value = data[key];
 
   switch (rule.type) {
     case 'required':
-      if (isEmpty(value)) return message;
+      if (isEmpty(value!)) return message;
       break;
     case 'length':
-      if (!isEmpty(value)) {
+      if (!isEmpty(value!)) {
         if (rule.min && value!.toString().length < rule.min) return message;
         if (rule.max && value!.toString().length > rule.max) return message;
       }
@@ -54,7 +55,7 @@ const validateRule = <T extends FormData>(
 };
 
 export const validate = <T extends FormData>(
-  data: T,
+  data: Partial<T>,
   rules: Rules<T>
 ): FormErrors<T> => {
   const keys = Object.keys(data) as (keyof T)[];
@@ -71,4 +72,13 @@ export const validate = <T extends FormData>(
   }
 
   return error;
+};
+
+export const hasError = <T extends FormData>(errors: FormErrors<T>) => {
+  for (const key in errors) {
+    if (errors[key]?.length) {
+      return true;
+    }
+  }
+  return false;
 };

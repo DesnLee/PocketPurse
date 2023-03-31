@@ -16,3 +16,9 @@ declare namespace API {
     };
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type SignInData = {
+  email: string;
+  authCode: string;
+};
