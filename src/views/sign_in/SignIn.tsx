@@ -2,6 +2,7 @@ import type { FC, FormEvent, MouseEventHandler } from 'react';
 import { Icon, TopNav } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { Input } from '../../components/FormInput/Input';
+import { request } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
@@ -60,6 +61,7 @@ export const SignIn: FC = () => {
       console.log('error');
     } else {
       console.log('提交表单：', data);
+      request.post('/api/v1/sign_in', data);
     }
   };
 
@@ -116,7 +118,13 @@ export const SignIn: FC = () => {
               }
             />
           </div>
-          <button pp-btn-primary type='submit'>
+          <button
+            pp-btn-primary
+            type='submit'
+            disabled={
+              hasError(errors) || data.email === '' || data.authCode === ''
+            }
+          >
             登录
           </button>
         </form>
