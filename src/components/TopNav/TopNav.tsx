@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { Icon } from './Icon';
+import { Icon } from '../Icon';
 
 interface Props {
   title?: string;

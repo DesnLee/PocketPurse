@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../views/home/Home';
 import { Items } from '../views/Items/Items';
+import { NewItem } from '../views/newItem/NewItem';
 import { SignIn } from '../views/sign_in/SignIn';
 import { root } from './root';
 import { welcomeRoutes } from './welcomeRoutes';
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
   {
     path: '/items',
     element: <Items />,
+  },
+  {
+    path: '/items/new',
+    element: <NewItem />,
   },
   {
     path: '/sign_in',

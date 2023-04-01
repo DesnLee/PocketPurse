@@ -1,7 +1,6 @@
 import type { FC, FormEvent, MouseEventHandler } from 'react';
-import { Icon, TopNav } from '../../components';
+import { Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
-import { Input } from '../../components/FormInput/Input';
 import { request } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
@@ -66,12 +65,12 @@ export const SignIn: FC = () => {
   };
 
   return (
-    <div px-16px flex flex-col h-full gradient-primary>
-      <header shrink-0 grow-0>
+    <div pp-page-wrapper gradient-primary>
+      <TopNavTransparent>
         <TopNav title='登录/注册' leftIcon={<Icon name='arrow_left' />} />
-      </header>
+      </TopNavTransparent>
 
-      <main shrink-1 grow-1 py-40px flex flex-col items-center gap-56px>
+      <main px-16px shrink-1 grow-1 py-40px flex flex-col items-center gap-56px>
         <div flex flex-col items-center gap-12px shrink-0 grow-0>
           <img w-72px h-72px src={logo} alt='logo' />
           <h1 font-bold text-28px color='[var(--color-primary)]'>
