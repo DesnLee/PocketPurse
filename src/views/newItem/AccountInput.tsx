@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import styled from 'styled-components';
 import { Icon } from '../../components';
+import { usePopup } from '../../hooks';
 
 const Button = styled.button<{
   area: string;
@@ -37,10 +38,13 @@ const CalendarWrapper = styled.div`
 `;
 
 export const AccountInput: FC = () => {
+  const { Popup, open } = usePopup();
+
   return (
     <div>
+      {Popup}
       <div font-bold bg='#00000009' flex>
-        <CalendarWrapper>
+        <CalendarWrapper onClick={open}>
           <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
           <span>2023-03-14</span>
           <Icon name='arrow_right' size='16px' color='#c0c4cc' />
