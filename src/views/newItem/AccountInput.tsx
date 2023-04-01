@@ -25,7 +25,36 @@ const Button = styled.button<{
 
 export const AccountInput: FC = () => {
   return (
-    <div b-t-1 b-t-solid b-t='#0001'>
+    <div>
+      <div
+        b-y-1
+        b-y-solid
+        b-y='#0001'
+        px-16px
+        py-12px
+        flex
+        gap-12px
+        items-center
+        font-bold
+      >
+        <div
+          flex
+          gap-12px
+          items-center
+          b-r-1
+          b-r-solid
+          b-r='#0002'
+          text-14px
+          pr-12px
+          color='#606266'
+        >
+          <Icon name='calendar' size='16px' color='#606266' />
+          <span>2023-03-14</span>
+        </div>
+        <span flex-1 text-20px color-black text-right overflow-scroll font-mono>
+          ¥123456789.01
+        </span>
+      </div>
       <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
         <Button area='1 / 1 / 2 / 2'>1</Button>
         <Button area='1 / 2 / 2 / 3'>2</Button>
