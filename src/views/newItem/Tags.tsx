@@ -22,6 +22,8 @@ export const Tags: FC = () => {
   const tags = Array.from<string>({ length: 30 }).fill('😄');
   return (
     <ol
+      grow-1
+      overflow-scroll
       grid
       grid-cols='[repeat(auto-fit,56px)]'
       gap-x-28px

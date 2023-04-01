@@ -23,9 +23,7 @@ export const NewItem: FC = () => {
           onChange={(value) => setCurrent(value)}
         />
       </TopNavGradient>
-      <main grow-1 overflow-scroll>
-        <Tags />
-      </main>
+      <Tags />
       <AccountInput />
     </div>
   );
