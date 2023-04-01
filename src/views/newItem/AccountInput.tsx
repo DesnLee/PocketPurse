@@ -23,37 +23,39 @@ const Button = styled.button<{
   }
 `;
 
+const CalendarWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  margin: 8px 12px;
+  padding: 0 12px;
+  color: #303133;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 #0000000c;
+`;
+
 export const AccountInput: FC = () => {
   return (
     <div>
-      <div
-        b-y-1
-        b-y-solid
-        b-y='#0001'
-        px-16px
-        py-12px
-        flex
-        gap-12px
-        items-center
-        font-bold
-      >
-        <div
-          flex
-          gap-12px
-          items-center
-          b-r-1
-          b-r-solid
-          b-r='#0002'
-          text-14px
-          pr-12px
-          color='#606266'
-        >
-          <Icon name='calendar' size='16px' color='#606266' />
+      <div font-bold bg='#00000009' flex>
+        <CalendarWrapper>
+          <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
           <span>2023-03-14</span>
-        </div>
-        <span flex-1 text-20px color-black text-right overflow-scroll font-mono>
+          <Icon name='arrow_right' size='16px' color='#c0c4cc' />
+        </CalendarWrapper>
+        <p
+          text-20px
+          color-black
+          text-right
+          overflow-scroll
+          font-mono
+          p-16px
+          flex-1
+        >
           ¥123456789.01
-        </span>
+        </p>
       </div>
       <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
         <Button area='1 / 1 / 2 / 2'>1</Button>
