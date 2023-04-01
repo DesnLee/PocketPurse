@@ -9,14 +9,14 @@ const Button = styled.button<{
 }>`
   grid-area: ${({ area }) => area};
   font-size: ${({ font }) => font ?? '24px'};
-  line-height: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: ${({ primary }) => (primary ? 'var(--color-primary)' : '#fff')};
   color: ${({ primary }) => (primary ? '#fffe' : '#404244')};
   font-weight: bold;
   border: none;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:active {
     background: ${({ primary }) => (!primary ? '#ffaa5a33' : '#ffaa5a99')};
@@ -26,7 +26,7 @@ const Button = styled.button<{
 export const AccountInput: FC = () => {
   return (
     <div b-t-1 b-t-solid b-t='#0001'>
-      <div grid grid-rows-4 grid-cols-4 gap-1px bg='#00000006'>
+      <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
         <Button area='1 / 1 / 2 / 2'>1</Button>
         <Button area='1 / 2 / 2 / 3'>2</Button>
         <Button area='1 / 3 / 2 / 4'>3</Button>

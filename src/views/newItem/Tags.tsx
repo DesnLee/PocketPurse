@@ -36,7 +36,7 @@ export const Tags: FC = () => {
         </IconWrapper>
       </li>
       {tags.map((tag, i) => (
-        <li w-56px key={tag}>
+        <li w-56px key={i}>
           <IconWrapper selected={false}>{tag}</IconWrapper>
           <p text-12px leading-12px mt-6px text-center color='#606266'>
             tag{i}
