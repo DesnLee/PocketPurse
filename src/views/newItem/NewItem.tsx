@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Icon, TopNav, TopNavGradient } from '../../components';
-import { Tab } from '../../components/TopNav/Tab';
+import { Icon, Tab, TopNav, TopNavGradient } from '../../components';
+import { Tags } from './Tags';
 
 const tabs: { key: ItemModel['kind']; label: string }[] = [
   { key: 'expenses', label: '支出' },
@@ -22,6 +22,9 @@ export const NewItem: FC = () => {
           onChange={(value) => setCurrent(value)}
         />
       </TopNavGradient>
+      <main>
+        <Tags />
+      </main>
     </div>
   );
 };
