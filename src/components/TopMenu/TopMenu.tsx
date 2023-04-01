@@ -28,7 +28,6 @@ export const TopMenu: FC = () => {
         min-w-16em
         flex
         flex-col
-        shadow-primary
         p-16px
         z='[var(--z-index-menu)]'
       >

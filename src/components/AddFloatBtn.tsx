@@ -14,7 +14,7 @@ export const AddFloatBtn: FC = () => {
       fixed
       bottom-24px
       right-24px
-      shadow-primary
+      shadow-xl
     >
       <Icon name='add' color='#fffe' size='20px' />
     </div>

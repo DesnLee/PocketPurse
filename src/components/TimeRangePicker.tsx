@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { Tab } from './TopNav/Tab';
 
 export type TimeRange = 'thisMonth' | 'lastMonth' | 'thisYear' | 'custom';
 interface Props {
@@ -19,25 +20,5 @@ const ranges: TimeRanges = [
 ];
 
 export const TimeRangePicker: FC<Props> = ({ current, onChange }) => {
-  return (
-    <ol
-      flex
-      gap-12px
-      color='#909399'
-      mt-8px
-      text-16px
-      font-bold
-      children-p-12px
-    >
-      {ranges.map((range) => (
-        <li
-          key={range.key}
-          className={current === range.key ? 'tag-active' : ''}
-          onClick={() => onChange(range.key)}
-        >
-          {range.label}
-        </li>
-      ))}
-    </ol>
-  );
+  return <Tab items={ranges} value={current} onChange={onChange} />;
 };
