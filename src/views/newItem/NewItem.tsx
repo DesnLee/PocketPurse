@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Icon, Tab, TopNav, TopNavGradient } from '../../components';
+import { AccountInput } from './AccountInput';
 import { Tags } from './Tags';
 
 const tabs: { key: ItemModel['kind']; label: string }[] = [
@@ -22,9 +23,10 @@ export const NewItem: FC = () => {
           onChange={(value) => setCurrent(value)}
         />
       </TopNavGradient>
-      <main>
+      <main grow-1 overflow-scroll>
         <Tags />
       </main>
+      <AccountInput />
     </div>
   );
 };
