@@ -39,7 +39,9 @@ const CalendarWrapper = styled.div`
 `;
 
 export const AccountInput: FC = () => {
-  const { Popup, open } = usePopup({ children: <TimePicker /> });
+  const { Popup, open } = usePopup({
+    children: <TimePicker itemsHeight={96} />,
+  });
 
   return (
     <div>
