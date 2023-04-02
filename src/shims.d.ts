@@ -19,5 +19,6 @@ declare module 'react' {
     z?: string;
     block?: boolean;
     b?: string;
+    top?: string;
   }
 }
