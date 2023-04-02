@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import type { FC } from 'react';
 import styled from 'styled-components';
 import { Icon } from '../../components';
 import { usePopup } from '../../hooks';
+import { time } from '../../lib/time';
 import { DatePicker } from './DatePicker';
 
 const Button = styled.button<{
@@ -39,13 +41,9 @@ const CalendarWrapper = styled.div`
 `;
 
 export const AccountInput: FC = () => {
+  const [date, setDate] = useState(new Date());
   const { Popup, open } = usePopup({
-    children: (
-      <DatePicker
-        defaultValue={new Date()}
-        onChange={(v) => console.log(v.toLocaleString())}
-      />
-    ),
+    children: <DatePicker defaultValue={date} onChange={(v) => setDate(v)} />,
   });
 
   return (
@@ -54,7 +52,7 @@ export const AccountInput: FC = () => {
       <div font-bold bg='#00000009' flex>
         <CalendarWrapper onClick={open}>
           <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
-          <span>2023-03-14</span>
+          <span>{time(date).format('yyyy-MM-dd')}</span>
           <Icon name='arrow_right' size='16px' color='#c0c4cc' />
         </CalendarWrapper>
         <p
