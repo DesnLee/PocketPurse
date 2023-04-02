@@ -40,7 +40,12 @@ const CalendarWrapper = styled.div`
 
 export const AccountInput: FC = () => {
   const { Popup, open } = usePopup({
-    children: <DatePicker />,
+    children: (
+      <DatePicker
+        defaultValue={new Date()}
+        onChange={(v) => console.log(v.toLocaleString())}
+      />
+    ),
   });
 
   return (

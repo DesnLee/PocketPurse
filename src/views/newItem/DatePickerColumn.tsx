@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import styled from 'styled-components';
-import { time } from '../../lib/time';
 
 const PickerWrapper = styled.div<{ style: any }>`
   height: var(--panel-height);
@@ -9,16 +8,6 @@ const PickerWrapper = styled.div<{ style: any }>`
   position: relative;
   overflow: hidden;
   flex: 1;
-
-  //> .selector {
-  //  position: absolute;
-  //  top: calc(50% - (var(--items-height) / 2) * 1px);
-  //  background: #00000009;
-  //  height: calc(var(--items-height) * 1px);
-  //  left: 12px;
-  //  right: 12px;
-  //  border-radius: 12px;
-  //}
 
   > .list-wrapper {
     position: absolute;
@@ -37,15 +26,15 @@ const PickerList = styled.ol<{ style: any }>`
 `;
 
 interface Props {
-  start?: Date;
-  end?: Date;
-  value?: Date;
+  value: number;
   itemsHeight?: number;
   pickerHeight?: string;
+  data: number[];
+  onChange: (value: number) => void;
 }
 export const DatePickerColumn: FC<Props> = ({
-  start,
-  end,
+  data,
+  onChange,
   value,
   itemsHeight = 44,
   pickerHeight = '44vh',
@@ -54,20 +43,16 @@ export const DatePickerColumn: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [isTouching, setIsTouching] = useState(false);
 
-  // 计算年份列表，默认从今年往前推 5 年
-  const startYear = start ? time(start).year : time().add(-5, 'year').year;
-  const endYear = end ? time(end).year : time().year;
-  // 保证 startYear < endYear
-  if (startYear > endYear)
-    throw new Error('startYear must be less than endYear');
-  const years = Array.from(
-    { length: endYear - startYear + 1 },
-    (_, i) => i + startYear
-  );
-  // 计算年份初始位置，选中 value 或今年
-  const initialIndex = years.findIndex((year) => year === time(value).year);
+  // 计算初始位置，选中 value
+  const initialIndex = data.findIndex((item) => item === value);
   const [oldY, setOldY] = useState(0);
   const [translateY, setTranslateY] = useState(-initialIndex * itemsHeight);
+
+  useEffect(() => {
+    // 选中 value
+    const index = data.findIndex((item) => item === value);
+    setTranslateY(-index * itemsHeight);
+  }, [initialIndex, value, data]);
 
   return (
     <PickerWrapper
@@ -104,19 +89,22 @@ export const DatePickerColumn: FC<Props> = ({
 
         // 限制滚动范围
         target = Math.min(target, 0);
-        target = Math.max(target, -itemsHeight * (years.length - 1));
+        target = Math.max(target, -itemsHeight * (data.length - 1));
 
         // 设置滚动位置和动画时间
         setTranslateY(target);
         setDuration(0.08);
         setIsTouching(false);
+
+        // 设置选中的值
+        const index = Math.abs(target / itemsHeight);
+        onChange(data[index]);
       }}
     >
-      {/* <div className='selector' /> */}
       <div className='list-wrapper'>
         <PickerList style={{ '--axis-y': translateY }}>
-          {years.map((year) => (
-            <li key={year}>{year}</li>
+          {data.map((item) => (
+            <li key={item}>{item}</li>
           ))}
         </PickerList>
       </div>
