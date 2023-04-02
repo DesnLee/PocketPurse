@@ -8,16 +8,17 @@ const PickerWrapper = styled.div<{ style: any }>`
   font-size: 16px;
   position: relative;
   overflow: hidden;
+  flex: 1;
 
-  > .selector {
-    position: absolute;
-    top: calc(50% - (var(--items-height) / 2) * 1px);
-    background: #00000009;
-    height: calc(var(--items-height) * 1px);
-    left: 12px;
-    right: 12px;
-    border-radius: 12px;
-  }
+  //> .selector {
+  //  position: absolute;
+  //  top: calc(50% - (var(--items-height) / 2) * 1px);
+  //  background: #00000009;
+  //  height: calc(var(--items-height) * 1px);
+  //  left: 12px;
+  //  right: 12px;
+  //  border-radius: 12px;
+  //}
 
   > .list-wrapper {
     position: absolute;
@@ -42,7 +43,7 @@ interface Props {
   itemsHeight?: number;
   pickerHeight?: string;
 }
-export const TimePicker: FC<Props> = ({
+export const DatePickerColumn: FC<Props> = ({
   start,
   end,
   value,
@@ -102,9 +103,8 @@ export const TimePicker: FC<Props> = ({
         }
 
         // 限制滚动范围
-        const minY = -itemsHeight * (years.length - 1);
-        if (target > 0) target = 0;
-        if (target < minY) target = minY;
+        target = Math.min(target, 0);
+        target = Math.max(target, -itemsHeight * (years.length - 1));
 
         // 设置滚动位置和动画时间
         setTranslateY(target);
@@ -112,7 +112,7 @@ export const TimePicker: FC<Props> = ({
         setIsTouching(false);
       }}
     >
-      <div className='selector' />
+      {/* <div className='selector' /> */}
       <div className='list-wrapper'>
         <PickerList style={{ '--axis-y': translateY }}>
           {years.map((year) => (

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import styled from 'styled-components';
 import { Icon } from '../../components';
 import { usePopup } from '../../hooks';
-import { TimePicker } from './TimePicker';
+import { DatePicker } from './DatePicker';
 
 const Button = styled.button<{
   area: string;
@@ -40,7 +40,7 @@ const CalendarWrapper = styled.div`
 
 export const AccountInput: FC = () => {
   const { Popup, open } = usePopup({
-    children: <TimePicker itemsHeight={96} />,
+    children: <DatePicker />,
   });
 
   return (
