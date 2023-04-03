@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../views/home/Home';
 import { Items } from '../views/Items/Items';
 import { NewItem } from '../views/newItem/NewItem';
+import { NewTag } from '../views/newTag/NewTag';
 import { SignIn } from '../views/sign_in/SignIn';
 import { root } from './root';
 import { welcomeRoutes } from './welcomeRoutes';
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
   {
     path: '/tags',
     element: <div>tags</div>,
+  },
+  {
+    path: '/tags/new',
+    element: <NewTag />,
   },
   {
     path: '/reminder',

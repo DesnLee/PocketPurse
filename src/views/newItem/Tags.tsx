@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon } from '../../components';
 
@@ -18,7 +19,10 @@ const IconWrapper = styled.div<{ selected?: boolean }>`
     selected ? 'var(--color-primary)' : 'transparent'};
 `;
 
-export const Tags: FC = () => {
+interface Props {
+  currentType: ItemModel['kind'];
+}
+export const Tags: FC<Props> = ({ currentType }) => {
   const tags = Array.from<string>({ length: 30 }).fill('😄');
   return (
     <ol
@@ -34,9 +38,11 @@ export const Tags: FC = () => {
       px-10px
     >
       <li w-56px>
-        <IconWrapper>
-          <Icon size='20px' color='var(--color-primary)' name='add' />
-        </IconWrapper>
+        <Link to={`/tags/new?type=${currentType}`}>
+          <IconWrapper>
+            <Icon size='20px' color='var(--color-primary)' name='add' />
+          </IconWrapper>
+        </Link>
       </li>
       {tags.map((tag, i) => (
         <li w-56px key={i}>
