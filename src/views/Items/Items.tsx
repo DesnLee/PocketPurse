@@ -29,7 +29,7 @@ export const Items: FC = () => {
         />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
-      <main grow-1 overflow-scroll>
+      <main grow-1 overflow-auto>
         <ItemsSummary />
         <ItemList />
       </main>

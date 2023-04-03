@@ -79,7 +79,7 @@ export const Input: FC<Props> = ({
   };
 
   const labelNode = () => {
-    if (label) return null;
+    if (!label) return null;
     if (typeof label === 'string') {
       return <StringLabel labelWidth={labelWidth}>{label}</StringLabel>;
     } else {
