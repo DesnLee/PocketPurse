@@ -8,7 +8,7 @@ interface ItemModel {
   created_at: string;
   updated_at: string;
   deleted_at?: string;
-  kind: 'expenses' | 'incomes';
+  kind: 'expenses' | 'income';
 }
 
 declare namespace APIResponse {

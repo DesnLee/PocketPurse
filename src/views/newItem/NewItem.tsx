@@ -6,11 +6,11 @@ import { Tags } from './Tags';
 
 const tabs: { key: ItemModel['kind']; label: string }[] = [
   { key: 'expenses', label: '支出' },
-  { key: 'incomes', label: '收入' },
+  { key: 'income', label: '收入' },
 ];
 
 export const NewItem: FC = () => {
-  const [current, setCurrent] = useState<ItemModel['kind']>('incomes');
+  const [current, setCurrent] = useState<ItemModel['kind']>('income');
 
   return (
     <div pp-page-wrapper>
@@ -23,7 +23,7 @@ export const NewItem: FC = () => {
           onChange={(value) => setCurrent(value)}
         />
       </TopNavGradient>
-      <Tags />
+      <Tags currentType={current} />
       <AccountInput />
     </div>
   );

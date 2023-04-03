@@ -11,7 +11,7 @@ const getItemId = (): number => {
 // 创建一个 item
 export const createItem = (): ItemModel => {
   const id = getItemId();
-  const kind = Math.random() > 0.3 ? 'expenses' : 'incomes';
+  const kind = Math.random() > 0.3 ? 'expenses' : 'income';
   // const note = ['吃饭', '喝水', '睡觉', '打豆豆'][
   //   Math.floor(Math.random() * 4)
   // ];
