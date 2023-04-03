@@ -17,7 +17,6 @@ export const userAPI: MockMethod[] = [
     statusCode: 200,
     timeout: 500,
     response: ({ body }: { body: SignInData }) => {
-      console.log('body', body);
       return {
         msg: 'succeed',
         jwt: '__TOKEN__',

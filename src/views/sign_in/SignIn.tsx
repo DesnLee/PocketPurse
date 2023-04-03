@@ -37,7 +37,6 @@ export const SignIn: FC = () => {
 
   const onClickSendAuthCode: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    console.log('发送验证码');
   };
 
   const checkForm = (key?: keyof typeof data) => {
@@ -57,9 +56,7 @@ export const SignIn: FC = () => {
     e.preventDefault();
     checkForm();
     if (hasError(errors)) {
-      console.log('error');
     } else {
-      console.log('提交表单：', data);
       request.post('/api/v1/sign_in', data);
     }
   };
