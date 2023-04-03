@@ -61,7 +61,7 @@ export const AccountInput: FC = () => {
       <div font-bold bg='#00000009' flex>
         <CalendarWrapper onClick={open}>
           <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
-          <span>{time(date).format('yyyy-MM-dd')}</span>
+          <span>{time(date).format()}</span>
           <Icon name='arrow_right' size='16px' color='#c0c4cc' />
         </CalendarWrapper>
         <p

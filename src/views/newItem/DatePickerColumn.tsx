@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const ColumnWrapper = styled.div<{ style: any }>`
   height: 100%;
-  font-size: 16px;
+  font-size: 18px;
   position: relative;
   overflow: hidden;
   flex: 1;

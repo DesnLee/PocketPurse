@@ -111,7 +111,7 @@ export class Time {
     return this;
   }
 
-  format(fmt: string) {
+  format(fmt = 'yyyy-MM-dd') {
     return fmt
       .replace(/yyyy/g, this.year.toString())
       .replace(/MM/g, this.month.toString().padStart(2, '0'))

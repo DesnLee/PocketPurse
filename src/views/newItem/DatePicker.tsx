@@ -135,6 +135,7 @@ export const DatePicker: FC<Props> = (props) => {
       </div>
 
       <div flex grow-1 relative>
+        <PickerMask />
         <Selector style={{ '--items-height': itemsHeight }} />
         <DatePickerColumn
           itemsHeight={itemsHeight}
@@ -176,4 +177,24 @@ const PickerWrapper = styled.div<{ style: any }>`
   flex-direction: column;
   gap: 12px;
   height: var(--panel-height);
+`;
+
+const PickerMask = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    #fff 0%,
+    #fff9 35%,
+    #fff0 45%,
+    #fff0 50%,
+    #fff0 55%,
+    #fff9 65%,
+    #fff 100%
+  );
 `;
