@@ -147,6 +147,7 @@ export const DatePicker: FC<Props> = (props) => {
           // 三个选择器
           (['year', 'month', 'day'] as const).map((key) => (
             <DatePickerColumn
+              key={key}
               itemsHeight={itemsHeight}
               value={valueTime.current[key]}
               data={dataList[key]}
