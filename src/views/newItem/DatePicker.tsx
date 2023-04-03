@@ -52,8 +52,8 @@ export const DatePicker: FC<Props> = (props) => {
     valueTime.current[key] = newValue;
 
     // 如果选择的时间晚于当前时间，置为当前时间
-    if (valueTime.current.timestamp > time().timestamp) {
-      valueTime.current.dateObject = time().dateObject;
+    if (valueTime.current.timestamp > endTime.timestamp) {
+      valueTime.current.dateObject = endTime.dateObject;
     }
 
     update({});
@@ -67,8 +67,8 @@ export const DatePicker: FC<Props> = (props) => {
 
   // 计算月列表，今天之前
   let monthList: number[];
-  if (valueTime.current.year === time().year) {
-    monthList = Array.from({ length: time().month }, (_, i) => i + 1);
+  if (valueTime.current.year === endTime.year) {
+    monthList = Array.from({ length: endTime.month }, (_, i) => i + 1);
   } else {
     monthList = Array.from({ length: 12 }, (_, i) => i + 1);
   }
@@ -76,10 +76,10 @@ export const DatePicker: FC<Props> = (props) => {
   // 计算日列表，今天之前
   let dayList: number[];
   if (
-    valueTime.current.year === time().year &&
-    valueTime.current.month === time().month
+    valueTime.current.year === endTime.year &&
+    valueTime.current.month === endTime.month
   ) {
-    dayList = Array.from({ length: time().day }, (_, i) => i + 1);
+    dayList = Array.from({ length: endTime.day }, (_, i) => i + 1);
   } else {
     dayList = Array.from(
       { length: valueTime.current.lastDayOfMonth.day },
