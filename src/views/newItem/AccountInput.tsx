@@ -40,7 +40,22 @@ const CalendarWrapper = styled.div`
   box-shadow: 0 0 10px 0 #0000000c;
 `;
 
+type KeyboardKeys =
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '0'
+  | '.'
+  | 'backspace';
+
 export const AccountInput: FC = () => {
+  // 日期
   const [date, setDate] = useState(new Date());
   const { Popup, open, close } = usePopup({
     children: (
@@ -55,10 +70,54 @@ export const AccountInput: FC = () => {
     ),
   });
 
+  // 金额
+  const [output, _setOutput] = useState('0');
+  const addNum = (num: KeyboardKeys) => {
+    const [yuan, jiao] = output.split('.');
+
+    // 如果正在输入小数
+    if (jiao !== undefined) {
+      _setOutput((prev) => prev + num);
+    }
+    // 如果正在输入整数
+    else if (yuan.length < 9) {
+      _setOutput((prev) => prev + num);
+    }
+  };
+  const setOutput = (value: KeyboardKeys) => {
+    // 限制小数点后两位
+    if (value !== 'backspace') {
+      if (output.includes('.') && output.length - output.indexOf('.') > 2)
+        return;
+    }
+
+    switch (value) {
+      case '0':
+        if (output !== '0') addNum(value);
+        break;
+      case '.':
+        if (!output.includes('.')) _setOutput((prev) => prev + value);
+        break;
+      case 'backspace':
+        if (output.length > 1) {
+          _setOutput((prev) => prev.slice(0, -1));
+        } else {
+          _setOutput('0');
+        }
+        break;
+      default:
+        if (output === '0') {
+          _setOutput(value);
+        } else {
+          addNum(value);
+        }
+    }
+  };
+
   return (
     <div>
       {Popup}
-      <div font-bold bg='#00000009' flex>
+      <div font-bold bg='#00000009' flex b-t-1 b-t='#00000009' b-t-solid>
         <CalendarWrapper onClick={open}>
           <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
           <span>{time(date).format()}</span>
@@ -68,27 +127,49 @@ export const AccountInput: FC = () => {
           text-20px
           color-black
           text-right
-          overflow-scroll
+          overflow-auto
           font-mono
           p-16px
           flex-1
         >
-          ¥123456789.01
+          ¥{output}
         </p>
       </div>
       <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
-        <Button area='1 / 1 / 2 / 2'>1</Button>
-        <Button area='1 / 2 / 2 / 3'>2</Button>
-        <Button area='1 / 3 / 2 / 4'>3</Button>
-        <Button area='2 / 1 / 3 / 2'>4</Button>
-        <Button area='2 / 2 / 3 / 3'>5</Button>
-        <Button area='2 / 3 / 3 / 4'>6</Button>
-        <Button area='3 / 1 / 4 / 2'>7</Button>
-        <Button area='3 / 2 / 4 / 3'>8</Button>
-        <Button area='3 / 3 / 4 / 4'>9</Button>
-        <Button area='4 / 1 / 5 / 3'>0</Button>
-        <Button area='4 / 3 / 5 / 4'>.</Button>
-        <Button area='1 / 4 / 2 / 5'>
+        <Button area='1 / 1 / 2 / 2' onClick={() => setOutput('1')}>
+          1
+        </Button>
+        <Button area='1 / 2 / 2 / 3' onClick={() => setOutput('2')}>
+          2
+        </Button>
+        <Button area='1 / 3 / 2 / 4' onClick={() => setOutput('3')}>
+          3
+        </Button>
+        <Button area='2 / 1 / 3 / 2' onClick={() => setOutput('4')}>
+          4
+        </Button>
+        <Button area='2 / 2 / 3 / 3' onClick={() => setOutput('5')}>
+          5
+        </Button>
+        <Button area='2 / 3 / 3 / 4' onClick={() => setOutput('6')}>
+          6
+        </Button>
+        <Button area='3 / 1 / 4 / 2' onClick={() => setOutput('7')}>
+          7
+        </Button>
+        <Button area='3 / 2 / 4 / 3' onClick={() => setOutput('8')}>
+          8
+        </Button>
+        <Button area='3 / 3 / 4 / 4' onClick={() => setOutput('9')}>
+          9
+        </Button>
+        <Button area='4 / 1 / 5 / 3' onClick={() => setOutput('0')}>
+          0
+        </Button>
+        <Button area='4 / 3 / 5 / 4' onClick={() => setOutput('.')}>
+          .
+        </Button>
+        <Button area='1 / 4 / 2 / 5' onClick={() => setOutput('backspace')}>
           <Icon name='delete' size='28px' color='#606266' />
         </Button>
         <Button area='2 / 4 / 5 / 5' font='18px' primary={true}>
