@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import styled from 'styled-components';
 
-const PickerWrapper = styled.div<{ style: any }>`
-  height: var(--panel-height);
+const ColumnWrapper = styled.div<{ style: any }>`
+  height: 100%;
   font-size: 16px;
   position: relative;
   overflow: hidden;
@@ -15,7 +15,7 @@ const PickerWrapper = styled.div<{ style: any }>`
     top: calc(50% - var(--items-height) / 2 * 1px);
   }
 `;
-const PickerList = styled.ol<{ style: any }>`
+const ColumnList = styled.ol<{ style: any }>`
   transform: translateY(calc(var(--axis-y) * 1px));
   transition: transform calc(var(--duration) * 1s) linear;
 
@@ -27,8 +27,7 @@ const PickerList = styled.ol<{ style: any }>`
 
 interface Props {
   value: number;
-  itemsHeight?: number;
-  pickerHeight?: string;
+  itemsHeight: number;
   data: number[];
   onChange: (value: number) => void;
 }
@@ -36,8 +35,7 @@ export const DatePickerColumn: FC<Props> = ({
   data,
   onChange,
   value,
-  itemsHeight = 44,
-  pickerHeight = '44vh',
+  itemsHeight,
 }) => {
   // 通用控制变量
   const [duration, setDuration] = useState(0);
@@ -55,9 +53,8 @@ export const DatePickerColumn: FC<Props> = ({
   }, [initialIndex, value, data]);
 
   return (
-    <PickerWrapper
+    <ColumnWrapper
       style={{
-        '--panel-height': pickerHeight,
         '--items-height': itemsHeight,
         '--duration': duration,
       }}
@@ -102,12 +99,12 @@ export const DatePickerColumn: FC<Props> = ({
       }}
     >
       <div className='list-wrapper'>
-        <PickerList style={{ '--axis-y': translateY }}>
+        <ColumnList style={{ '--axis-y': translateY }}>
           {data.map((item) => (
             <li key={item}>{item}</li>
           ))}
-        </PickerList>
+        </ColumnList>
       </div>
-    </PickerWrapper>
+    </ColumnWrapper>
   );
 };

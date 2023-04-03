@@ -11,14 +11,23 @@ interface Props {
   defaultValue?: Date;
   itemsHeight?: number;
   pickerHeight?: string;
-  onChange?: (value: Date) => void;
+  onConfirm?: (value: Date) => void;
+  onCancel?: () => void;
 }
 export const DatePicker: FC<Props> = (props) => {
-  const { start, end, defaultValue, onChange, itemsHeight = 44 } = props;
+  const {
+    start,
+    end,
+    pickerHeight = '38vh',
+    defaultValue,
+    onConfirm,
+    onCancel,
+    itemsHeight = 44,
+  } = props;
 
   // 获取三个时间的 Time 对象，默认年份往前推 5 年
-  const startTime = time(start ?? time().add(-5, 'year').date);
-  const endTime = time(end ?? new Date());
+  const startTime = start ? time(start) : time().add(-5, 'year');
+  const endTime = end ? time(end) : time();
   // 保证 startTime < endTime
   if (startTime.timestamp > endTime.timestamp)
     throw new Error('startYear must be less than endYear');
@@ -37,7 +46,6 @@ export const DatePicker: FC<Props> = (props) => {
       };
       maxDay = newDate.lastDayOfMonth.day;
     }
-
     if (valueTime.current.day > maxDay) {
       valueTime.current.day = maxDay;
     }
@@ -49,7 +57,6 @@ export const DatePicker: FC<Props> = (props) => {
     }
 
     update({});
-    onChange?.(valueTime.current.date);
   };
 
   // 计算年列表
@@ -81,27 +88,74 @@ export const DatePicker: FC<Props> = (props) => {
   }
 
   return (
-    <div flex>
-      <Selector style={{ '--items-height': itemsHeight }} />
-      <DatePickerColumn
-        {...props}
-        value={valueTime.current.year}
-        data={yearList}
-        onChange={(year) => _onChange(year, 'year')}
-      />
-      <DatePickerColumn
-        {...props}
-        value={valueTime.current.month}
-        data={monthList}
-        onChange={(month) => _onChange(month, 'month')}
-      />
-      <DatePickerColumn
-        {...props}
-        value={valueTime.current.day}
-        data={dayList}
-        onChange={(day) => _onChange(day, 'day')}
-      />
-    </div>
+    <PickerWrapper style={{ '--panel-height': pickerHeight }}>
+      <div
+        text-14px
+        grid
+        grid-rows-1
+        grid-cols='[auto_1fr_auto]'
+        h-44px
+        leading-44px
+      >
+        <span
+          px-20px
+          grid-row-start-1
+          grid-col-start-1
+          grid-row-end-1
+          grid-col-end-2
+          text-left
+          color='#909399'
+          onClick={onCancel}
+        >
+          取消
+        </span>
+        <span
+          grid-row-start-1
+          grid-col-start-2
+          grid-row-end-1
+          grid-col-end-3
+          text-center
+          font-bold
+          text-16px
+        >
+          日期选择
+        </span>
+        <span
+          px-20px
+          grid-row-start-1
+          grid-col-start-3
+          grid-row-end-1
+          grid-col-end-4
+          text-right
+          color='[var(--color-primary)]'
+          onClick={() => onConfirm?.(valueTime.current.date)}
+        >
+          确认
+        </span>
+      </div>
+
+      <div flex grow-1 relative>
+        <Selector style={{ '--items-height': itemsHeight }} />
+        <DatePickerColumn
+          itemsHeight={itemsHeight}
+          value={valueTime.current.year}
+          data={yearList}
+          onChange={(year) => _onChange(year, 'year')}
+        />
+        <DatePickerColumn
+          itemsHeight={itemsHeight}
+          value={valueTime.current.month}
+          data={monthList}
+          onChange={(month) => _onChange(month, 'month')}
+        />
+        <DatePickerColumn
+          itemsHeight={itemsHeight}
+          value={valueTime.current.day}
+          data={dayList}
+          onChange={(day) => _onChange(day, 'day')}
+        />
+      </div>
+    </PickerWrapper>
   );
 };
 
@@ -114,4 +168,12 @@ const Selector = styled.div<{ style: any }>`
   left: 12px;
   right: 12px;
   border-radius: 12px;
+`;
+
+const PickerWrapper = styled.div<{ style: any }>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: var(--panel-height);
 `;

@@ -33,6 +33,8 @@ const PopupElement: FC<PopupProps> = ({ isVisible, setVisible, children }) => {
         flex-col
         z='[var(--z-index-popup)]'
         touch-none
+        rounded-t-12px
+        overflow-hidden
       >
         {children}
       </animated.div>

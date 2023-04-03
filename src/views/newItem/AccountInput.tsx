@@ -42,8 +42,17 @@ const CalendarWrapper = styled.div`
 
 export const AccountInput: FC = () => {
   const [date, setDate] = useState(new Date());
-  const { Popup, open } = usePopup({
-    children: <DatePicker defaultValue={date} onChange={(v) => setDate(v)} />,
+  const { Popup, open, close } = usePopup({
+    children: (
+      <DatePicker
+        defaultValue={date}
+        onConfirm={(v) => {
+          setDate(v);
+          close();
+        }}
+        onCancel={() => close()}
+      />
+    ),
   });
 
   return (

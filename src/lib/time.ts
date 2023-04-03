@@ -11,9 +11,9 @@ export const time = (d?: Date) => {
   return new Time(d);
 };
 export class Time {
-  private _date: Date;
+  #date: Date;
   constructor(d?: Date) {
-    this._date = d || new Date();
+    this.#date = d ? new Date(d) : new Date();
   }
 
   get dateObject() {
@@ -39,7 +39,7 @@ export class Time {
   }
 
   get date() {
-    return this._date;
+    return new Date(this.#date);
   }
 
   get lastDayOfMonth() {
@@ -47,63 +47,63 @@ export class Time {
   }
 
   get timestamp() {
-    return this._date.getTime();
+    return this.#date.getTime();
   }
 
   get year() {
-    return this._date.getFullYear();
+    return this.#date.getFullYear();
   }
 
   set year(y) {
-    this._date.setFullYear(y);
+    this.#date.setFullYear(y);
   }
 
   get month() {
-    return this._date.getMonth() + 1;
+    return this.#date.getMonth() + 1;
   }
 
   set month(m) {
-    this._date.setMonth(m - 1);
+    this.#date.setMonth(m - 1);
   }
 
   get day() {
-    return this._date.getDate();
+    return this.#date.getDate();
   }
 
   set day(d) {
-    this._date.setDate(d);
+    this.#date.setDate(d);
   }
 
   get hour() {
-    return this._date.getHours();
+    return this.#date.getHours();
   }
 
   set hour(h) {
-    this._date.setHours(h);
+    this.#date.setHours(h);
   }
 
   get minute() {
-    return this._date.getMinutes();
+    return this.#date.getMinutes();
   }
 
   set minute(m) {
-    this._date.setMinutes(m);
+    this.#date.setMinutes(m);
   }
 
   get second() {
-    return this._date.getSeconds();
+    return this.#date.getSeconds();
   }
 
   set second(s) {
-    this._date.setSeconds(s);
+    this.#date.setSeconds(s);
   }
 
   get millisecond() {
-    return this._date.getMilliseconds();
+    return this.#date.getMilliseconds();
   }
 
   set millisecond(ms) {
-    this._date.setMilliseconds(ms);
+    this.#date.setMilliseconds(ms);
   }
 
   add(num: number, key: DateKind) {
