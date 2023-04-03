@@ -23,9 +23,10 @@ export const Tags: FC = () => {
   return (
     <ol
       grow-1
-      overflow-scroll
+      overflow-auto
       grid
       grid-cols='[repeat(auto-fit,56px)]'
+      grid-rows='[repeat(auto-fit,74px)]'
       gap-x-28px
       gap-y-20px
       justify-center
