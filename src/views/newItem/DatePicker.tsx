@@ -87,6 +87,12 @@ export const DatePicker: FC<Props> = (props) => {
     );
   }
 
+  const dataList = {
+    year: yearList,
+    month: monthList,
+    day: dayList,
+  };
+
   return (
     <PickerWrapper style={{ '--panel-height': pickerHeight }}>
       <div
@@ -137,24 +143,17 @@ export const DatePicker: FC<Props> = (props) => {
       <div flex grow-1 relative>
         <PickerMask />
         <Selector style={{ '--items-height': itemsHeight }} />
-        <DatePickerColumn
-          itemsHeight={itemsHeight}
-          value={valueTime.current.year}
-          data={yearList}
-          onChange={(year) => _onChange(year, 'year')}
-        />
-        <DatePickerColumn
-          itemsHeight={itemsHeight}
-          value={valueTime.current.month}
-          data={monthList}
-          onChange={(month) => _onChange(month, 'month')}
-        />
-        <DatePickerColumn
-          itemsHeight={itemsHeight}
-          value={valueTime.current.day}
-          data={dayList}
-          onChange={(day) => _onChange(day, 'day')}
-        />
+        {
+          // 三个选择器
+          (['year', 'month', 'day'] as const).map((key) => (
+            <DatePickerColumn
+              itemsHeight={itemsHeight}
+              value={valueTime.current[key]}
+              data={dataList[key]}
+              onChange={(value) => _onChange(value, key)}
+            />
+          ))
+        }
       </div>
     </PickerWrapper>
   );
