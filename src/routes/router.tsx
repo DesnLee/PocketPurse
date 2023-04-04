@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../views/home/Home';
 import { Items } from '../views/Items/Items';
 import { NewItem } from '../views/newItem/NewItem';
+import { Statistics } from '../views/statistics/Statistics';
 import { EditTag } from '../views/tags/EditTag';
 import { SignIn } from '../views/sign_in/SignIn';
 import { root } from './root';
@@ -27,8 +28,8 @@ export const router = createBrowserRouter([
     element: <NewItem />,
   },
   {
-    path: '/charts',
-    element: <div>charts</div>,
+    path: '/statistics',
+    element: <Statistics />,
   },
   {
     path: '/export',

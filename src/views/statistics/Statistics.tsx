@@ -6,7 +6,7 @@ import {
   TopNav,
   TopNavGradient,
 } from '../../components';
-import { Line } from '../../components/Charts/Line';
+import { LineChart } from '../../components/Charts/LineChart';
 import type { TimeRange } from '../../components/TimeRangePicker';
 
 export const Statistics: FC = () => {
@@ -74,7 +74,7 @@ export const Statistics: FC = () => {
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
       <main grow-1 overflow-auto pt-16px pb-36px>
-        <Line data={data} />
+        <LineChart data={data} />
       </main>
     </div>
   );
