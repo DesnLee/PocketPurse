@@ -54,8 +54,7 @@ export const SignIn: FC = () => {
 
   const onSubmit = () => {
     checkForm();
-    if (hasError(errors)) {
-    } else {
+    if (!hasError(errors)) {
       request.post('/api/v1/sign_in', data);
     }
   };

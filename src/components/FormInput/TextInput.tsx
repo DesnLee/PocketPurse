@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Icon } from '../Icon';
 
 export interface TextInputProps {
-  align?: 'left' | 'center' | 'right';
+  align?: 'left' | 'center';
   label?: string | ReactNode;
   labelWidth?: string;
   type?: 'text' | 'email' | 'number';
@@ -123,7 +123,7 @@ const NodeLabel = styled.span<{ labelWidth: string }>`
 
 const MyInput = styled.input<{
   clearable: boolean;
-  align: 'left' | 'center' | 'right';
+  align: 'left' | 'center';
 }>`
   text-align: ${({ align }) => align};
   padding-right: ${({ clearable }) => (clearable ? '40px' : '16px')};
@@ -132,12 +132,24 @@ const MyInput = styled.input<{
 const ErrorSpan = styled.span<{
   hasLabel: boolean;
   labelWidth: string;
-  align: 'left' | 'center' | 'right';
+  align: 'left' | 'center';
 }>`
   position: absolute;
   bottom: -22px;
   font-size: 12px;
   color: #f56c6c;
-  left: ${({ labelWidth }) => labelWidth || '3em'};
-  transform: ${({ hasLabel }) => `translateX(${hasLabel ? '28px' : '16px'})`};);
+  left: ${({ labelWidth, align }) => {
+    if (align === 'center') {
+      return '50%';
+    } else {
+      return labelWidth || '3em';
+    }
+  }};
+  transform: ${({ hasLabel, align }) => {
+    if (align === 'center') {
+      return 'translateX(-50%)';
+    } else {
+      return `translateX(${hasLabel ? '28px' : '16px'})`;
+    }
+  }};);
 `;

@@ -6,10 +6,10 @@ interface EditTagStore {
   data: Partial<TagModel>;
   errors: Partial<FormErrors<TagModel>>;
   setData: (data: Partial<TagModel>) => void;
-  setErrors: (errors: Partial<FormErrors<TagModel>>) => void;
+  setErrors: (errors: FormErrors<Partial<TagModel>>) => void;
 }
 
-export const useEditStore = create<EditTagStore>((set) => ({
+export const useEditTagStore = create<EditTagStore>((set) => ({
   data: {
     name: '',
     sign: '',

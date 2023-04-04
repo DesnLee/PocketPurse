@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon, TopNav, TopNavGradient } from '../../components';
-import { useEditStore } from '../../stores/useEditTagStore';
+import { useEditTagStore } from '../../stores';
 import { TagEditor } from './components/TagEditor';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const EditTag: FC<Props> = ({ type, title }) => {
   const nav = useNavigate();
-  const { data } = useEditStore();
+  const { data } = useEditTagStore();
 
   return (
     <div pp-page-wrapper>

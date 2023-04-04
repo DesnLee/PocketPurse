@@ -1,17 +1,34 @@
+import type { Partial } from '@react-spring/web';
 import { useEffect } from 'react';
 import type { FC } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTagApi } from '../../../api/tag';
 import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
-import { useEditStore } from '../../../stores/useEditTagStore';
+import { hasError, validate } from '../../../lib/validate';
+import type { Rules } from '../../../lib/validate';
+import { useEditTagStore } from '../../../stores';
+
+const rules: Rules<Partial<TagModel>> = [
+  {
+    key: 'name',
+    type: 'required',
+    message: '标签名不能为空',
+  },
+  {
+    key: 'name',
+    type: 'length',
+    max: 8,
+    message: '标签名最多 8 个字符',
+  },
+];
 
 interface Props {
   type: 'new' | 'edit';
 }
 
 export const TagEditor: FC<Props> = ({ type }) => {
-  const { data, errors, setData, setErrors } = useEditStore();
+  const { data, errors, setData, setErrors } = useEditTagStore();
   const [urlSearchParams] = useSearchParams();
   const { id } = useParams();
 
@@ -46,8 +63,14 @@ export const TagEditor: FC<Props> = ({ type }) => {
         });
     }
   }, [type, id]);
+
   const onSubmit = () => {
-    console.log(data);
+    const newError = validate(data, rules);
+    setErrors(newError);
+    if (!hasError(newError)) {
+      console.log('校验通过');
+      console.log(data);
+    }
   };
 
   return (
@@ -62,6 +85,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
         placeholder='请输入标签名'
         value={data.name}
         onChange={(name) => setData({ name })}
+        errors={errors.name}
       />
 
       <div flex-1 flex flex-col overflow-auto gap-8px>
