@@ -15,9 +15,6 @@ export const EmojiInput: FC<EmojiInputProps> = ({
   onChange,
 }) => {
   const [currentTab, setCurrentTab] = useState(defaultTab ?? emojis[0].key);
-  const [currentEmoji, _setCurrentEmoji] = useState(
-    value ?? emojis[0].symbols[0]
-  );
   const emojisPanel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,11 +22,6 @@ export const EmojiInput: FC<EmojiInputProps> = ({
       top: 0,
     });
   }, [currentTab]);
-
-  const setCurrentEmoji = (emoji: string) => {
-    _setCurrentEmoji(emoji);
-    onChange?.(emoji);
-  };
 
   return (
     <div
@@ -77,13 +69,13 @@ export const EmojiInput: FC<EmojiInputProps> = ({
       >
         {emojis
           .find(({ key }) => key === currentTab)
-          ?.symbols.map((symbol) => (
+          ?.signs.map((sign) => (
             <EmojiItem
-              key={symbol}
-              onClick={() => setCurrentEmoji(symbol)}
-              className={currentEmoji === symbol ? 'selected' : ''}
+              key={sign}
+              onClick={() => onChange?.(sign)}
+              className={value === sign ? 'selected' : ''}
             >
-              {symbol}
+              {sign}
             </EmojiItem>
           ))}
       </div>

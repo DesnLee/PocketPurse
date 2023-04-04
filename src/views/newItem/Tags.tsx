@@ -38,7 +38,7 @@ export const Tags: FC<Props> = ({ currentType }) => {
       px-10px
     >
       <li w-56px>
-        <Link to={`/tags/new?type=${currentType}`}>
+        <Link to={`/tags/new?kind=${currentType}`}>
           <IconWrapper>
             <Icon size='20px' color='var(--color-primary)' name='add' />
           </IconWrapper>

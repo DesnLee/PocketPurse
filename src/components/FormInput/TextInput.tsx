@@ -8,6 +8,7 @@ export interface TextInputProps {
   label?: string | ReactNode;
   labelWidth?: string;
   type?: 'text' | 'email' | 'number';
+  value?: string;
   onChange?: (value: string) => void;
   onBlur?: () => void;
   clearable?: boolean;
@@ -20,6 +21,7 @@ export const TextInput: FC<TextInputProps> = ({
   align = 'left',
   label,
   type = 'text',
+  value,
   onChange,
   onBlur,
   placeholder = `请输入${label}`,
@@ -56,6 +58,7 @@ export const TextInput: FC<TextInputProps> = ({
       {labelNode()}
       <div relative grow-1 shrink-1 w-full flex items-center>
         <MyInput
+          value={value}
           align={align}
           clearable={clearable}
           ref={input}

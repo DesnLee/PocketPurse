@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../views/home/Home';
 import { Items } from '../views/Items/Items';
 import { NewItem } from '../views/newItem/NewItem';
-import { NewTag } from '../views/newTag/NewTag';
+import { EditTag } from '../views/tags/EditTag';
 import { SignIn } from '../views/sign_in/SignIn';
 import { root } from './root';
 import { welcomeRoutes } from './welcomeRoutes';
@@ -39,7 +39,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/tags/new',
-    element: <NewTag />,
+    element: <EditTag type='new' title='新建标签' />,
+  },
+  {
+    path: '/tags/edit/:id',
+    element: <EditTag type='edit' title='标签详情' />,
   },
   {
     path: '/reminder',

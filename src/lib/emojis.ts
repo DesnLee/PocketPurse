@@ -1564,41 +1564,41 @@ export const emojis = [
   {
     key: 'smileysAndPeople',
     name: 'Smileys & People',
-    symbols: smileysAndPeople,
+    signs: smileysAndPeople,
   },
   {
     key: 'animalsAndNature',
     name: 'Animals & Nature',
-    symbols: animalsAndNature,
+    signs: animalsAndNature,
   },
   {
     key: 'foodAndDrink',
     name: 'Food & Drink',
-    symbols: foodAndDrink,
+    signs: foodAndDrink,
   },
   {
     key: 'activity',
     name: 'Activity',
-    symbols: activity,
+    signs: activity,
   },
   {
     key: 'travelAndPlaces',
     name: 'Travel & Places',
-    symbols: travelAndPlaces,
+    signs: travelAndPlaces,
   },
   {
     key: 'objects',
     name: 'Objects',
-    symbols: objects,
+    signs: objects,
   },
   {
     key: 'symbols',
     name: 'Symbols',
-    symbols,
+    signs: symbols,
   },
   {
     key: 'flags',
     name: 'Flags',
-    symbols: flags,
+    signs: flags,
   },
 ];
