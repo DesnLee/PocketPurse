@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { Icon } from '../Icon';
 
 const StringLabel = styled.span<{ labelWidth: string }>`
-  width: ${(props) => props.labelWidth || '3em'};
+  width: ${({ labelWidth }) => labelWidth || '3em'};
   text-align: right;
   color: #303133;
   font-size: 14px;
-  flex-basis: ${(props) => props.labelWidth || '3em'};
+  flex-basis: ${({ labelWidth }) => labelWidth || '3em'};
   flex-shrink: 0;
   flex-grow: 0;
   display: block;
@@ -25,24 +25,25 @@ const NodeLabel = styled.span<{ labelWidth: string }>`
   justify-content: center;
 
   & > * {
-    width: ${(props) => props.labelWidth || '24px'};
-    height: ${(props) => props.labelWidth || '24px'};
+    width: ${({ labelWidth }) => labelWidth || '24px'};
+    height: ${({ labelWidth }) => labelWidth || '24px'};
   }
 `;
 const MyInput = styled.input<{ clearable: boolean }>`
-  padding-right: ${(props) => (props.clearable ? '40px' : '16px')};
+  padding-right: ${({ clearable }) => (clearable ? '40px' : '16px')};
 `;
-const ErrorSpan = styled.span`
+const ErrorSpan = styled.span<{ hasLabel: boolean; labelWidth: string }>`
   position: absolute;
   bottom: -22px;
   font-size: 12px;
   color: #f56c6c;
-  left: ${(props: { labelWidth: string }) => props.labelWidth || '3em'};
-  transform: translateX(26px);
+  left: ${({ labelWidth }) => labelWidth || '3em'};
+  transform: ${({ hasLabel }) => `translateX(${hasLabel ? '28px' : '16px'})`};
+  );
 `;
 
 interface Props {
-  label: string | ReactNode;
+  label?: string | ReactNode;
   labelWidth?: string;
   type?: 'text' | 'password' | 'email' | 'number';
   onChange?: (value: string) => void;
@@ -94,7 +95,7 @@ export const Input: FC<Props> = ({
         <MyInput
           clearable={clearable}
           ref={input}
-          className='b-1 b-transparent p-y-4px p-l-12px min-h-48px leading-24px text-16px font-bold w-full rounded-8px bg-white:64 focus:bg-white:92 focus:b-1 focus:b-solid  focus:b-[var(--color-primary)]'
+          className='b-1 b-transparent p-y-4px p-l-12px min-h-48px leading-24px text-16px font-bold w-full rounded-8px bg-[#00000009] focus:bg-[#00000004] focus:b-1 focus:b-solid  focus:b-[var(--color-primary)]'
           type={type}
           placeholder={placeholder}
           onChange={_onChange}
@@ -112,7 +113,9 @@ export const Input: FC<Props> = ({
         )}
       </div>
       {errors.length > 0 && (
-        <ErrorSpan labelWidth={labelWidth}>{errors[0]}</ErrorSpan>
+        <ErrorSpan labelWidth={labelWidth} hasLabel={!!label}>
+          {errors[0]}
+        </ErrorSpan>
       )}
       {rightBtn && (
         <span grow-0 shrink-0>
