@@ -8,3 +8,4 @@ export { ErrorPage } from './ErrorPage';
 export { Loading } from './Loading';
 export { TopMenu } from './TopMenu/TopMenu';
 export { Input } from './FormInput/Input';
+export { Form } from './Form/Form';

@@ -1,5 +1,5 @@
-import type { FC, FormEvent, MouseEventHandler } from 'react';
-import { Icon, Input, TopNav, TopNavTransparent } from '../../components';
+import type { FC, MouseEventHandler } from 'react';
+import { Form, Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { request } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
@@ -52,8 +52,7 @@ export const SignIn: FC = () => {
     setErrors(error);
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = () => {
     checkForm();
     if (hasError(errors)) {
     } else {
@@ -75,13 +74,8 @@ export const SignIn: FC = () => {
           </h1>
         </div>
 
-        <form
-          shrink-1
-          grow-1
-          w-full
-          flex
-          flex-col
-          justify-between
+        <Form
+          className='shrink-1 grow-1 w-full flex flex-col justify-between'
           onSubmit={onSubmit}
         >
           <div flex flex-col>
@@ -123,7 +117,7 @@ export const SignIn: FC = () => {
           >
             登录
           </button>
-        </form>
+        </Form>
       </main>
     </div>
   );
