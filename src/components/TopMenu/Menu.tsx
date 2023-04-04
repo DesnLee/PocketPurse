@@ -10,7 +10,7 @@ const icons = [
   {
     name: 'charts',
     label: '统计图表',
-    to: '/charts',
+    to: '/statistics',
   },
   {
     name: 'export_data',
