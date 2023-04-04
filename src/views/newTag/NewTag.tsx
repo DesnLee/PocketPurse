@@ -7,7 +7,8 @@ import { emojis } from '../../lib/emojis';
 export const NewTag: FC = () => {
   const nav = useNavigate();
 
-  const [emoji, setEmoji] = useState(emojis[0].symbols[0]);
+  const index = Math.floor(Math.random() * emojis[0].symbols.length);
+  const [emoji, setEmoji] = useState(emojis[0].symbols[index]);
   const [tagName, setTagName] = useState('');
 
   const onSubmit = () => {
@@ -49,7 +50,7 @@ export const NewTag: FC = () => {
         />
 
         <div flex-1 flex flex-col overflow-auto gap-8px>
-          <Input type='emoji' onChange={setEmoji} />
+          <Input type='emoji' value={emoji} onChange={setEmoji} />
           <p text-center text-12px color='#909399'>
             点击选择表情，记账页标签列表可长按编辑
           </p>
