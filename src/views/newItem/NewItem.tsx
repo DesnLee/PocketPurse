@@ -10,7 +10,7 @@ const tabs: { key: ItemModel['kind']; label: string }[] = [
 ];
 
 export const NewItem: FC = () => {
-  const [current, setCurrent] = useState<ItemModel['kind']>('income');
+  const [current, setCurrent] = useState<ItemModel['kind']>('expenses');
 
   return (
     <div pp-page-wrapper>
