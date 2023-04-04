@@ -9,6 +9,11 @@ import { welcomeRoutes } from './welcomeRoutes';
 
 export const router = createBrowserRouter([
   root,
+  welcomeRoutes,
+  {
+    path: '/sign_in',
+    element: <SignIn />,
+  },
   {
     path: '/home',
     element: <Home />,
@@ -20,10 +25,6 @@ export const router = createBrowserRouter([
   {
     path: '/items/new',
     element: <NewItem />,
-  },
-  {
-    path: '/sign_in',
-    element: <SignIn />,
   },
   {
     path: '/charts',
@@ -49,5 +50,4 @@ export const router = createBrowserRouter([
     path: '/reminder',
     element: <div>reminder</div>,
   },
-  welcomeRoutes,
 ]);

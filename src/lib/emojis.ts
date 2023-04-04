@@ -1563,42 +1563,42 @@ const flags = [
 export const emojis = [
   {
     key: 'smileysAndPeople',
-    name: 'Smileys & People',
+    name: '表情符号与人物',
     signs: smileysAndPeople,
   },
   {
     key: 'animalsAndNature',
-    name: 'Animals & Nature',
+    name: '动物与自然',
     signs: animalsAndNature,
   },
   {
     key: 'foodAndDrink',
-    name: 'Food & Drink',
+    name: '食物与饮料',
     signs: foodAndDrink,
   },
   {
     key: 'activity',
-    name: 'Activity',
+    name: '活动',
     signs: activity,
   },
   {
     key: 'travelAndPlaces',
-    name: 'Travel & Places',
+    name: '旅行与地点',
     signs: travelAndPlaces,
   },
   {
     key: 'objects',
-    name: 'Objects',
+    name: '物体',
     signs: objects,
   },
   {
     key: 'symbols',
-    name: 'Symbols',
+    name: '符号',
     signs: symbols,
   },
   {
     key: 'flags',
-    name: 'Flags',
+    name: '旗帜',
     signs: flags,
   },
 ];
