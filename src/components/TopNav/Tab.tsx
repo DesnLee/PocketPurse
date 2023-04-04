@@ -22,13 +22,6 @@ const TabOl = styled.ol<{ layout: TabLayout }>`
   width: 100%;
   flex-wrap: nowrap;
 
-  // Hide scrollbar
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
   > li {
     flex-shrink: 0;
     flex-grow: ${({ layout }) => (layout === 'scroll' ? 0 : 1)};
@@ -44,7 +37,7 @@ export const Tab = <T extends string>({
   layout = 'scroll',
 }: TabProps<T>) => {
   return (
-    <TabOl layout={layout}>
+    <TabOl layout={layout} className={'hide-scrollbar'}>
       {items.map((item) => (
         <li
           key={item.key}

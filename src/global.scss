@@ -121,3 +121,11 @@ ol {
     animation: spin 1.5s ease-in-out infinite;
   }
 }
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
