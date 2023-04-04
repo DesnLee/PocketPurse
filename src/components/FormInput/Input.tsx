@@ -29,10 +29,18 @@ const NodeLabel = styled.span<{ labelWidth: string }>`
     height: ${({ labelWidth }) => labelWidth || '24px'};
   }
 `;
-const MyInput = styled.input<{ clearable: boolean }>`
+const MyInput = styled.input<{
+  clearable: boolean;
+  align: 'left' | 'center' | 'right';
+}>`
+  text-align: ${({ align }) => align};
   padding-right: ${({ clearable }) => (clearable ? '40px' : '16px')};
 `;
-const ErrorSpan = styled.span<{ hasLabel: boolean; labelWidth: string }>`
+const ErrorSpan = styled.span<{
+  hasLabel: boolean;
+  labelWidth: string;
+  align: 'left' | 'center' | 'right';
+}>`
   position: absolute;
   bottom: -22px;
   font-size: 12px;
@@ -43,6 +51,7 @@ const ErrorSpan = styled.span<{ hasLabel: boolean; labelWidth: string }>`
 `;
 
 interface Props {
+  align?: 'left' | 'center' | 'right';
   label?: string | ReactNode;
   labelWidth?: string;
   type?: 'text' | 'password' | 'email' | 'number';
@@ -55,6 +64,7 @@ interface Props {
 }
 
 export const Input: FC<Props> = ({
+  align = 'left',
   label,
   type = 'text',
   onChange,
@@ -93,6 +103,7 @@ export const Input: FC<Props> = ({
       {labelNode()}
       <div relative grow-1 shrink-1 w-full flex items-center>
         <MyInput
+          align={align}
           clearable={clearable}
           ref={input}
           className='b-1 b-transparent p-y-4px p-l-12px min-h-48px leading-24px text-16px font-bold w-full rounded-8px bg-[#00000009] focus:bg-[#00000004] focus:b-1 focus:b-solid  focus:b-[var(--color-primary)]'
@@ -113,7 +124,7 @@ export const Input: FC<Props> = ({
         )}
       </div>
       {errors.length > 0 && (
-        <ErrorSpan labelWidth={labelWidth} hasLabel={!!label}>
+        <ErrorSpan labelWidth={labelWidth} hasLabel={!!label} align={align}>
           {errors[0]}
         </ErrorSpan>
       )}
