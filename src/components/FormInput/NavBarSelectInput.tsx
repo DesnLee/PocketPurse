@@ -27,7 +27,9 @@ export const NavBarSelectInput: FC<SelectInputProps> = ({
         onChange={(e) => onChange?.(e.target.value)}
       >
         {options.map(({ value, label }) => (
-          <option value={value}>{label}</option>
+          <option key={value} value={value}>
+            {label}
+          </option>
         ))}
       </NavBarSelector>
 
