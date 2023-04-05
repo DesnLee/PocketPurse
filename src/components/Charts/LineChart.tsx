@@ -36,8 +36,8 @@ export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
       grid: {
         bottom: '24px',
         top: '16px',
-        left: '20px',
-        right: '20px',
+        left: '28px',
+        right: '28px',
       },
       tooltip: {
         trigger: 'axis',
