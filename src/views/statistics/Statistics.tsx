@@ -8,6 +8,8 @@ import {
 } from '../../components';
 import { LineChart } from '../../components/Charts/LineChart';
 import type { LineChartData } from '../../components/Charts/LineChart';
+import { PieChart } from '../../components/Charts/PieChart';
+import type { PieChartData } from '../../components/Charts/PieChart';
 import type { TimeRange } from '../../components/TimeRangePicker';
 import { time } from '../../lib/time';
 
@@ -22,6 +24,12 @@ export const Statistics: FC = () => {
     ];
   });
 
+  const data2: PieChartData = [
+    ['吃饭', 480],
+    ['买衣服', 1200],
+    ['买皮肤', 648],
+  ];
+
   return (
     <div pp-page-wrapper>
       <TopNavGradient>
@@ -31,8 +39,9 @@ export const Statistics: FC = () => {
         />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
-      <main grow-1 overflow-auto pt-16px pb-36px>
+      <main grow-1 overflow-auto pt-16px pb-36px flex flex-col gap-24px>
         <LineChart data={data} valuePrefix='¥' />
+        <PieChart data={data2} valuePrefix='¥' />
       </main>
     </div>
   );
