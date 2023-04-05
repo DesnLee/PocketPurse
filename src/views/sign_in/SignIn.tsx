@@ -1,4 +1,5 @@
-import type { FC, MouseEventHandler } from 'react';
+import { useState } from 'react';
+import type { FC } from 'react';
 import { Form, Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
 import { request } from '../../lib/request';
@@ -35,10 +36,6 @@ const rules: Rules<SignInData> = [
 export const SignIn: FC = () => {
   const { data, errors, setData, setErrors } = useSignInStore();
 
-  const onClickSendAuthCode: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-  };
-
   const checkForm = (key?: keyof typeof data) => {
     let error;
     if (key) {
@@ -50,12 +47,50 @@ export const SignIn: FC = () => {
       error = validate(data, rules);
     }
     setErrors(error);
+    return error;
+  };
+
+  // 发送验证码 倒计时
+  const initialSeconds = 60;
+  const [seconds, setSeconds] = useState(initialSeconds);
+  const [isCounting, setIsCounting] = useState(false);
+  const startCountDown = () => {
+    let innerSeconds = initialSeconds;
+    if (!isCounting) {
+      setIsCounting(true);
+      const timer = setInterval(() => {
+        if (innerSeconds > 0) {
+          innerSeconds--;
+          setSeconds(innerSeconds);
+        } else {
+          setIsCounting(false);
+          setSeconds(initialSeconds);
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
+  };
+  const onClickSendAuthCode = async () => {
+    const newError = checkForm('email');
+    if (!hasError(newError)) {
+      console.log(data.email);
+      try {
+        // await useUserApi().sendAuthCode(data.email);
+        startCountDown();
+      } catch (e) {
+        console.log('请求发送验证码失败！');
+      }
+    } else {
+      console.log('验证失败');
+    }
   };
 
   const onSubmit = () => {
-    checkForm();
-    if (!hasError(errors)) {
+    const newError = checkForm();
+    if (!hasError(newError)) {
       request.post('/api/v1/sign_in', data);
+    } else {
+      console.log('验证失败');
     }
   };
 
@@ -99,10 +134,12 @@ export const SignIn: FC = () => {
               clearable
               rightBtn={
                 <button
+                  disabled={isCounting}
+                  type='button'
                   className='pp-btn-secondary w-32vw rounded-8px'
-                  onClick={onClickSendAuthCode}
+                  onClick={() => onClickSendAuthCode()}
                 >
-                  获取验证码
+                  {isCounting ? `重新获取 ${seconds}s` : '获取验证码'}
                 </button>
               }
             />
