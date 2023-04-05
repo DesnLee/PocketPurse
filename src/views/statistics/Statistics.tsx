@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import {
   Icon,
+  Input,
   TimeRangePicker,
   TopNav,
   TopNavGradient,
@@ -41,15 +42,30 @@ export const Statistics: FC = () => {
     { tag: { name: '通勤', sign: '🚇' }, amount: 54000 },
   ];
 
+  const options: { value: ItemModel['kind']; label: string }[] = [
+    { value: 'expenses', label: '支出' },
+    { value: 'income', label: '收入' },
+  ];
+  const [kind, setKind] = useState<ItemModel['kind']>('expenses');
+
   return (
     <div pp-page-wrapper>
       <TopNavGradient>
         <TopNav
           title='统计图表'
           leftIcon={<Icon name='arrow_left' onClick={() => {}} />}
+          rightElement={
+            <Input
+              type='navSelect'
+              options={options}
+              value={kind}
+              onChange={(v) => setKind(v as ItemModel['kind'])}
+            />
+          }
         />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
+
       <main grow-1 overflow-auto pt-16px pb-36px flex flex-col>
         <section>
           <h1 text-18px font-bold ml-16px>
