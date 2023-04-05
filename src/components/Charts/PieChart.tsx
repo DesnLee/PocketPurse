@@ -18,6 +18,8 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
   const [options, _setOptions] = useState<EChartsOption>({});
   const setOptions = (data: PieChartData, valuePrefix?: string) => {
     const newOptions: EChartsOption = {
+      color: ['#7A5980', '#FF5964', '#75DBCD', '#247BA0', '#F4D35E'],
+      // backgroundColor: '#fff',
       tooltip: {
         trigger: 'none',
         valueFormatter: (value) => `${valuePrefix ?? ''}${value}`,
