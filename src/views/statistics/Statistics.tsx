@@ -10,6 +10,8 @@ import { LineChart } from '../../components/Charts/LineChart';
 import type { LineChartData } from '../../components/Charts/LineChart';
 import { PieChart } from '../../components/Charts/PieChart';
 import type { PieChartData } from '../../components/Charts/PieChart';
+import type { RankChartData } from '../../components/Charts/RankChart ';
+import { RankChart } from '../../components/Charts/RankChart ';
 import type { TimeRange } from '../../components/TimeRangePicker';
 import { time } from '../../lib/time';
 
@@ -32,6 +34,13 @@ export const Statistics: FC = () => {
     ['车贷', 648],
   ];
 
+  const data3: RankChartData = [
+    { tag: { name: '房贷', sign: '🏠' }, amount: 4000 },
+    { tag: { name: '车贷', sign: '🚗' }, amount: 2000 },
+    { tag: { name: '吃饭', sign: '🥣' }, amount: 1200 },
+    { tag: { name: '通勤', sign: '🚇' }, amount: 540 },
+  ];
+
   return (
     <div pp-page-wrapper>
       <TopNavGradient>
@@ -41,9 +50,29 @@ export const Statistics: FC = () => {
         />
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
-      <main grow-1 overflow-auto pt-16px pb-36px flex flex-col gap-24px>
-        <LineChart data={data} valuePrefix='¥' />
-        <PieChart data={data2} valuePrefix='¥' />
+      <main grow-1 overflow-auto pt-16px pb-36px flex flex-col>
+        <section>
+          <h1 text-18px font-bold ml-16px>
+            消费趋势
+          </h1>
+          <LineChart data={data} valuePrefix='¥' />
+        </section>
+
+        <section mt-28px>
+          <h1 text-18px font-bold ml-16px>
+            消费占比
+          </h1>
+          <PieChart data={data2} valuePrefix='¥' />
+        </section>
+
+        {data3?.length > 0 && (
+          <section mt-8px>
+            <h1 text-18px font-bold ml-16px>
+              消费排行
+            </h1>
+            <RankChart data={data3} valuePrefix='¥' />
+          </section>
+        )}
       </main>
     </div>
   );

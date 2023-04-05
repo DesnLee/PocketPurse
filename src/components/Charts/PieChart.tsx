@@ -38,7 +38,7 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
       series: [
         {
           type: 'pie',
-          radius: ['56%', '84%'],
+          radius: ['52%', '80%'],
           avoidLabelOverlap: false,
           itemStyle: {
             borderRadius: 8,
@@ -63,23 +63,23 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
             rich: {
               name: {
                 color: '#909399',
-                fontSize: 14,
+                fontSize: 12,
                 lineHeight: 20,
               },
               value: {
                 color: '#303133',
-                fontSize: 24,
-                lineHeight: 48,
+                fontSize: 22,
+                lineHeight: 40,
                 fontWeight: 'bold',
               },
               percent: {
                 color: '#fff',
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 'bold',
-                borderWidth: 1,
+                borderWidth: 0,
                 backgroundColor: '#ffaa5a',
                 borderRadius: 4,
-                padding: [3, 6],
+                padding: [2, 4],
               },
             },
           },
@@ -92,6 +92,16 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
 
     _setOptions(newOptions);
   };
+
+  // const highlightMax = () => {
+  //   const values = data.map(([name, value]) => value);
+  //   const max = Math.max(...values);
+  //   const index = values.indexOf(max);
+  //   myChart.current?.dispatchAction({
+  //     type: 'highlight',
+  //     dataIndex: index,
+  //   });
+  // };
 
   // data 变化时，更新 options
   useEffect(() => {
@@ -113,6 +123,9 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
     window.addEventListener('resize', resize);
     myChart.current = echarts.init(pie.current);
     myChart.current.setOption(options);
+
+    // 每次渲染完成自动高亮最大值
+    // myChart.current.on('finished', highlightMax);
 
     return () => {
       myChart.current?.dispose();
