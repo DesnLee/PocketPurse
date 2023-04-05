@@ -7,11 +7,12 @@ import {
   TopNavGradient,
 } from '../../components';
 import { LineChart } from '../../components/Charts/LineChart';
+import type { LineChartData } from '../../components/Charts/LineChart';
 import type { TimeRange } from '../../components/TimeRangePicker';
 
 export const Statistics: FC = () => {
   const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
-  const data: [string, number][] = [
+  const data: LineChartData = [
     ['2000-06-05', 116],
     ['2000-06-06', 129],
     ['2000-06-07', 135],
@@ -74,7 +75,7 @@ export const Statistics: FC = () => {
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
       <main grow-1 overflow-auto pt-16px pb-36px>
-        <LineChart data={data} />
+        <LineChart data={data} valuePrefix='¥' />
       </main>
     </div>
   );

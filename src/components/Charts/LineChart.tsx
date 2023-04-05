@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react';
 import type { FC } from 'react';
 import * as echarts from 'echarts';
 
+export type LineChartData = [string, number][];
 interface Props {
-  data: [string, number][];
+  data: LineChartData;
   height?: string;
+  valuePrefix?: string;
 }
 
-export const LineChart: FC<Props> = ({ data, height }) => {
+export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
   const line = useRef<HTMLDivElement>(null);
 
   const maxValue = parseInt(
@@ -18,47 +20,40 @@ export const LineChart: FC<Props> = ({ data, height }) => {
 
   const option: EChartsOption = {
     // Make gradient line here
-    visualMap: [
-      {
-        show: false,
-        type: 'continuous',
-        seriesIndex: 0,
-        min: 0,
-        max: maxValue,
-      },
-    ],
-    grid: [
-      {
-        bottom: '24px',
-        top: '16px',
-        left,
-        right: '8px',
-      },
-    ],
+    visualMap: {
+      show: false,
+      type: 'continuous',
+      seriesIndex: 0,
+      min: 0,
+      max: maxValue,
+    },
+    grid: {
+      bottom: '24px',
+      top: '16px',
+      left,
+      right: '8px',
+    },
     tooltip: {
       trigger: 'axis',
-      valueFormatter: (value) => `¥${(value as number) / 100}`,
+      valueFormatter: (value) => `${valuePrefix ?? ''}${value}`,
     },
-    xAxis: [
-      {
-        data: data.map((item) => item[0]),
-        axisLine: { lineStyle: { color: '#909399' } },
-        axisLabel: {
-          formatter: (value: string) => value.slice(5),
-          color: '#909399',
-          margin: 12,
-        },
+    xAxis: {
+      data: data.map((item) => item[0]),
+      axisLine: { lineStyle: { color: '#909399' } },
+      axisLabel: {
+        formatter: (value: string) => value.slice(5),
+        color: '#909399',
+        margin: 12,
       },
-    ],
-    yAxis: [
-      {
-        splitLine: { lineStyle: { color: '#0000000f' } },
-        axisLabel: { color: '#909399' },
-      },
-    ],
+    },
+    yAxis: {
+      splitLine: { lineStyle: { color: '#0000000f' } },
+      axisLabel: { color: '#909399' },
+    },
     series: [
       {
         type: 'line',
+        symbolSize: 8,
         showSymbol: false,
         data: data.map((item) => item[1]),
       },
@@ -80,7 +75,6 @@ export const LineChart: FC<Props> = ({ data, height }) => {
       window.removeEventListener('resize', resize);
     };
   }, []);
-  return (
-    <div w-full px-16px style={{ height: height ?? '24vh' }} ref={line}></div>
-  );
+
+  return <div w-full px-16px style={{ height: height ?? '24vh' }} ref={line} />;
 };
