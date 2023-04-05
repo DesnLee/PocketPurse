@@ -2,27 +2,27 @@ import type { EChartsOption } from 'echarts';
 import { useEffect, useRef, useState } from 'react';
 import type { FC } from 'react';
 import * as echarts from 'echarts';
+import { colorPalette } from '../../lib/colors';
 
 export type PieChartData = [string, number][];
 interface Props {
   data: PieChartData;
   height?: string;
-  valuePrefix?: string;
 }
 
-export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
+export const PieChart: FC<Props> = ({ data, height }) => {
   const pie = useRef<HTMLDivElement>(null);
   const myChart = useRef<echarts.ECharts>();
 
   // 设置图表
   const [options, _setOptions] = useState<EChartsOption>({});
-  const setOptions = (data: PieChartData, valuePrefix?: string) => {
+  const setOptions = (data: PieChartData) => {
     const newOptions: EChartsOption = {
-      color: ['#7A5980', '#FF5964', '#75DBCD', '#247BA0', '#F4D35E'],
+      color: colorPalette,
       // backgroundColor: '#fff',
       tooltip: {
         trigger: 'none',
-        valueFormatter: (value) => `${valuePrefix ?? ''}${value}`,
+        valueFormatter: (value) => `¥${value}`,
       },
       legend: {
         orient: 'vertical',
@@ -55,11 +55,9 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
           label: {
             show: false,
             position: 'center',
-            formatter: [
-              '{name|{b}}',
-              `{value|${valuePrefix ?? ''}{c}}`,
-              '{percent|{d}%}',
-            ].join('\n'),
+            formatter: ['{name|{b}}', `{value|¥{c}}`, '{percent|{d}%}'].join(
+              '\n'
+            ),
             rich: {
               name: {
                 color: '#909399',
@@ -93,22 +91,12 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
     _setOptions(newOptions);
   };
 
-  // const highlightMax = () => {
-  //   const values = data.map(([name, value]) => value);
-  //   const max = Math.max(...values);
-  //   const index = values.indexOf(max);
-  //   myChart.current?.dispatchAction({
-  //     type: 'highlight',
-  //     dataIndex: index,
-  //   });
-  // };
-
   // data 变化时，更新 options
   useEffect(() => {
     if (data.length > 0) {
-      setOptions(data, valuePrefix);
+      setOptions(data);
     }
-  }, [data, valuePrefix]);
+  }, [data]);
 
   // options 变化时，更新图表
   useEffect(() => {
@@ -123,9 +111,6 @@ export const PieChart: FC<Props> = ({ data, height, valuePrefix }) => {
     window.addEventListener('resize', resize);
     myChart.current = echarts.init(pie.current);
     myChart.current.setOption(options);
-
-    // 每次渲染完成自动高亮最大值
-    // myChart.current.on('finished', highlightMax);
 
     return () => {
       myChart.current?.dispose();

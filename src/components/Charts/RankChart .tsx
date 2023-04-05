@@ -1,4 +1,7 @@
 import type { FC } from 'react';
+import styled from 'styled-components';
+import { colorPalette } from '../../lib/colors';
+import { Money } from '../Money';
 
 export type RankChartData = {
   tag: { name: string; sign: string };
@@ -7,13 +10,22 @@ export type RankChartData = {
 
 interface Props {
   data: RankChartData;
-  valuePrefix?: string;
 }
-export const RankChart: FC<Props> = ({ data, valuePrefix }) => {
+
+export const RankChart: FC<Props> = ({ data }) => {
   if (data.length === 0) return null;
+  // 排序
+  data.sort((a, b) => b.amount - a.amount);
+  // 计算总额
+  let max = 0;
+  const total = data.reduce((acc, cur) => {
+    max = Math.max(max, cur.amount);
+    return acc + cur.amount;
+  }, 0);
+
   return (
     <div mt-12px flex flex-col gap-24px>
-      {data.map(({ tag, amount }) => {
+      {data.map(({ tag, amount }, index) => {
         return (
           <div
             key={tag.name}
@@ -38,7 +50,7 @@ export const RankChart: FC<Props> = ({ data, valuePrefix }) => {
               {tag.sign}
             </div>
             <div style={{ gridArea: '1/2/2/3' }} color='#303133'>
-              {tag.name}
+              {tag.name} - {((amount / total) * 100).toFixed(1)}%
             </div>
             <div
               style={{ gridArea: '1/3/2/4' }}
@@ -47,17 +59,48 @@ export const RankChart: FC<Props> = ({ data, valuePrefix }) => {
               font-bold
               color='#303133'
             >
-              {valuePrefix ?? ''} {amount}
+              <Money value={amount} />
             </div>
-            <div
-              style={{ gridArea: '2/2/3/4' }}
-              bg-red
-              h-12px
-              rounded-6px
-            ></div>
+            <ProgressBar
+              style={{
+                '--percent': `${(amount / max) * 100}%`,
+                '--color1': colorPalette[index],
+                '--color2': `${colorPalette[index]}66`,
+              }}
+            />
           </div>
         );
       })}
     </div>
   );
 };
+
+const ProgressBar = styled.div<{ style: any }>`
+  grid-area: 2/2/3/4;
+  background: #0000000f;
+  border-radius: 6px;
+  height: 12px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 100%;
+    width: var(--percent);
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--color1) 0%, var(--color2) 100%);
+    animation: progress 1.2s ease-in-out;
+  }
+
+  @keyframes progress {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: var(--percent);
+    }
+  }
+`;

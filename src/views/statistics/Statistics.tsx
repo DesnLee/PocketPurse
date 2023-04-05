@@ -35,10 +35,10 @@ export const Statistics: FC = () => {
   ];
 
   const data3: RankChartData = [
-    { tag: { name: '房贷', sign: '🏠' }, amount: 4000 },
-    { tag: { name: '车贷', sign: '🚗' }, amount: 2000 },
-    { tag: { name: '吃饭', sign: '🥣' }, amount: 1200 },
-    { tag: { name: '通勤', sign: '🚇' }, amount: 540 },
+    { tag: { name: '房贷', sign: '🏠' }, amount: 400000 },
+    { tag: { name: '车贷', sign: '🚗' }, amount: 200000 },
+    { tag: { name: '吃饭', sign: '🥣' }, amount: 120000 },
+    { tag: { name: '通勤', sign: '🚇' }, amount: 54000 },
   ];
 
   return (
@@ -55,14 +55,14 @@ export const Statistics: FC = () => {
           <h1 text-18px font-bold ml-16px>
             消费趋势
           </h1>
-          <LineChart data={data} valuePrefix='¥' />
+          <LineChart data={data} />
         </section>
 
         <section mt-28px>
           <h1 text-18px font-bold ml-16px>
             消费占比
           </h1>
-          <PieChart data={data2} valuePrefix='¥' />
+          <PieChart data={data2} />
         </section>
 
         {data3?.length > 0 && (
@@ -70,7 +70,7 @@ export const Statistics: FC = () => {
             <h1 text-18px font-bold ml-16px>
               消费排行
             </h1>
-            <RankChart data={data3} valuePrefix='¥' />
+            <RankChart data={data3} />
           </section>
         )}
       </main>

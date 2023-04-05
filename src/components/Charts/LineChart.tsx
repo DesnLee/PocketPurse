@@ -8,10 +8,9 @@ export type LineChartData = [string, number][];
 interface Props {
   data: LineChartData;
   height?: string;
-  valuePrefix?: string;
 }
 
-export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
+export const LineChart: FC<Props> = ({ data, height }) => {
   const line = useRef<HTMLDivElement>(null);
   const myChart = useRef<echarts.ECharts>();
 
@@ -21,8 +20,7 @@ export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
     data: LineChartData,
     maxValue: number,
     left: number,
-    needZoom: boolean,
-    valuePrefix?: string
+    needZoom: boolean
   ) => {
     const newOptions: EChartsOption = {
       // Make gradient line here
@@ -41,7 +39,7 @@ export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
       },
       tooltip: {
         trigger: 'axis',
-        valueFormatter: (value) => `${valuePrefix ?? ''}${value}`,
+        valueFormatter: (value) => `¥${value}`,
       },
       xAxis: {
         data: data.map((item) => item[0]),
@@ -87,9 +85,9 @@ export const LineChart: FC<Props> = ({ data, height, valuePrefix }) => {
       const maxValue = Math.max(...data.map((item) => item[1]));
       const left = (maxValue.toString().length + 1) * 16;
       const needZoom = data.length > 60;
-      setOptions(data, maxValue, left, needZoom, valuePrefix);
+      setOptions(data, maxValue, left, needZoom);
     }
-  }, [data, valuePrefix]);
+  }, [data]);
 
   // options 变化时，更新图表
   useEffect(() => {
