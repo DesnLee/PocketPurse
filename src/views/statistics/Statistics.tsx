@@ -49,7 +49,7 @@ export const Statistics: FC = () => {
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
   return (
-    <div pp-page-wrapper>
+    <div pp-page-wrapper bg='#f4f4f4'>
       <TopNavGradient>
         <TopNav
           title='统计图表'
@@ -66,24 +66,24 @@ export const Statistics: FC = () => {
         <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
 
-      <main grow-1 overflow-auto pt-16px pb-36px flex flex-col>
-        <section>
-          <h1 text-18px font-bold ml-16px>
+      <main grow-1 overflow-auto pb-36px flex flex-col bg='#f4f4f4'>
+        <section mt-12px m-x-12px py-12px bg-white rounded-12px>
+          <h1 text-18px font-bold ml-12px>
             消费趋势
           </h1>
           <LineChart data={data} />
         </section>
 
-        <section mt-28px>
-          <h1 text-18px font-bold ml-16px>
+        <section mt-12px m-x-12px py-12px bg-white rounded-12px>
+          <h1 text-18px font-bold ml-12px>
             消费占比
           </h1>
           <PieChart data={data2} />
         </section>
 
         {data3?.length > 0 && (
-          <section mt-8px>
-            <h1 text-18px font-bold ml-16px>
+          <section mt-12px m-x-12px py-12px bg-white rounded-12px>
+            <h1 text-18px font-bold ml-12px>
               消费排行
             </h1>
             <RankChart data={data3} />

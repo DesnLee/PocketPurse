@@ -33,9 +33,9 @@ export const LineChart: FC<Props> = ({ data, height }) => {
       },
       grid: {
         bottom: '24px',
-        top: '16px',
-        left: '28px',
-        right: '28px',
+        top: '24px',
+        left: '24px',
+        right: '24px',
       },
       tooltip: {
         trigger: 'axis',
@@ -109,5 +109,5 @@ export const LineChart: FC<Props> = ({ data, height }) => {
     };
   }, []);
 
-  return <div w-full style={{ height: height ?? '24vh' }} ref={line} />;
+  return <div style={{ height: height ?? '24vh' }} ref={line} />;
 };

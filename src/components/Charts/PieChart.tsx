@@ -27,13 +27,13 @@ export const PieChart: FC<Props> = ({ data, height }) => {
       legend: {
         orient: 'vertical',
         top: 'center',
-        left: '12px',
+        left: '6px',
       },
       grid: {
-        top: '0px',
-        bottom: '0px',
-        left: '0px',
-        right: '0px',
+        // top: '0px',
+        // bottom: '0px',
+        // left: '0px',
+        // right: '0px',
       },
       series: [
         {

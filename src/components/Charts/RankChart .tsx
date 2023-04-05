@@ -24,7 +24,7 @@ export const RankChart: FC<Props> = ({ data }) => {
   }, 0);
 
   return (
-    <div mt-12px flex flex-col gap-24px>
+    <div mt-16px flex flex-col gap-24px>
       {data.map(({ tag, amount }, index) => {
         return (
           <div
@@ -33,7 +33,7 @@ export const RankChart: FC<Props> = ({ data }) => {
             grid-rows-2
             grid-cols='[48px_1fr_1fr]'
             items-center
-            px-16px
+            px-12px
             gap-x-12px
             text-14px
           >
