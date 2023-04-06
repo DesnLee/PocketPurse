@@ -7,7 +7,7 @@ export const TopNavGradient = styled.header<{ disableShadow?: boolean }>`
   padding: 0 16px;
   background: linear-gradient(180deg, #ffefba 0%, #ffffff 100%);
   box-shadow: 0 0 24px 0 var(--shadow-color);
-  z-index: var(--z-index-popup);
+  z-index: var(--z-index-default);
 `;
 
 export const TopNavTransparent = styled.header`

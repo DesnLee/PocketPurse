@@ -46,7 +46,7 @@ const PopupElement: FC<PopupProps> = ({ isVisible, setVisible, children }) => {
         w-full
         h-full
         className='bg-black:56'
-        z='[var(--z-index-popup)-1]'
+        z='[calc(var(--z-index-popup)-1)]'
         onClick={() => setVisible(false)}
         touch-none
       />
