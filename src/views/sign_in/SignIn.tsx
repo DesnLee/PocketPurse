@@ -6,6 +6,7 @@ import { request } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
+import { useToastStore } from '../../stores/useToastStore';
 
 const rules: Rules<SignInData> = [
   {
@@ -70,16 +71,21 @@ export const SignIn: FC = () => {
       }, 1000);
     }
   };
+
+  const { setIsLoading } = useToastStore();
   const onClickSendAuthCode = async () => {
     const newError = checkForm('email');
     if (!hasError(newError)) {
       console.log(data.email);
       try {
         // await useUserApi().sendAuthCode(data.email);
+        setIsLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         startCountDown();
       } catch (e) {
         console.log('请求发送验证码失败！');
       }
+      setIsLoading(false);
     } else {
       console.log('验证失败');
     }

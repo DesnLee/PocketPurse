@@ -7,11 +7,19 @@ interface PopupProps {
   isVisible: boolean;
   setVisible: (value: boolean) => void;
   children: ReactNode;
+  position?: 'center' | 'bottom';
 }
-const PopupElement: FC<PopupProps> = ({ isVisible, setVisible, children }) => {
+
+const PopupElement: FC<PopupProps> = ({
+  isVisible,
+  setVisible,
+  children,
+  position = 'bottom',
+}) => {
   const panelAnimation = useSpring({
     opacity: isVisible ? 1 : 0,
-    transform: `translateY(${isVisible ? '0%' : '100%'})`,
+    transform:
+      position === 'bottom' ? `translateY(${isVisible ? '0%' : '100%'})` : '',
   });
 
   const maskAnimation = useSpring({
@@ -19,25 +27,50 @@ const PopupElement: FC<PopupProps> = ({ isVisible, setVisible, children }) => {
     pointerEvents: (isVisible ? 'auto' : 'none') as 'auto' | 'none',
   });
 
+  const panel = () => {
+    if (position === 'bottom') {
+      return (
+        <animated.div
+          style={panelAnimation}
+          fixed
+          bottom-0
+          left-0
+          bg-white
+          w-full
+          min-w-16em
+          flex
+          flex-col
+          z='[var(--z-index-popup)]'
+          touch-none
+          rounded-t-12px
+          overflow-hidden
+        >
+          {children}
+        </animated.div>
+      );
+    } else if (position === 'center') {
+      return (
+        <animated.div
+          style={panelAnimation}
+          fixed
+          top='50%'
+          left='50%'
+          translate-x='-50%'
+          translate-y='-50%'
+          z='[var(--z-index-popup)]'
+          touch-none
+          rounded-t-12px
+          overflow-hidden
+        >
+          {children}
+        </animated.div>
+      );
+    }
+  };
+
   return (
     <>
-      <animated.div
-        style={panelAnimation}
-        fixed
-        bottom-0
-        left-0
-        bg-white
-        w-full
-        min-w-16em
-        flex
-        flex-col
-        z='[var(--z-index-popup)]'
-        touch-none
-        rounded-t-12px
-        overflow-hidden
-      >
-        {children}
-      </animated.div>
+      {panel()}
       <animated.div
         style={maskAnimation}
         fixed
@@ -56,12 +89,17 @@ const PopupElement: FC<PopupProps> = ({ isVisible, setVisible, children }) => {
 
 interface UsePopupProps {
   children: ReactNode;
+  position?: 'center' | 'bottom';
 }
 
-export const usePopup = ({ children }: UsePopupProps) => {
+export const usePopup = ({ children, position }: UsePopupProps) => {
   const [isVisible, setVisible] = useState(false);
   const Popup = createPortal(
-    <PopupElement isVisible={isVisible} setVisible={setVisible}>
+    <PopupElement
+      position={position}
+      isVisible={isVisible}
+      setVisible={setVisible}
+    >
       {children}
     </PopupElement>,
     document.body
