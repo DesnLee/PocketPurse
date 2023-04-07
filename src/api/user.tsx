@@ -1,10 +1,10 @@
-import { request } from '../lib/request';
+import { useRequest } from '../lib/request';
 
-export const useUserApi = () => ({
-  getUser: (): Promise<APIResponse.User> => {
-    return request('/api/v1/user');
-  },
-  sendAuthCode: (email: string): Promise<unknown> => {
-    return request.post('/api/v1/send_auth_code', { email });
-  },
-});
+export const useUserApi = () => {
+  const { request } = useRequest();
+  return {
+    getUser: () => {
+      return request.get<APIResponse.User>('/api/v1/user');
+    },
+  };
+};

@@ -1,9 +1,9 @@
-import { request } from '../lib/request';
+import { useRequest } from '../lib/request';
 
-interface CommonApi {
-  get: <T>(path: string) => Promise<T>;
-}
+export const useCommonApi = () => {
+  const { request } = useRequest();
 
-export const useCommonApi = (): CommonApi => ({
-  get: (path) => request.get(path),
-});
+  return {
+    get: <T>(path: string) => request.get<T>(path),
+  };
+};

@@ -1,5 +1,8 @@
-import { request } from '../lib/request';
+import { useRequest } from '../lib/request';
 
-export const useItemApi = () => ({
-  getItems: (): Promise<APIResponse.Items> => request.get('/api/v1/items'),
-});
+export const useItemApi = () => {
+  const { request } = useRequest();
+  return {
+    getItems: () => request.get<APIResponse.Items>('/api/v1/items'),
+  };
+};

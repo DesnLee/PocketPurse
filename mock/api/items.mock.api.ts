@@ -6,7 +6,7 @@ export const itemsAPI: MockMethod[] = [
     url: '/api/v1/items',
     method: 'get',
     statusCode: 200,
-    timeout: 500,
+    timeout: 1000,
     response: ({ query }: Mock.Request) => {
       return itemsData.succeed({
         page: parseInt(query.page) || 1,
@@ -14,5 +14,12 @@ export const itemsAPI: MockMethod[] = [
         total: 24,
       });
     },
+  },
+  {
+    url: '/api/v1/send_sms_code',
+    method: 'post',
+    statusCode: 404,
+    timeout: 5000,
+    response: '',
   },
 ];

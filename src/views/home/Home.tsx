@@ -1,9 +1,8 @@
 import type { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { useItemApi, useUserApi } from '../../api';
-import { Loading } from '../../components';
 import { useTitle } from '../../hooks';
+import { useRequest } from '../../lib/request';
 import { useLocalStorageStore } from '../../stores';
 import noDataSvg from '../../assets/images/home/no_data.svg';
 
@@ -22,6 +21,7 @@ const EmptyView: FC = () => {
 };
 
 export const Home: FC = () => {
+  const { request } = useRequest();
   const { hasRead, setHasRead } = useLocalStorageStore();
   if (!hasRead) {
     setHasRead(true);
@@ -30,19 +30,16 @@ export const Home: FC = () => {
   useTitle('首页');
 
   const { data: userData, isLoading: userLoading } = useSWR('user', () =>
-    useUserApi().getUser()
+    request.get<APIResponse.User>('/api/v1/user', { loading: true })
   );
 
   const { data: itemsData, isLoading: itemsLoading } = useSWR(
-    userData ? 'items' : null,
-    () => useItemApi().getItems()
+    userData?.data ? 'items' : null,
+    () => request.get<APIResponse.Items>('/api/v1/items', { loading: true })
   );
 
-  if (userLoading || itemsLoading) {
-    return <Loading />;
-  }
-
-  if (itemsData?.resources && itemsData.resources.length > 0) {
+  if (userLoading || itemsLoading) return null;
+  if (itemsData?.data.resources && itemsData.data.resources.length > 0) {
     return <Navigate to='/items' />;
   }
 

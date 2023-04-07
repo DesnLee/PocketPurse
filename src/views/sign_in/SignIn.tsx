@@ -2,11 +2,10 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import { Form, Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
-import { request } from '../../lib/request';
+import { useRequest } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
-import { useToastStore } from '../../stores/useToastStore';
 
 const rules: Rules<SignInData> = [
   {
@@ -35,6 +34,7 @@ const rules: Rules<SignInData> = [
 ];
 
 export const SignIn: FC = () => {
+  const { request } = useRequest();
   const { data, errors, setData, setErrors } = useSignInStore();
 
   const checkForm = (key?: keyof typeof data) => {
@@ -72,29 +72,28 @@ export const SignIn: FC = () => {
     }
   };
 
-  const { setIsLoading } = useToastStore();
   const onClickSendAuthCode = async () => {
     const newError = checkForm('email');
     if (!hasError(newError)) {
-      console.log(data.email);
       try {
-        // await useUserApi().sendAuthCode(data.email);
-        setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await request.post<any>(
+          '/api/v1/send_sms_code',
+          { email: data.email },
+          { loading: true }
+        );
         startCountDown();
       } catch (e) {
         console.log('请求发送验证码失败！');
       }
-      setIsLoading(false);
     } else {
       console.log('验证失败');
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const newError = checkForm();
     if (!hasError(newError)) {
-      request.post('/api/v1/sign_in', data);
+      await request.post<any>('/api/v1/sign_in', data, { loading: true });
     } else {
       console.log('验证失败');
     }

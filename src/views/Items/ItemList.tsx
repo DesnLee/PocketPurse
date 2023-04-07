@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import { useCommonApi } from '../../api/common';
 import { Icon } from '../../components';
+import { useRequest } from '../../lib/request';
 
 interface BottomBlockProps {
   type: 'error' | 'next' | 'loading' | 'noMore';
@@ -30,14 +30,18 @@ export const ItemList: FC = () => {
   // 加载更多状态
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const { request } = useRequest();
+
   // 请求数据
   const { data, error, size, setSize, isLoading } = useSWRInfinite(
     getKey,
     async (path) => {
       return new Promise<APIResponse.Items>((resolve, reject) => {
-        useCommonApi()
+        request
           .get<APIResponse.Items>(path)
-          .then((res) => resolve(res))
+          .then((res) => {
+            resolve(res.data);
+          })
           .catch((err) => reject(err))
           .finally(() => setLoadingMore(false));
       });
