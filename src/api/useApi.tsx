@@ -6,7 +6,8 @@ export const useApi = () => {
   const api = {
     // user 系列接口
     user: {
-      getUser: () => request.get<APIResponse.User>('/api/v1/user'),
+      getUser: () =>
+        request.get<APIResponse.User>('/api/v1/user', { loading: true }),
       getSmsCode: (email: string) =>
         request.post<any>(
           '/api/v1/send_sms_code',
@@ -18,12 +19,13 @@ export const useApi = () => {
     },
     // item 系列接口
     item: {
-      getItems: () => request.get<APIResponse.Items>('/api/v1/items'),
+      getItems: () =>
+        request.get<APIResponse.Items>('/api/v1/items', { loading: true }),
     },
     // tag 系列接口
     tag: {
       getTag: (id: number) =>
-        request.get<APIResponse.Tag>(`/api/v1/tag?id=${id}`),
+        request.get<APIResponse.Tag>(`/api/v1/tag?id=${id}`, { loading: true }),
     },
   };
 
