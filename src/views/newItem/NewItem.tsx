@@ -43,7 +43,7 @@ export const NewItem: FC = () => {
       }, 1500);
     } else {
       await api.item.createItem(data);
-      nav('/items');
+      nav(-1);
     }
   };
 

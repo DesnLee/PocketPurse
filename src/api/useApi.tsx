@@ -25,7 +25,7 @@ export const useApi = () => {
       getItems: () =>
         request.get<APIResponse.Items>('/api/v1/items', { loading: true }),
       createItem: (data: Partial<ItemModel>) =>
-        request.post<APIResponse.Item>('/api/v1/item', data, {
+        request.post<APIResponse.Item>('/api/v1/items', data, {
           loading: true,
         }),
     },
@@ -35,6 +35,10 @@ export const useApi = () => {
         request.get<APIResponse.Tag>(`/api/v1/tag?id=${id}`, { loading: true }),
       getTags: (kind: ItemModel['kind']) =>
         request.get<APIResponse.Tags>(`/api/v1/tags?kind=${kind}`, {
+          loading: true,
+        }),
+      createTag: (data: Partial<TagModel>) =>
+        request.post<APIResponse.Tag>('/api/v1/tags', data, {
           loading: true,
         }),
     },

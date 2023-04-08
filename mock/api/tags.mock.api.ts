@@ -1,4 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock';
+import { createTag } from '../helper/tags.mock.helper';
 import { tagData, tagsData } from '../model/tags.mock.data';
 
 export const tagsAPI: MockMethod[] = [
@@ -23,6 +24,15 @@ export const tagsAPI: MockMethod[] = [
         size: parseInt(query.limit) || 10,
         total: 34,
       });
+    },
+  },
+  {
+    url: '/api/v1/tags',
+    method: 'post',
+    statusCode: 200,
+    timeout: 1000,
+    response: ({ body }: any): APIResponse.Item => {
+      return { resource: { ...createTag(body.kind), ...body } };
     },
   },
 ];

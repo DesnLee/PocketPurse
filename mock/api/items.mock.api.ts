@@ -1,4 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock';
+import { createItem } from '../helper/items.mock.helper';
 import { itemsData } from '../model/items.mock.data';
 
 export const itemsAPI: MockMethod[] = [
@@ -16,12 +17,12 @@ export const itemsAPI: MockMethod[] = [
     },
   },
   {
-    url: '/api/v1/item',
+    url: '/api/v1/items',
     method: 'post',
     statusCode: 200,
     timeout: 1000,
     response: ({ body }: any): APIResponse.Item => {
-      return { resource: body };
+      return { resource: { ...createItem(), ...body } };
     },
   },
 ];

@@ -1,7 +1,7 @@
 import type { Partial } from '@react-spring/web';
 import { useEffect } from 'react';
 import type { FC } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useApi } from '../../../api/useApi';
 import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
@@ -18,8 +18,8 @@ const rules: Rules<Partial<TagModel>> = [
   {
     key: 'name',
     type: 'length',
-    max: 8,
-    message: '标签名最多 8 个字符',
+    max: 6,
+    message: '标签名最多 6 个字符',
   },
 ];
 
@@ -28,6 +28,7 @@ interface Props {
 }
 
 export const TagEditor: FC<Props> = ({ type }) => {
+  const nav = useNavigate();
   const { api } = useApi();
   const { data, errors, setData, setErrors } = useEditTagStore();
   const [urlSearchParams] = useSearchParams();
@@ -64,12 +65,14 @@ export const TagEditor: FC<Props> = ({ type }) => {
     }
   }, [type, id]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const newError = validate(data, rules);
     setErrors(newError);
     if (!hasError(newError)) {
       console.log('校验通过');
-      console.log(data);
+      const result = await api.tag.createTag(data);
+      console.log(result);
+      nav(-1);
     }
   };
 
