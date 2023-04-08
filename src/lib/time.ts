@@ -7,12 +7,12 @@ export type DateKind =
   | 'second'
   | 'millisecond';
 
-export const time = (d?: Date) => {
+export const time = (d?: Date | string | number) => {
   return new Time(d);
 };
 export class Time {
   #date: Date;
-  constructor(d?: Date) {
+  constructor(d?: Date | string | number) {
     this.#date = d ? new Date(d) : new Date();
   }
 

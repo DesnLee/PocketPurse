@@ -1,10 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { Icon } from '../../components';
-import { usePopup } from '../../hooks';
-import { time } from '../../lib/time';
-import { DatePicker } from './DatePicker';
 
 type KeyboardKeys =
   | '1'
@@ -20,43 +17,34 @@ type KeyboardKeys =
   | '.'
   | 'backspace';
 
-const keysMap: { key: ReactNode; value: KeyboardKeys; area: string }[] = [
-  { key: '1', value: '1', area: '1 / 1 / 2 / 2' },
-  { key: '2', value: '2', area: '1 / 2 / 2 / 3' },
-  { key: '3', value: '3', area: '1 / 3 / 2 / 4' },
-  { key: '4', value: '4', area: '2 / 1 / 3 / 2' },
-  { key: '5', value: '5', area: '2 / 2 / 3 / 3' },
-  { key: '6', value: '6', area: '2 / 3 / 3 / 4' },
-  { key: '7', value: '7', area: '3 / 1 / 4 / 2' },
-  { key: '8', value: '8', area: '3 / 2 / 4 / 3' },
-  { key: '9', value: '9', area: '3 / 3 / 4 / 4' },
-  { key: '0', value: '0', area: '4 / 1 / 5 / 3' },
-  { key: '.', value: '.', area: '4 / 3 / 5 / 4' },
+const keysMap: { k: ReactNode; v: KeyboardKeys; area: string }[] = [
+  { k: '1', v: '1', area: '1 / 1 / 2 / 2' },
+  { k: '2', v: '2', area: '1 / 2 / 2 / 3' },
+  { k: '3', v: '3', area: '1 / 3 / 2 / 4' },
+  { k: '4', v: '4', area: '2 / 1 / 3 / 2' },
+  { k: '5', v: '5', area: '2 / 2 / 3 / 3' },
+  { k: '6', v: '6', area: '2 / 3 / 3 / 4' },
+  { k: '7', v: '7', area: '3 / 1 / 4 / 2' },
+  { k: '8', v: '8', area: '3 / 2 / 4 / 3' },
+  { k: '9', v: '9', area: '3 / 3 / 4 / 4' },
+  { k: '0', v: '0', area: '4 / 1 / 5 / 3' },
+  { k: '.', v: '.', area: '4 / 3 / 5 / 4' },
   {
-    key: <Icon name='delete' size='28px' color='#606266' />,
-    value: 'backspace',
+    k: <Icon name='delete' size='28px' color='#606266' />,
+    v: 'backspace',
     area: '1 / 4 / 2 / 5',
   },
 ];
 
-export const AccountInput: FC = () => {
-  // 日期 + 日期选择器
-  const [date, setDate] = useState(new Date());
-  const { Popup, open, close } = usePopup({
-    children: (
-      <DatePicker
-        defaultValue={date}
-        onConfirm={(v) => {
-          setDate(v);
-          close();
-        }}
-        onCancel={() => close()}
-      />
-    ),
-  });
+interface Props {
+  calendar: ReactNode;
+  value?: number;
+  onChange?: (value: number) => void;
+}
 
+export const AccountInput: FC<Props> = ({ calendar, value, onChange }) => {
   // 设置金额
-  const [output, _setOutput] = useState('0');
+  const [output, _setOutput] = useState(value ? (value / 100).toString() : '0');
   const addNum = (num: KeyboardKeys) => {
     const [yuan, jiao] = output.split('.');
 
@@ -95,15 +83,14 @@ export const AccountInput: FC = () => {
     }
   };
 
+  useEffect(() => {
+    onChange?.(Number(output) * 100);
+  }, [output]);
+
   return (
     <div>
-      {Popup}
       <div font-bold bg='#00000009' flex b-t-1 b-t='#00000009' b-t-solid>
-        <CalendarWrapper onClick={open}>
-          <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
-          <span>{time(date).format()}</span>
-          <Icon name='arrow_right' size='16px' color='#c0c4cc' />
-        </CalendarWrapper>
+        {calendar}
         <p
           text-20px
           color-black
@@ -118,9 +105,9 @@ export const AccountInput: FC = () => {
       </div>
 
       <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
-        {keysMap.map(({ key, value, area }) => (
-          <Button key={value} area={area} onClick={() => setOutput(value)}>
-            {key}
+        {keysMap.map(({ k, v, area }) => (
+          <Button key={v} area={area} onClick={() => setOutput(v)}>
+            {k}
           </Button>
         ))}
         <Button area='2 / 4 / 5 / 5' font='18px' primary>
@@ -150,17 +137,4 @@ const Button = styled.button<{
   &:active {
     background: ${({ primary }) => (!primary ? '#ffaa5a33' : '#ffaa5a99')};
   }
-`;
-
-const CalendarWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-size: 14px;
-  margin: 8px 12px;
-  padding: 0 12px;
-  color: #303133;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px 0 #0000000c;
 `;

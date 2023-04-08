@@ -1,7 +1,9 @@
 import type { FC } from 'react';
 import { Icon, Tab, TopNav, TopNavGradient } from '../../components';
+import { time } from '../../lib/time';
 import { useCreateItemStore } from '../../stores/useCreateItemStore';
 import { AccountInput } from './AccountInput';
+import { Calendar } from './Calendar';
 import { Tags } from './Tags';
 
 const tabs: { key: ItemModel['kind']; label: string }[] = [
@@ -29,7 +31,16 @@ export const NewItem: FC = () => {
         value={data.tag_ids}
         onChange={(tag_ids) => setData({ tag_ids })}
       />
-      <AccountInput />
+      <AccountInput
+        value={data.amount}
+        onChange={(amount) => setData({ amount })}
+        calendar={
+          <Calendar
+            value={time(data.happen_at).date}
+            onChange={(happen_at) => setData({ happen_at })}
+          />
+        }
+      />
     </div>
   );
 };
