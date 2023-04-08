@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Navigate, useLocation, useRouteError } from 'react-router-dom';
-import { useToastStore } from '../stores/useToastStore';
+import { useToastStore } from '../stores';
 import { ErrorNoData, ErrorUnauthorized } from '../vars/errors';
 
 export const ErrorUnAuthorized: FC = () => {

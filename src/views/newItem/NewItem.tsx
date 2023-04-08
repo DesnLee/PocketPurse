@@ -39,6 +39,11 @@ export const NewItem: FC = () => {
       });
     } else {
       await api.item.createItem(data);
+      openToast({
+        type: 'success',
+        text: '记账成功',
+        duration: 800,
+      });
       nav(-1);
       resetData(); // 成功后重置数据
     }

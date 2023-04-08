@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import type { FC } from 'react';
 import { usePopup } from '../hooks';
-import { useToastStore } from '../stores/useToastStore';
+import { useToastStore } from '../stores';
 import { Icon } from './Icon';
 
 interface Props {

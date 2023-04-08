@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../lib/request';
-import { useToastStore } from '../stores/useToastStore';
+import { useToastStore } from '../stores';
 
 export const ERROR_MESSAGE: {
   [key: number]: { text: string; jumpTo?: string };
