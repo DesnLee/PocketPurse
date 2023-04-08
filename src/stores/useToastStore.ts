@@ -42,10 +42,10 @@ export const useToastStore = create<ToastStore>((set, get) => ({
     }));
   },
   openToast: ({ type, text, duration = 2000 }) => {
-    let timer: any = null;
+    let timer: number | null = null;
     if (type !== 'loading') {
-      timer = setTimeout(() => {
-        clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        timer !== null && clearTimeout(timer);
         get().closeToast(type);
       }, duration);
     }
