@@ -103,7 +103,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
           onChange={(sign) => setData({ sign })}
         />
         <p text-center text-12px color='#909399'>
-          点击选择表情，记账页标签列表可长按编辑
+          tips：记账页标签列表可长按编辑标签
         </p>
       </div>
 
