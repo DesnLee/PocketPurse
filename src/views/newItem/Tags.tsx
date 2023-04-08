@@ -70,9 +70,6 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
           .catch((err) => reject(err))
           .finally(() => setLoadingMore(false));
       });
-    },
-    {
-      revalidateFirstPage: false,
     }
   );
 
