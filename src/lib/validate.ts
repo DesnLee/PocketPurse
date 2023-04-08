@@ -1,4 +1,10 @@
-type JSONValue = string | number | boolean | null | { [k: string]: JSONValue };
+type JSONValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [k: string]: JSONValue }
+  | JSONValue[];
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type FormData = { [k: string]: JSONValue };
 export type Rules<T> = Rule<T>[];
@@ -18,6 +24,10 @@ type Rule<T> = {
       type: 'pattern';
       pattern: RegExp;
     }
+  | {
+      type: 'notEqual';
+      value: JSONValue;
+    }
 );
 
 export type FormErrors<T> = {
@@ -25,7 +35,12 @@ export type FormErrors<T> = {
 };
 
 const isEmpty = (value: JSONValue) => {
-  return value === undefined || value === null || value === '';
+  return (
+    value === undefined ||
+    value === null ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0)
+  );
 };
 
 const validateRule = <T extends FormData>(
@@ -48,6 +63,9 @@ const validateRule = <T extends FormData>(
       break;
     case 'pattern':
       if (!rule.pattern.test(value!.toString())) return message;
+      break;
+    case 'notEqual':
+      if (JSON.stringify(value) === JSON.stringify(rule.value)) return message;
       break;
     default:
       break;

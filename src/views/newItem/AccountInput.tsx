@@ -106,11 +106,16 @@ export const AccountInput: FC<Props> = ({ calendar, value, onChange }) => {
 
       <div grid grid-rows='[repeat(4,56px)]' grid-cols-4 gap-1px bg='#00000006'>
         {keysMap.map(({ k, v, area }) => (
-          <Button key={v} area={area} onClick={() => setOutput(v)}>
+          <Button
+            type='button'
+            key={v}
+            area={area}
+            onClick={() => setOutput(v)}
+          >
             {k}
           </Button>
         ))}
-        <Button area='2 / 4 / 5 / 5' font='18px' primary>
+        <Button type='submit' area='2 / 4 / 5 / 5' font='18px' primary>
           提交
         </Button>
       </div>

@@ -15,4 +15,13 @@ export const itemsAPI: MockMethod[] = [
       });
     },
   },
+  {
+    url: '/api/v1/item',
+    method: 'post',
+    statusCode: 200,
+    timeout: 1000,
+    response: ({ body }: any): APIResponse.Item => {
+      return { resource: body };
+    },
+  },
 ];

@@ -24,6 +24,10 @@ export const useApi = () => {
     item: {
       getItems: () =>
         request.get<APIResponse.Items>('/api/v1/items', { loading: true }),
+      createItem: (data: Partial<ItemModel>) =>
+        request.post<APIResponse.Item>('/api/v1/item', data, {
+          loading: true,
+        }),
     },
     // tag 系列接口
     tag: {

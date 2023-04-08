@@ -1,7 +1,12 @@
 import type { FC } from 'react';
-import { Icon, Tab, TopNav, TopNavGradient } from '../../components';
+import { useNavigate } from 'react-router-dom';
+import { useApi } from '../../api/useApi';
+import { Form, Icon, Tab, TopNav, TopNavGradient } from '../../components';
 import { time } from '../../lib/time';
+import { hasError, validate } from '../../lib/validate';
+import type { Rules } from '../../lib/validate';
 import { useCreateItemStore } from '../../stores/useCreateItemStore';
+import { useToastStore } from '../../stores/useToastStore';
 import { AccountInput } from './AccountInput';
 import { Calendar } from './Calendar';
 import { Tags } from './Tags';
@@ -11,12 +16,39 @@ const tabs: { key: ItemModel['kind']; label: string }[] = [
   { key: 'income', label: '收入' },
 ];
 
+const rules: Rules<ItemModel> = [
+  { key: 'kind', type: 'required', message: '账单类型不能为空' },
+  { key: 'tag_ids', type: 'required', message: '标签不能为空' },
+  { key: 'happen_at', type: 'required', message: '账单日期不能为空' },
+  { key: 'amount', type: 'required', message: '账单金额不能为空' },
+  { key: 'amount', type: 'notEqual', value: 0, message: '账单金额不能为 0' },
+];
+
 export const NewItem: FC = () => {
   const { data, setData } = useCreateItemStore();
+  const { openToast, closeToast } = useToastStore();
+  const { api } = useApi();
+  const nav = useNavigate();
+
+  const onSubmit = async () => {
+    const errors = validate(data, rules);
+    if (hasError(errors)) {
+      openToast({
+        type: 'error',
+        text: Object.values(errors).flat()[0] ?? '未知错误',
+      });
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        closeToast('error');
+      }, 1500);
+    } else {
+      await api.item.createItem(data);
+      nav('/items');
+    }
+  };
 
   return (
-    <div pp-page-wrapper>
-      {JSON.stringify(data)}
+    <Form className='pp-page-wrapper' onSubmit={onSubmit}>
       <TopNavGradient>
         <TopNav title='记一笔' leftIcon={<Icon name='arrow_left' />} />
         <Tab
@@ -41,6 +73,6 @@ export const NewItem: FC = () => {
           />
         }
       />
-    </div>
+    </Form>
   );
 };
