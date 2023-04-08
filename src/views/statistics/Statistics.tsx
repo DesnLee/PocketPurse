@@ -32,6 +32,7 @@ export const Statistics: FC = () => {
   ];
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
+  // 构造时间范围
   const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
   const [startAndEnd, setStartAndEnd] = useState<{
     start: string;
@@ -67,6 +68,7 @@ export const Statistics: FC = () => {
     setStartAndEnd(() => ({ start, end }));
   }, [currentRange]);
 
+  // 请求折线图数据
   const { data: lineChartData } = useSWRImmutable(
     `lineChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
     () =>

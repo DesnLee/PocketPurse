@@ -44,7 +44,6 @@ export const LineChart: FC<Props> = ({ data, height }) => {
         data: data.map((item) => time(item[0]).format('MM-dd')),
         axisLine: { lineStyle: { color: '#909399' } },
         axisLabel: {
-          // formatter: (value: string) => value.slice(5),
           color: '#909399',
           margin: 12,
         },
@@ -70,8 +69,8 @@ export const LineChart: FC<Props> = ({ data, height }) => {
       newOptions.dataZoom = {
         type: 'inside',
         zoomLock: true,
-        start: 0,
-        end: (60 / data.length) * 100,
+        start: ((data.length - 60) / data.length) * 100,
+        end: 100,
       };
     }
 
@@ -90,7 +89,7 @@ export const LineChart: FC<Props> = ({ data, height }) => {
 
   // options 变化时，更新图表
   useEffect(() => {
-    myChart.current?.setOption(options);
+    myChart.current?.setOption(options, { notMerge: true });
   }, [options]);
 
   const resize = () => {
