@@ -7,6 +7,7 @@ interface EditCreateItemStore {
   errors: Partial<FormErrors<ItemModel>>;
   setData: (data: Partial<ItemModel>) => void;
   setErrors: (errors: FormErrors<Partial<ItemModel>>) => void;
+  resetData: () => void;
 }
 
 export const useCreateItemStore = create<EditCreateItemStore>((set) => ({
@@ -32,6 +33,17 @@ export const useCreateItemStore = create<EditCreateItemStore>((set) => ({
     set((oldState) => ({
       ...oldState,
       errors: { ...oldState.errors, ...errors },
+    }));
+  },
+  resetData: () => {
+    set((oldState) => ({
+      ...oldState,
+      data: {
+        kind: 'expenses',
+        tag_ids: [],
+        happen_at: new Date().toISOString(),
+        amount: 0,
+      },
     }));
   },
 }));

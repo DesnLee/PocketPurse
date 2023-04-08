@@ -7,6 +7,7 @@ interface EditTagStore {
   errors: Partial<FormErrors<TagModel>>;
   setData: (data: Partial<TagModel>) => void;
   setErrors: (errors: FormErrors<Partial<TagModel>>) => void;
+  resetData: () => void;
 }
 
 export const useEditTagStore = create<EditTagStore>((set) => ({
@@ -28,6 +29,16 @@ export const useEditTagStore = create<EditTagStore>((set) => ({
     set((oldState) => ({
       ...oldState,
       errors: { ...oldState.errors, ...errors },
+    }));
+  },
+  resetData: () => {
+    set((oldState) => ({
+      ...oldState,
+      data: {
+        name: '',
+        sign: '',
+        kind: 'expenses',
+      },
     }));
   },
 }));

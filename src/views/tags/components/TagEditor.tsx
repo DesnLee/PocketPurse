@@ -7,8 +7,7 @@ import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
 import { hasError, validate } from '../../../lib/validate';
 import type { Rules } from '../../../lib/validate';
-import { useEditTagStore } from '../../../stores';
-import { useToastStore } from '../../../stores/useToastStore';
+import { useEditTagStore, useToastStore } from '../../../stores';
 
 const rules: Rules<Partial<TagModel>> = [
   {
@@ -31,7 +30,7 @@ interface Props {
 export const TagEditor: FC<Props> = ({ type }) => {
   const nav = useNavigate();
   const { api } = useApi();
-  const { data, errors, setData, setErrors } = useEditTagStore();
+  const { data, errors, setData, setErrors, resetData } = useEditTagStore();
   const [urlSearchParams] = useSearchParams();
   const { id } = useParams();
 
@@ -78,6 +77,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
         duration: 800,
       });
       nav(-1);
+      resetData(); // 成功后重置数据
     }
   };
 

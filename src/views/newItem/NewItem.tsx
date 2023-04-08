@@ -5,8 +5,7 @@ import { Form, Icon, Tab, TopNav, TopNavGradient } from '../../components';
 import { time } from '../../lib/time';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
-import { useCreateItemStore } from '../../stores/useCreateItemStore';
-import { useToastStore } from '../../stores/useToastStore';
+import { useCreateItemStore, useToastStore } from '../../stores';
 import { AccountInput } from './AccountInput';
 import { Calendar } from './Calendar';
 import { Tags } from './Tags';
@@ -25,7 +24,7 @@ const rules: Rules<ItemModel> = [
 ];
 
 export const NewItem: FC = () => {
-  const { data, setData } = useCreateItemStore();
+  const { data, setData, resetData } = useCreateItemStore();
   const { openToast } = useToastStore();
   const { api } = useApi();
   const nav = useNavigate();
@@ -36,10 +35,12 @@ export const NewItem: FC = () => {
       openToast({
         type: 'error',
         text: Object.values(errors).flat()[0] ?? '未知错误',
+        duration: 800,
       });
     } else {
       await api.item.createItem(data);
       nav(-1);
+      resetData(); // 成功后重置数据
     }
   };
 
