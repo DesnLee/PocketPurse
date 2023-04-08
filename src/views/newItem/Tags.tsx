@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { useApi } from '../../api/useApi';
 import { Icon } from '../../components';
 
@@ -28,7 +28,7 @@ interface Props {
 }
 export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
   const { api } = useApi();
-  const { data: tags } = useSWR(`tags_${currentType}`, () =>
+  const { data: tags } = useSWRImmutable(`tags_${currentType}`, () =>
     api.tag.getTags(currentType)
   );
 
