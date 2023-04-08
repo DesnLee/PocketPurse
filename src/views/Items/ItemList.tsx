@@ -46,9 +46,6 @@ export const ItemList: FC = () => {
           .catch((err) => reject(err))
           .finally(() => setLoadingMore(false));
       });
-    },
-    {
-      revalidateFirstPage: false,
     }
   );
 
