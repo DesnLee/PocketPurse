@@ -21,7 +21,7 @@ export const tagsAPI: MockMethod[] = [
         kind: query.kind as ItemModel['kind'],
         page: parseInt(query.page) || 1,
         size: parseInt(query.limit) || 10,
-        total: 99,
+        total: 34,
       });
     },
   },

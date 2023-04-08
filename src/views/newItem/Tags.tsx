@@ -7,19 +7,20 @@ import { Icon } from '../../components';
 import { useRequest } from '../../hooks';
 
 interface BottomBlockProps {
-  type: 'error' | 'next' | 'loading' | 'noMore';
+  type: 'error' | 'next' | 'loading' | 'noMore' | 'clickToAdd';
   onClick?: () => void;
 }
 
 const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
   return (
     <div px-16px pt-16px pb-32px onClick={onClick}>
-      {type === 'next' && <button pp-btn-info>加载更多</button>}
+      {type === 'next' && <button pp-btn-info>加载更多标签</button>}
       {type !== 'next' && (
         <p h-48px text-center text-14px leading-48px color='#909399'>
-          {type === 'error' && '加载失败，点击重试'}{' '}
-          {type === 'loading' && '加载数据中'}{' '}
-          {type === 'noMore' && '没有更多了'}
+          {type === 'error' && '加载失败，点击重试'}
+          {type === 'loading' && '加载标签中'}
+          {type === 'noMore' && '没有更多标签了'}
+          {type === 'clickToAdd' && '还没有标签哦，点击加号创建一个吧'}
         </p>
       )}
     </div>
@@ -101,13 +102,12 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
       return (
         <div grow-1 overflow-auto>
           <ol
-            // grow-1
-            // overflow-auto
             grid
             grid-cols='[repeat(auto-fit,56px)]'
             grid-rows='[repeat(auto-fit,74px)]'
             gap-x-28px
             gap-y-20px
+            justify-center
             p-16px
             px-10px
           >
@@ -160,6 +160,7 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
             // 非首次加载成功
             else {
               const { total, size: resSize, page } = data[size - 1].pager;
+              if (total === 0) return <BottomBlock type='clickToAdd' />;
               // 有下一页
               return total >
                 resSize * (page - 1) + data[size - 1].resources.length ? (
