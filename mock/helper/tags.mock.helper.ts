@@ -1,19 +1,48 @@
 import { faker } from '@faker-js/faker';
 
-export const createTag = (kind: ItemModel['kind']) => ({
-  id: faker.datatype.number(10000),
-  user_id: 0,
-  name: faker.word.verb(),
-  sign: '🤫',
-  created_at: faker.date.past().toISOString(),
-  updated_at: faker.date.past().toISOString(),
-  kind,
-});
+let itemId = 0;
+const getItemId = (): number => {
+  itemId += 1;
+  return itemId;
+};
 
-export const createTags = (kind: ItemModel['kind']) => {
-  const tags = [];
-  for (let i = 0; i < faker.datatype.number(10); i++) {
-    tags.push(createTag(kind));
-  }
-  return tags;
+export const createTag = (kind: ItemModel['kind']): TagModel => {
+  const id = getItemId();
+  return {
+    id,
+    user_id: 0,
+    name: faker.word.verb(),
+    sign: faker.internet.emoji(),
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.past().toISOString(),
+    kind,
+  };
+};
+
+const createTags = (kind: ItemModel['kind'], num: number): TagModel[] => {
+  return Array.from({ length: num }).map(() => createTag(kind));
+};
+
+export const createTagsData = ({
+  kind,
+  page = 1,
+  size = 30,
+  total = 100,
+}: {
+  kind: ItemModel['kind'];
+  page?: number;
+  size?: number;
+  total?: number;
+}): APIResponse.Tags => {
+  const hasSend = (page - 1) * size;
+  const hasLeft = total - hasSend;
+  const tags = hasLeft > 0 ? createTags(kind, Math.min(size, hasLeft)) : [];
+  return {
+    resources: tags,
+    pager: {
+      page,
+      size,
+      total,
+    },
+  };
 };

@@ -1,6 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock';
-import { createTags } from '../helper/tags.mock.helper';
-import { tagData } from '../model/tags.mock.data';
+import { tagData, tagsData } from '../model/tags.mock.data';
 
 export const tagsAPI: MockMethod[] = [
   {
@@ -17,8 +16,13 @@ export const tagsAPI: MockMethod[] = [
     method: 'get',
     statusCode: 200,
     timeout: 500,
-    response: ({ query }: Mock.Request) => {
-      return { resources: createTags(query.kind as ItemModel['kind']) };
+    response: ({ query }: Mock.Request): APIResponse.Tags => {
+      return tagsData.succeed({
+        kind: query.kind as ItemModel['kind'],
+        page: parseInt(query.page) || 1,
+        size: parseInt(query.limit) || 10,
+        total: 24,
+      });
     },
   },
 ];
