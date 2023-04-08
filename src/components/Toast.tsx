@@ -1,12 +1,15 @@
+import React, { useEffect } from 'react';
 import type { FC } from 'react';
+import { usePopup } from '../hooks';
+import { useToastStore } from '../stores/useToastStore';
 import { Icon } from './Icon';
 
 interface Props {
   type: 'loading' | 'error';
-  text?: string;
+  text: string;
 }
 
-export const Toast: FC<Props> = ({ type, text = '加载中...' }) => {
+const ToastElement: FC<Props> = ({ type, text }) => {
   return (
     <div
       w-96px
@@ -25,5 +28,42 @@ export const Toast: FC<Props> = ({ type, text = '加载中...' }) => {
         {text}
       </p>
     </div>
+  );
+};
+
+// 全局 Toast
+export const Toast = () => {
+  const { loading, error } = useToastStore();
+  const {
+    open: loadingOpen,
+    close: LoadingClose,
+    Popup: LoadingPopup,
+  } = usePopup({
+    children: <ToastElement text={loading.text} type='loading' />,
+    position: 'center',
+    closeOnClickMask: false,
+  });
+  const {
+    open: errorOpen,
+    close: errorClose,
+    Popup: errorPopup,
+  } = usePopup({
+    children: <ToastElement text={error.text} type='error' />,
+    position: 'center',
+    closeOnClickMask: false,
+  });
+
+  useEffect(() => {
+    loading.isOpen ? loadingOpen() : LoadingClose();
+  }, [loading.isOpen]);
+
+  useEffect(() => {
+    error.isOpen ? errorOpen() : errorClose();
+  }, [error.isOpen]);
+
+  return (
+    <>
+      {LoadingPopup} {errorPopup}
+    </>
   );
 };
