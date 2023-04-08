@@ -40,6 +40,7 @@ export const useRequest = () => {
       let text;
       let jumpTo = '';
 
+      // 统一错误提示，如果前端预设了错误提示，则使用预设的，否则使用后端返回的，后端也没有返回则使用未知错误
       if (error) {
         text = error.text;
         jumpTo = error.jumpTo ?? '';
@@ -53,8 +54,9 @@ export const useRequest = () => {
         text,
       });
 
-      // jump to
+      // 如果有跳转地址，则跳转
       if (jumpTo) {
+        // 如果是 401 错误，则跳转时带上当前页面的地址，登录后跳转回来
         if (err.response.status === 401) {
           const redirect = encodeURIComponent(`${pathname}${search}`);
           nav(`${jumpTo}?redirect=${redirect}`);
