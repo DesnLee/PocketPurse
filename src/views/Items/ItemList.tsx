@@ -5,7 +5,7 @@ import { Icon } from '../../components';
 import { useRequest } from '../../hooks';
 
 interface BottomBlockProps {
-  type: 'error' | 'next' | 'loading' | 'noMore';
+  type: 'error' | 'next' | 'loading' | 'noMore' | 'noData';
   onClick?: () => void;
 }
 const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
@@ -17,6 +17,7 @@ const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
           {type === 'error' && '加载失败，点击重试'}
           {type === 'loading' && '加载数据中'}
           {type === 'noMore' && '没有更多了'}
+          {type === 'noData' && '还没有账单数据，快去添加吧'}
         </p>
       )}
     </div>
@@ -167,6 +168,7 @@ export const ItemList: FC = () => {
             // 非首次加载成功
             else {
               const { total, size: resSize, page } = data[size - 1].pager;
+              if (total === 0) return <BottomBlock type='noData' />;
               // 有下一页
               return total >
                 resSize * (page - 1) + data[size - 1].resources.length ? (
