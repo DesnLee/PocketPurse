@@ -15,7 +15,7 @@ export const useApi = () => {
           { loading: true, loadingText: '请求发送验证码...' }
         ),
       signIn: (data: SignInData) =>
-        request.post<any>('/api/v1/sign_in', data, {
+        request.post<APIResponse.LoginSucceed>('/api/v1/sign_in', data, {
           loading: true,
           loadingText: '登录中...',
         }),

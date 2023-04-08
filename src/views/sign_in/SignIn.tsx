@@ -92,7 +92,10 @@ export const SignIn: FC = () => {
   const onSubmit = async () => {
     const newError = checkForm();
     if (!hasError(newError)) {
-      await api.user.signIn(data);
+      const res = await api.user.signIn(data);
+
+      // 保存token
+      localStorage.setItem('token', res.data.jwt);
       const to = searchParams.get('redirect') || '/items';
       nav(to);
     } else {

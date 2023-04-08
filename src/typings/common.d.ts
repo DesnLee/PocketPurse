@@ -22,3 +22,11 @@ type SignInData = {
   email: string;
   authCode: string;
 };
+
+declare namespace APIResponse {
+  type LoginSucceed = {
+    msg: 'succeed';
+    jwt: string;
+    timestamp: number;
+  };
+}
