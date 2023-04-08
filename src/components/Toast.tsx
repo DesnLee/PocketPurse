@@ -5,7 +5,7 @@ import { useToastStore } from '../stores/useToastStore';
 import { Icon } from './Icon';
 
 interface Props {
-  type: 'loading' | 'error';
+  type: 'loading' | 'error' | 'success';
   text: string;
 }
 
@@ -33,7 +33,7 @@ const ToastElement: FC<Props> = ({ type, text }) => {
 
 // 全局 Toast
 export const Toast = () => {
-  const { loading, error } = useToastStore();
+  const { loading, error, success } = useToastStore();
   const {
     open: loadingOpen,
     close: LoadingClose,
@@ -52,6 +52,15 @@ export const Toast = () => {
     position: 'center',
     closeOnClickMask: false,
   });
+  const {
+    open: successOpen,
+    close: successClose,
+    Popup: successPopup,
+  } = usePopup({
+    children: <ToastElement text={success.text} type='success' />,
+    position: 'center',
+    closeOnClickMask: false,
+  });
 
   useEffect(() => {
     loading.isOpen ? loadingOpen() : LoadingClose();
@@ -61,9 +70,14 @@ export const Toast = () => {
     error.isOpen ? errorOpen() : errorClose();
   }, [error.isOpen]);
 
+  useEffect(() => {
+    success.isOpen ? successOpen() : successClose();
+  }, [success.isOpen]);
+
   return (
     <>
       {LoadingPopup} {errorPopup}
+      {successPopup}
     </>
   );
 };

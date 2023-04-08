@@ -8,6 +8,7 @@ import { emojis } from '../../../lib/emojis';
 import { hasError, validate } from '../../../lib/validate';
 import type { Rules } from '../../../lib/validate';
 import { useEditTagStore } from '../../../stores';
+import { useToastStore } from '../../../stores/useToastStore';
 
 const rules: Rules<Partial<TagModel>> = [
   {
@@ -65,14 +66,23 @@ export const TagEditor: FC<Props> = ({ type }) => {
     }
   }, [type, id]);
 
+  const { openToast, closeToast } = useToastStore();
   const onSubmit = async () => {
     const newError = validate(data, rules);
     setErrors(newError);
     if (!hasError(newError)) {
       console.log('校验通过');
       const result = await api.tag.createTag(data);
+      openToast({
+        text: '保存成功',
+        type: 'success',
+      });
       console.log(result);
       nav(-1);
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        closeToast('success');
+      }, 1500);
     }
   };
 

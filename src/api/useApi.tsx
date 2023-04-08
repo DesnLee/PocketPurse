@@ -52,6 +52,7 @@ export const useApi = () => {
       createTag: (data: Partial<TagModel>) =>
         request.post<APIResponse.Tag>('/api/v1/tags', data, {
           loading: true,
+          loadingText: '创建中，请稍候...',
           handleError: true,
         }),
     },

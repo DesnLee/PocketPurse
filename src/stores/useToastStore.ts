@@ -1,12 +1,16 @@
 import { create } from 'zustand';
 
-type ToastType = 'loading' | 'error';
+type ToastType = 'loading' | 'error' | 'success';
 interface ToastStore {
   loading: {
     text: string;
     isOpen: boolean;
   };
   error: {
+    text: string;
+    isOpen: boolean;
+  };
+  success: {
     text: string;
     isOpen: boolean;
   };
@@ -23,6 +27,10 @@ export const useToastStore = create<ToastStore>((set) => ({
     text: '出错了',
     isOpen: false,
   },
+  success: {
+    text: '成功',
+    isOpen: false,
+  },
   closeToast: (type) => {
     set((oldState) => ({
       ...oldState,
@@ -30,6 +38,7 @@ export const useToastStore = create<ToastStore>((set) => ({
     }));
   },
   openToast: ({ type, text }) => {
+    console.log('openToast', type, text);
     set((oldState) => ({
       ...oldState,
       [type]: {
