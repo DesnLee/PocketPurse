@@ -60,7 +60,7 @@ const PopupElement: FC<PopupProps> = ({
           translate-x='-50%'
           translate-y='-50%'
           z='[var(--z-index-popup)]'
-          touch-none
+          pointer-events-none
           rounded-t-12px
           overflow-hidden
         >
