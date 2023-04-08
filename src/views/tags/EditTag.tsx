@@ -1,6 +1,5 @@
 import type { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Icon, TopNav, TopNavGradient } from '../../components';
+import { TopNav, TopNavGradient } from '../../components';
 import { useEditTagStore } from '../../stores';
 import { TagEditor } from './components/TagEditor';
 
@@ -10,16 +9,12 @@ interface Props {
 }
 
 export const EditTag: FC<Props> = ({ type, title }) => {
-  const nav = useNavigate();
   const { data } = useEditTagStore();
 
   return (
     <div pp-page-wrapper>
       <TopNavGradient disableShadow={true}>
-        <TopNav
-          title={title}
-          leftIcon={<Icon name='arrow_left' onClick={() => nav(-1)} />}
-        />
+        <TopNav title={title} />
       </TopNavGradient>
 
       <div flex justify-center mb-16px>

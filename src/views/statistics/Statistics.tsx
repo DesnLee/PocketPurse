@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import {
-  Icon,
   Input,
   TimeRangePicker,
   TopNav,
@@ -53,7 +52,6 @@ export const Statistics: FC = () => {
       <TopNavGradient>
         <TopNav
           title='统计图表'
-          leftIcon={<Icon name='arrow_left' onClick={() => {}} />}
           rightElement={
             <Input
               type='navSelect'

@@ -1,4 +1,5 @@
 import type { FC, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from '../Icon';
 
 interface Props {
@@ -14,6 +15,10 @@ export const TopNav: FC<Props> = ({
   color,
   rightElement,
 }) => {
+  const nav = useNavigate();
+  const goBack = () => {
+    nav(-1);
+  };
   return (
     <div flex items-center py-16px color={color ?? '[var(--color-primary)]'}>
       <span
@@ -25,7 +30,7 @@ export const TopNav: FC<Props> = ({
         children-w-24px
         children-h-24px
       >
-        {leftIcon || <Icon name='arrow_back' size='24px' />}
+        {leftIcon || <Icon name='arrow_left' size='24px' onClick={goBack} />}
       </span>
       <h1 ml-8px text-18px font-bold>
         {title}

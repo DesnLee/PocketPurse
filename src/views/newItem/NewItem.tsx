@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../../api/useApi';
-import { Form, Icon, Tab, TopNav, TopNavGradient } from '../../components';
+import { Form, Tab, TopNav, TopNavGradient } from '../../components';
 import { time } from '../../lib/time';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
@@ -52,7 +52,7 @@ export const NewItem: FC = () => {
   return (
     <Form className='pp-page-wrapper' onSubmit={onSubmit}>
       <TopNavGradient>
-        <TopNav title='记一笔' leftIcon={<Icon name='arrow_left' />} />
+        <TopNav title='记一笔' />
         <Tab
           layout='full'
           items={tabs}

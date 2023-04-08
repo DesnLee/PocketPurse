@@ -106,7 +106,7 @@ export const SignIn: FC = () => {
   return (
     <div pp-page-wrapper gradient-primary>
       <TopNavTransparent>
-        <TopNav title='登录/注册' leftIcon={<Icon name='arrow_left' />} />
+        <TopNav title='登录/注册' />
       </TopNavTransparent>
 
       <main px-16px shrink-1 grow-1 py-40px flex flex-col items-center gap-56px>
