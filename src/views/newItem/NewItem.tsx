@@ -26,7 +26,7 @@ const rules: Rules<ItemModel> = [
 
 export const NewItem: FC = () => {
   const { data, setData } = useCreateItemStore();
-  const { openToast, closeToast } = useToastStore();
+  const { openToast } = useToastStore();
   const { api } = useApi();
   const nav = useNavigate();
 
@@ -37,10 +37,6 @@ export const NewItem: FC = () => {
         type: 'error',
         text: Object.values(errors).flat()[0] ?? '未知错误',
       });
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        closeToast('error');
-      }, 1500);
     } else {
       await api.item.createItem(data);
       nav(-1);

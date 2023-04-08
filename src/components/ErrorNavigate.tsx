@@ -6,18 +6,14 @@ import { ErrorNoData, ErrorUnauthorized } from '../vars/errors';
 export const ErrorUnAuthorized: FC = () => {
   const error = useRouteError();
   const { pathname, search } = useLocation();
-  const { openToast, closeToast } = useToastStore();
+  const { openToast } = useToastStore();
 
   if (error instanceof ErrorUnauthorized) {
     openToast({
       text: '请先登录',
       type: 'error',
+      duration: 1000,
     });
-    const timer = setTimeout(() => {
-      closeToast('error');
-      clearTimeout(timer);
-    }, 1000);
-
     const redirect = encodeURIComponent(`${pathname}${search}`);
     return <Navigate to={`/sign_in?redirect=${redirect}`} />;
   }

@@ -53,10 +53,6 @@ export const useRequest = () => {
         text,
       });
 
-      const timer = setTimeout(() => {
-        closeToast('error');
-        clearTimeout(timer);
-      }, 2000);
       // jump to
       if (jumpTo) {
         if (err.response.status === 401) {

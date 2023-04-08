@@ -66,7 +66,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
     }
   }, [type, id]);
 
-  const { openToast, closeToast } = useToastStore();
+  const { openToast } = useToastStore();
   const onSubmit = async () => {
     const newError = validate(data, rules);
     setErrors(newError);
@@ -75,6 +75,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
       openToast({
         text: '保存成功',
         type: 'success',
+        duration: 800,
       });
       nav(-1);
     }
