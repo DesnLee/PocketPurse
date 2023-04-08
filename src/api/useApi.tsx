@@ -61,6 +61,12 @@ export const useApi = () => {
           loadingText: '更新中，请稍候...',
           handleError: true,
         }),
+      deleteTag: (id: number) =>
+        request.delete(`/api/v1/tags/${id}`, {
+          loading: true,
+          loadingText: '删除中，请稍候...',
+          handleError: true,
+        }),
     },
   };
 

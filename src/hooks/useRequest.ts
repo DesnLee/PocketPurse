@@ -32,6 +32,10 @@ export interface MyRequest {
     data: any,
     options?: ExtraOptions
   ) => Promise<AxiosResponse<T, any>>;
+  delete: <T>(
+    url: string,
+    options?: ExtraOptions
+  ) => Promise<AxiosResponse<T, any>>;
 }
 
 export const useRequest = () => {
@@ -120,6 +124,24 @@ export const useRequest = () => {
       }
       return axiosInstance
         .patch(url, data)
+        .catch(
+          options?.handleError
+            ? errorHandler
+            : (e) => {
+                throw e;
+              }
+        )
+        .finally(() => closeToast('loading'));
+    },
+    delete: (url, options) => {
+      if (options?.loading) {
+        openToast({
+          type: 'loading',
+          text: options?.loadingText ?? '加载中...',
+        });
+      }
+      return axiosInstance
+        .delete(url)
         .catch(
           options?.handleError
             ? errorHandler
