@@ -1,9 +1,30 @@
+import { useState } from 'react';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import useSWRImmutable from 'swr/immutable';
-import { useApi } from '../../api/useApi';
+import useSWRInfinite from 'swr/infinite';
 import { Icon } from '../../components';
+import { useRequest } from '../../hooks';
+
+interface BottomBlockProps {
+  type: 'error' | 'next' | 'loading' | 'noMore';
+  onClick?: () => void;
+}
+
+const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
+  return (
+    <div px-16px pt-16px pb-32px onClick={onClick}>
+      {type === 'next' && <button pp-btn-info>加载更多</button>}
+      {type !== 'next' && (
+        <p h-48px text-center text-14px leading-48px color='#909399'>
+          {type === 'error' && '加载失败，点击重试'}{' '}
+          {type === 'loading' && '加载数据中'}{' '}
+          {type === 'noMore' && '没有更多了'}
+        </p>
+      )}
+    </div>
+  );
+};
 
 const IconWrapper = styled.div<{ selected?: boolean }>`
   width: 56px;
@@ -27,47 +48,131 @@ interface Props {
   onChange?: (value: ItemModel['tag_ids']) => void;
 }
 export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
-  const { api } = useApi();
-  const { data: tags } = useSWRImmutable(`tags_${currentType}`, () =>
-    api.tag.getTags(currentType)
+  const { request } = useRequest();
+
+  // 加载更多状态
+  const [loadingMore, setLoadingMore] = useState(false);
+  const getKey = (pageIndex: number) => {
+    return `/api/v1/tags?page=${pageIndex + 1}&limit=10&kind=${currentType}`;
+  };
+  // 请求数据
+  const { data, error, size, setSize, isLoading } = useSWRInfinite(
+    getKey,
+    async (path) => {
+      return new Promise<APIResponse.Tags>((resolve, reject) => {
+        request
+          .get<APIResponse.Tags>(path)
+          .then((res) => {
+            resolve(res.data);
+          })
+          .catch((err) => reject(err))
+          .finally(() => setLoadingMore(false));
+      });
+    },
+    {
+      revalidateFirstPage: false,
+    }
   );
 
-  return (
-    <ol
-      grow-1
-      overflow-auto
-      grid
-      grid-cols='[repeat(auto-fit,56px)]'
-      grid-rows='[repeat(auto-fit,74px)]'
-      gap-x-28px
-      gap-y-20px
-      p-16px
-      px-10px
-    >
-      <li w-56px>
-        <Link to={`/tags/new?kind=${currentType}`}>
-          <IconWrapper>
-            <Icon size='20px' color='var(--color-primary)' name='add' />
-          </IconWrapper>
-        </Link>
-      </li>
-      {tags?.data.resources.map((tag, i) => (
-        <li w-56px key={i} onClick={() => onChange?.([tag.id])}>
-          <IconWrapper selected={value?.includes(tag.id)}>
-            {tag.sign}
-          </IconWrapper>
-          <p
-            text-12px
-            leading-12px
-            mt-6px
-            text-center
-            color='#606266'
-            max-w-56px
+  // 加载数据
+  const loadData = (key: 'refresh' | 'next') => {
+    setLoadingMore(true);
+    setSize(key === 'refresh' ? size : size + 1);
+  };
+
+  // 首次加载中
+  if (isLoading) {
+    return (
+      <div grow-1>
+        <BottomBlock type='loading' />
+      </div>
+    );
+  } else {
+    // 首次加载即失败
+    if (!data && error) {
+      return (
+        <div grow-1>
+          <BottomBlock type='error' onClick={() => loadData('refresh')} />
+        </div>
+      );
+    }
+    // 加载成功
+    else if (data) {
+      return (
+        <div grow-1 overflow-auto>
+          <ol
+            // grow-1
+            // overflow-auto
+            grid
+            grid-cols='[repeat(auto-fit,56px)]'
+            grid-rows='[repeat(auto-fit,74px)]'
+            gap-x-28px
+            gap-y-20px
+            p-16px
+            px-10px
           >
-            {tag.name}
-          </p>
-        </li>
-      ))}
-    </ol>
-  );
+            <li w-56px>
+              <Link to={`/tags/new?kind=${currentType}`}>
+                <IconWrapper>
+                  <Icon size='20px' color='var(--color-primary)' name='add' />
+                </IconWrapper>
+              </Link>
+            </li>
+            {data
+              .map((page) => page.resources)
+              .flat()
+              ?.map((tag, i) => (
+                <li w-56px key={i} onClick={() => onChange?.([tag.id])}>
+                  <IconWrapper selected={value?.includes(tag.id)}>
+                    {tag.sign}
+                  </IconWrapper>
+                  <p
+                    text-12px
+                    leading-12px
+                    mt-6px
+                    text-center
+                    color='#606266'
+                    max-w-56px
+                  >
+                    {tag.name}
+                  </p>
+                </li>
+              ))}
+          </ol>
+
+          {(() => {
+            if (data.length < size) {
+              // 非首次加载失败
+              if (!loadingMore && error) {
+                return (
+                  <BottomBlock
+                    type='error'
+                    onClick={() => loadData('refresh')}
+                  />
+                );
+              }
+              // 非首次加载中
+              else if (loadingMore) {
+                return <BottomBlock type='loading' />;
+              }
+              return null;
+            }
+            // 非首次加载成功
+            else {
+              const { total, size: resSize, page } = data[size - 1].pager;
+              // 有下一页
+              return total >
+                resSize * (page - 1) + data[size - 1].resources.length ? (
+                <BottomBlock type='next' onClick={() => loadData('next')} />
+              ) : (
+                <BottomBlock type='noMore' />
+              );
+            }
+          })()}
+        </div>
+      );
+    }
+  }
+
+  return null;
 };
