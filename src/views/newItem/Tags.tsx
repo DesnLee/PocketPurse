@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useSWRInfinite from 'swr/infinite';
 import { Icon } from '../../components';
+import { LongPress } from '../../components/LongPress';
 import { useRequest } from '../../hooks';
 
 interface BottomBlockProps {
@@ -81,6 +82,12 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
     setSize(key === 'refresh' ? size : size + 1);
   };
 
+  // 跳转编辑页面
+  const nav = useNavigate();
+  const toEditTag = (id: number) => {
+    nav(`/tags/edit/${id}`);
+  };
+
   // 首次加载中
   if (isLoading) {
     return (
@@ -123,19 +130,21 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
               .flat()
               ?.map((tag, i) => (
                 <li w-56px key={i} onClick={() => onChange?.([tag.id])}>
-                  <IconWrapper selected={value?.includes(tag.id)}>
-                    {tag.sign}
-                  </IconWrapper>
-                  <p
-                    text-12px
-                    leading-12px
-                    mt-6px
-                    text-center
-                    color='#606266'
-                    max-w-56px
-                  >
-                    {tag.name}
-                  </p>
+                  <LongPress onEnd={() => toEditTag(tag.id)}>
+                    <IconWrapper selected={value?.includes(tag.id)}>
+                      {tag.sign}
+                    </IconWrapper>
+                    <p
+                      text-12px
+                      leading-12px
+                      mt-6px
+                      text-center
+                      color='#606266'
+                      max-w-56px
+                    >
+                      {tag.name}
+                    </p>
+                  </LongPress>
                 </li>
               ))}
           </ol>

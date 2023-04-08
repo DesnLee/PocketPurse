@@ -14,4 +14,13 @@ export default defineConfig(() => ({
   //     usePolling: true,
   //   },
   // },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          echarts: ['echarts'],
+        },
+      },
+    },
+  },
 }));
