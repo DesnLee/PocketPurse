@@ -14,11 +14,15 @@ interface ToastStore {
     text: string;
     isOpen: boolean;
   };
-  openToast: (options: { type: ToastType; text: string }) => void;
+  openToast: (options: {
+    type: ToastType;
+    text: string;
+    duration?: number;
+  }) => void;
   closeToast: (type: ToastType) => void;
 }
 
-export const useToastStore = create<ToastStore>((set) => ({
+export const useToastStore = create<ToastStore>((set, get) => ({
   loading: {
     text: '加载中...',
     isOpen: false,
@@ -37,8 +41,15 @@ export const useToastStore = create<ToastStore>((set) => ({
       [type]: { ...oldState[type], isOpen: false },
     }));
   },
-  openToast: ({ type, text }) => {
-    console.log('openToast', type, text);
+  openToast: ({ type, text, duration = 2000 }) => {
+    let timer: any = null;
+    if (type !== 'loading') {
+      timer = setTimeout(() => {
+        clearTimeout(timer);
+        get().closeToast(type);
+      }, duration);
+    }
+
     set((oldState) => ({
       ...oldState,
       [type]: {

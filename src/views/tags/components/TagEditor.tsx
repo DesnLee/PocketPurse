@@ -71,18 +71,12 @@ export const TagEditor: FC<Props> = ({ type }) => {
     const newError = validate(data, rules);
     setErrors(newError);
     if (!hasError(newError)) {
-      console.log('校验通过');
-      const result = await api.tag.createTag(data);
+      await api.tag.createTag(data);
       openToast({
         text: '保存成功',
         type: 'success',
       });
-      console.log(result);
       nav(-1);
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        closeToast('success');
-      }, 1500);
     }
   };
 
