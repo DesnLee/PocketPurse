@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosResponse } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../lib/request';
 import { useToastStore } from '../stores/useToastStore';
 
@@ -39,6 +39,7 @@ export interface MyRequest {
 
 export const useRequest = () => {
   const nav = useNavigate();
+  const { pathname, search } = useLocation();
   const { openToast, closeToast } = useToastStore();
 
   const errorHandler = (err: AxiosError) => {
@@ -55,7 +56,12 @@ export const useRequest = () => {
       }, 2000);
       // jump to
       if (jumpTo) {
-        nav(jumpTo);
+        if (err.response.status === 401) {
+          const redirect = encodeURIComponent(`${pathname}${search}`);
+          nav(`${jumpTo}?redirect=${redirect}`);
+        } else {
+          nav(jumpTo);
+        }
       }
     }
 

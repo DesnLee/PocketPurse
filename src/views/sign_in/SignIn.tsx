@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useApi } from '../../api/useApi';
 import { Form, Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
@@ -37,6 +37,7 @@ const rules: Rules<SignInData> = [
 export const SignIn: FC = () => {
   const { api } = useApi();
   const nav = useNavigate();
+  const [searchParams] = useSearchParams();
   const { data, errors, setData, setErrors } = useSignInStore();
 
   const checkForm = (key?: keyof typeof data) => {
@@ -92,7 +93,8 @@ export const SignIn: FC = () => {
     const newError = checkForm();
     if (!hasError(newError)) {
       await api.user.signIn(data);
-      nav('/home');
+      const to = searchParams.get('redirect') || '/items';
+      nav(to);
     } else {
       console.log('验证失败');
     }
