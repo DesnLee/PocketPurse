@@ -12,9 +12,9 @@ interface Props {
 const ToastElement: FC<Props> = ({ type, text }) => {
   return (
     <div
-      w-96px
+      w-36vw
       aspect-square
-      bg='#0006'
+      bg='#0009'
       rounded-12px
       flex
       flex-col
@@ -23,8 +23,8 @@ const ToastElement: FC<Props> = ({ type, text }) => {
       p-12px
       className={type === 'loading' ? 'pp-loading-wrapper' : ''}
     >
-      <Icon name={type} color='#fff' size='36px' />
-      <p mt-8px text-white text-14px text-center>
+      <Icon name={type} color='#fffd' size='44px' />
+      <p mt-16px color='#fffd' text-14px text-center>
         {text}
       </p>
     </div>
