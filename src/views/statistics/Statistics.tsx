@@ -12,8 +12,15 @@ import { PieChart } from '../../components/Charts/PieChart';
 import type { PieChartData } from '../../components/Charts/PieChart';
 import type { RankChartData } from '../../components/Charts/RankChart ';
 import { RankChart } from '../../components/Charts/RankChart ';
-import type { TimeRange } from '../../components/TimeRangePicker';
+import type { MyTimeRanges, TimeRange } from '../../components/TimeRangePicker';
 import { time } from '../../lib/time';
+
+const ranges: MyTimeRanges = [
+  { key: 'thisMonth', label: '本月' },
+  { key: 'lastMonth', label: '上月' },
+  { key: 'pastThreeMonths', label: '过去三个月' },
+  { key: 'thisYear', label: '本年' },
+];
 
 export const Statistics: FC = () => {
   const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
@@ -61,7 +68,11 @@ export const Statistics: FC = () => {
             />
           }
         />
-        <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
+        <TimeRangePicker
+          current={currentRange}
+          onChange={setCurrentRange}
+          ranges={ranges}
+        />
       </TopNavGradient>
 
       <main grow-1 overflow-auto pb-36px flex flex-col bg='#f4f4f4'>
