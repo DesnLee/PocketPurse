@@ -50,4 +50,10 @@ export const tagsAPI: MockMethod[] = [
       // };
     },
   },
+  {
+    url: '/api/v1/tags/:id',
+    method: 'delete',
+    statusCode: 204,
+    timeout: 1000,
+  },
 ];

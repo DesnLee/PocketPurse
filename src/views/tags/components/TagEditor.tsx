@@ -1,8 +1,8 @@
 import type { Partial } from '@react-spring/web';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { FC } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { useApi } from '../../../api/useApi';
 import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
@@ -51,14 +51,44 @@ export const TagEditor: FC<Props> = ({ type }) => {
   }, [type, urlSearchParams]);
 
   // 编辑标签
-  const { data: tag } = useSWR(type === 'edit' && id ? `tag_${id}` : null, () =>
-    api.tag.getTag(Number(id))
+  const { data: tag } = useSWRImmutable(
+    type === 'edit' && id ? `tag_${id}` : null,
+    () => api.tag.getTag(Number(id))
   );
   useEffect(() => {
     if (type !== 'edit' || !tag) return;
     const { resource } = tag.data;
     setData(resource);
   }, [tag, type]);
+
+  const deleteTime = useRef(0);
+  const onClickDelete = async () => {
+    if (!data.id) {
+      return openToast({
+        text: 'ID 不能为空',
+        type: 'error',
+        duration: 800,
+      });
+    }
+
+    // 确认删除
+    if (deleteTime.current < 1) {
+      deleteTime.current++;
+      return openToast({
+        text: '删除后不可恢复！再次点击以确认删除',
+        type: 'error',
+      });
+    }
+
+    await api.tag.deleteTag(data.id);
+    openToast({
+      text: '删除成功',
+      type: 'success',
+      duration: 800,
+    });
+    nav(-1);
+    resetData(); // 成功后重置数据
+  };
 
   const { openToast } = useToastStore();
   const onSubmit = async () => {
@@ -109,7 +139,12 @@ export const TagEditor: FC<Props> = ({ type }) => {
         保存
       </button>
       {type === 'edit' && (
-        <button pp-btn-info mt-24px type='button'>
+        <button
+          pp-btn-info
+          mt-24px
+          type='button'
+          onClick={() => onClickDelete()}
+        >
           删除
         </button>
       )}
