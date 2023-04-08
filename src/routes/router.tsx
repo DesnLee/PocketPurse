@@ -1,10 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { ErrorNavigate } from '../components/ErrorNavigate';
 import { Home } from '../views/home/Home';
 import { Items } from '../views/Items/Items';
 import { NewItem } from '../views/newItem/NewItem';
 import { Statistics } from '../views/statistics/Statistics';
 import { EditTag } from '../views/tags/EditTag';
 import { SignIn } from '../views/sign_in/SignIn';
+import { isItemsEmptyLoader } from './loaders/isItemsEmptyLoader';
 import { root } from './root';
 import { welcomeRoutes } from './welcomeRoutes';
 
@@ -22,6 +24,8 @@ export const router = createBrowserRouter([
   {
     path: '/items',
     element: <Items />,
+    loader: isItemsEmptyLoader,
+    errorElement: <ErrorNavigate />,
   },
   {
     path: '/items/new',
