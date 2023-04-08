@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react';
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { useApi } from '../../api/useApi';
 import {
   Input,
@@ -20,7 +20,7 @@ const ranges: MyTimeRanges = [
   { key: 'thisMonth', label: '本月' },
   { key: 'lastMonth', label: '上月' },
   { key: 'pastThreeMonths', label: '近三个月' },
-  { key: 'thisYear', label: '本年' },
+  { key: 'thisYear', label: '近一年' },
 ];
 
 export const Statistics: FC = () => {
@@ -37,56 +37,45 @@ export const Statistics: FC = () => {
     start: string;
     end: string;
   }>({
-    start: time().add(-1, 'month').date.toISOString(),
-    end: time().date.toISOString(),
+    start: time().add(-1, 'month').format(),
+    end: time().format(),
   });
   useEffect(() => {
     const now = time();
+    let start = '';
+    let end = '';
     switch (currentRange) {
       case 'thisMonth':
-        setStartAndEnd({
-          start: now.add(-1, 'month').date.toISOString(),
-          end: now.date.toISOString(),
-        });
+        start = now.add(-1, 'month').format();
+        end = now.format();
         break;
       case 'lastMonth':
-        setStartAndEnd({
-          start: now.add(-2, 'month').date.toISOString(),
-          end: now.add(-1, 'month').date.toISOString(),
-        });
+        start = now.add(-2, 'month').format();
+        end = now.add(-1, 'month').format();
         break;
       case 'pastThreeMonths':
-        setStartAndEnd({
-          start: now.add(-3, 'month').date.toISOString(),
-          end: now.date.toISOString(),
-        });
+        start = now.add(-3, 'month').format();
+        end = now.format();
         break;
       case 'thisYear':
-        setStartAndEnd({
-          start: now.add(1, 'year').date.toISOString(),
-          end: now.date.toISOString(),
-        });
+        start = now.add(-1, 'year').format();
+        end = now.format();
         break;
       default:
         break;
     }
+    setStartAndEnd(() => ({ start, end }));
   }, [currentRange]);
-  // const array = Array.from({ length: 60 }).fill(['2000-01-01', 15]);
-  // const start = time().add(-1, 'year');
 
-  const { data: lineChartData } = useSWR('lineChart', () =>
-    api.statistics.getLineChartData({
-      kind,
-      start: startAndEnd.start,
-      end: startAndEnd.end,
-    })
+  const { data: lineChartData } = useSWRImmutable(
+    `lineChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
+    () =>
+      api.statistics.getLineChartData({
+        kind,
+        start: startAndEnd.start,
+        end: startAndEnd.end,
+      })
   );
-  // const data: LineChartData = array.map(() => {
-  //   return [
-  //     start.add(1, 'day').format('yyyy-MM-dd'),
-  //     parseInt((Math.random() * 100).toFixed(0)),
-  //   ];
-  // });
 
   const data2: PieChartData = [
     ['吃饭', 480],

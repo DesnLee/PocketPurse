@@ -107,8 +107,9 @@ export class Time {
   }
 
   add(num: number, key: DateKind) {
-    this[key] += num;
-    return this;
+    const newDate = new Time(this.#date);
+    newDate[key] += num;
+    return newDate;
   }
 
   format(fmt = 'yyyy-MM-dd') {
