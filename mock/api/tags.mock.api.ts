@@ -38,4 +38,16 @@ export const tagsAPI: MockMethod[] = [
       // };
     },
   },
+  {
+    url: '/api/v1/tags/:id',
+    method: 'patch',
+    statusCode: 200,
+    timeout: 1000,
+    response: ({ body }: any) => {
+      return { resource: { ...createTag(body.kind), ...body } };
+      // return {
+      //   msg: '创建失败',
+      // };
+    },
+  },
 ];

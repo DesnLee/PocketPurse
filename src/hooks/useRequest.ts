@@ -27,6 +27,11 @@ export interface MyRequest {
     data: any,
     options?: ExtraOptions
   ) => Promise<AxiosResponse<T, any>>;
+  patch: <T>(
+    url: string,
+    data: any,
+    options?: ExtraOptions
+  ) => Promise<AxiosResponse<T, any>>;
 }
 
 export const useRequest = () => {
@@ -97,6 +102,24 @@ export const useRequest = () => {
       }
       return axiosInstance
         .post(url, data)
+        .catch(
+          options?.handleError
+            ? errorHandler
+            : (e) => {
+                throw e;
+              }
+        )
+        .finally(() => closeToast('loading'));
+    },
+    patch: (url, data, options) => {
+      if (options?.loading) {
+        openToast({
+          type: 'loading',
+          text: options?.loadingText ?? '加载中...',
+        });
+      }
+      return axiosInstance
+        .patch(url, data)
         .catch(
           options?.handleError
             ? errorHandler

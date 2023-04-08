@@ -55,6 +55,12 @@ export const useApi = () => {
           loadingText: '创建中，请稍候...',
           handleError: true,
         }),
+      updateTag: (data: Partial<TagModel>) =>
+        request.patch<APIResponse.Tag>(`/api/v1/tags/${data.id}`, data, {
+          loading: true,
+          loadingText: '更新中，请稍候...',
+          handleError: true,
+        }),
     },
   };
 

@@ -51,34 +51,31 @@ export const TagEditor: FC<Props> = ({ type }) => {
   }, [type, urlSearchParams]);
 
   // 编辑标签
-  const { data: tagData } = useSWR(type === 'edit' ? `tag_${id}` : null, () =>
+  const { data: tag } = useSWR(type === 'edit' && id ? `tag_${id}` : null, () =>
     api.tag.getTag(Number(id))
   );
   useEffect(() => {
-    if (type !== 'edit') return;
-    if (!tagData) return;
-    const { resource } = tagData.data;
-    setData({
-      id: resource.id,
-      name: resource.name,
-      sign: resource.sign,
-      kind: resource.kind,
-    });
-  }, [tagData, type]);
+    if (type !== 'edit' || !tag) return;
+    const { resource } = tag.data;
+    setData(resource);
+  }, [tag, type]);
 
   const { openToast } = useToastStore();
   const onSubmit = async () => {
     const newError = validate(data, rules);
     setErrors(newError);
     if (!hasError(newError)) {
-      await api.tag.createTag(data);
-      openToast({
-        text: '保存成功',
-        type: 'success',
-        duration: 800,
-      });
-      nav(-1);
-      resetData(); // 成功后重置数据
+      try {
+        if (type === 'new') await api.tag.createTag(data);
+        if (type === 'edit') await api.tag.updateTag(data);
+        openToast({
+          text: '保存成功',
+          type: 'success',
+          duration: 800,
+        });
+        nav(-1);
+        resetData(); // 成功后重置数据
+      } catch (e) {}
     }
   };
 
