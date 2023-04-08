@@ -8,14 +8,6 @@ export const ERROR_MESSAGE: {
 } = {
   400: { text: '请求参数错误' },
   401: { text: '请先登录', jumpTo: '/sign_in' },
-  403: { text: '拒绝访问' },
-  404: { text: '请求资源未找到' },
-  500: { text: '服务器错误' },
-  501: { text: '服务未实现' },
-  502: { text: '网关错误' },
-  503: { text: '服务不可用' },
-  504: { text: '网关超时' },
-  505: { text: 'HTTP版本不受支持' },
   9999: { text: '未知错误' },
 };
 
@@ -42,14 +34,25 @@ export const useRequest = () => {
   const { pathname, search } = useLocation();
   const { openToast, closeToast } = useToastStore();
 
-  const errorHandler = (err: AxiosError) => {
+  const errorHandler = (err: AxiosError<API.Error>) => {
     if (err.response) {
-      const { text, jumpTo } =
-        ERROR_MESSAGE[err.response.status] ?? ERROR_MESSAGE[9999];
+      const error = ERROR_MESSAGE[err.response.status];
+      let text;
+      let jumpTo = '';
+
+      if (error) {
+        text = error.text;
+        jumpTo = error.jumpTo ?? '';
+      } else if (err.response.data && err.response.data.msg) {
+        text = err.response.data.msg;
+      } else {
+        text = ERROR_MESSAGE[9999].text;
+      }
       openToast({
         type: 'error',
         text,
       });
+
       const timer = setTimeout(() => {
         closeToast('error');
         clearTimeout(timer);
@@ -78,7 +81,13 @@ export const useRequest = () => {
       }
       return axiosInstance
         .get(url)
-        .catch(errorHandler)
+        .catch(
+          options?.handleError
+            ? errorHandler
+            : (e) => {
+                throw e;
+              }
+        )
         .finally(() => closeToast('loading'));
     },
     post: (url, data, options) => {
@@ -90,7 +99,13 @@ export const useRequest = () => {
       }
       return axiosInstance
         .post(url, data)
-        .catch(errorHandler)
+        .catch(
+          options?.handleError
+            ? errorHandler
+            : (e) => {
+                throw e;
+              }
+        )
         .finally(() => closeToast('loading'));
     },
   };
