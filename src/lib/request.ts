@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useToastStore } from '../stores/useToastStore';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -30,36 +29,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-interface ExtraOptions {
-  loading?: boolean;
-  handleError?: boolean;
-}
-export const useRequest = () => {
-  const { setIsLoading } = useToastStore();
-
-  const request = {
-    get: <T>(url: string, options?: ExtraOptions) => {
-      if (options?.loading) {
-        setIsLoading(true);
-      }
-      return axiosInstance.get<T>(url).finally(() => {
-        if (options?.loading) {
-          setIsLoading(false);
-        }
-      });
-    },
-    post: <T>(url: string, data: any, options?: ExtraOptions) => {
-      if (options?.loading) {
-        setIsLoading(true);
-      }
-      return axiosInstance.post<T>(url, data).finally(() => {
-        if (options?.loading) {
-          setIsLoading(false);
-        }
-      });
-    },
-  };
-  return { request };
-};
-
-// export { request };
+export { axiosInstance };

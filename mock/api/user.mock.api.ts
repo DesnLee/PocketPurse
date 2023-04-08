@@ -12,14 +12,20 @@ export const userAPI: MockMethod[] = [
     },
   },
   {
+    url: '/api/v1/send_sms_code',
+    method: 'post',
+    statusCode: 204,
+    timeout: 2000,
+  },
+  {
     url: '/api/v1/sign_in',
     method: 'post',
     statusCode: 200,
-    timeout: 500,
-    response: ({ body }: { body: SignInData }) => {
+    timeout: 1500,
+    response: () => {
       return {
         msg: 'succeed',
-        jwt: '__TOKEN__',
+        jwt: '__JWT__',
         timestamp: Date.now(),
       };
     },

@@ -15,11 +15,4 @@ export const itemsAPI: MockMethod[] = [
       });
     },
   },
-  {
-    url: '/api/v1/send_sms_code',
-    method: 'post',
-    statusCode: 404,
-    timeout: 5000,
-    response: '',
-  },
 ];

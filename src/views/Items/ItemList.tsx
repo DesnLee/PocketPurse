@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import { Icon } from '../../components';
-import { useRequest } from '../../lib/request';
+import { useRequest } from '../../hooks';
 
 interface BottomBlockProps {
   type: 'error' | 'next' | 'loading' | 'noMore';

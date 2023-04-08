@@ -2,7 +2,7 @@ import type { Partial } from '@react-spring/web';
 import { useEffect } from 'react';
 import type { FC } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { useTagApi } from '../../../api/tag';
+import { useApi } from '../../../api/useApi';
 import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
 import { hasError, validate } from '../../../lib/validate';
@@ -28,6 +28,7 @@ interface Props {
 }
 
 export const TagEditor: FC<Props> = ({ type }) => {
+  const { api } = useApi();
   const { data, errors, setData, setErrors } = useEditTagStore();
   const [urlSearchParams] = useSearchParams();
   const { id } = useParams();
@@ -51,16 +52,15 @@ export const TagEditor: FC<Props> = ({ type }) => {
   // 编辑标签
   useEffect(() => {
     if (type === 'edit') {
-      useTagApi()
-        .getTag(Number(id))
-        .then(({ resource }) => {
-          setData({
-            id: resource.id,
-            name: resource.name,
-            sign: resource.sign,
-            kind: resource.kind,
-          });
+      api.tag.getTag(Number(id)).then(({ data }) => {
+        const { resource } = data;
+        setData({
+          id: resource.id,
+          name: resource.name,
+          sign: resource.sign,
+          kind: resource.kind,
         });
+      });
     }
   }, [type, id]);
 

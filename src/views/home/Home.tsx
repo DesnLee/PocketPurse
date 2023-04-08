@@ -1,8 +1,7 @@
 import type { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { useTitle } from '../../hooks';
-import { useRequest } from '../../lib/request';
+import { useRequest, useTitle } from '../../hooks';
 import { useLocalStorageStore } from '../../stores';
 import noDataSvg from '../../assets/images/home/no_data.svg';
 

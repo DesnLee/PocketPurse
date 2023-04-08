@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import type { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApi } from '../../api/useApi';
 import { Form, Icon, Input, TopNav, TopNavTransparent } from '../../components';
 import logo from '../../assets/images/logo.svg';
-import { useRequest } from '../../lib/request';
 import { hasError, validate } from '../../lib/validate';
 import type { Rules } from '../../lib/validate';
 import { useSignInStore } from '../../stores';
@@ -34,7 +35,8 @@ const rules: Rules<SignInData> = [
 ];
 
 export const SignIn: FC = () => {
-  const { request } = useRequest();
+  const { api } = useApi();
+  const nav = useNavigate();
   const { data, errors, setData, setErrors } = useSignInStore();
 
   const checkForm = (key?: keyof typeof data) => {
@@ -76,11 +78,7 @@ export const SignIn: FC = () => {
     const newError = checkForm('email');
     if (!hasError(newError)) {
       try {
-        await request.post<any>(
-          '/api/v1/send_sms_code',
-          { email: data.email },
-          { loading: true }
-        );
+        await api.user.getSmsCode(data.email);
         startCountDown();
       } catch (e) {
         console.log('请求发送验证码失败！');
@@ -93,7 +91,8 @@ export const SignIn: FC = () => {
   const onSubmit = async () => {
     const newError = checkForm();
     if (!hasError(newError)) {
-      await request.post<any>('/api/v1/sign_in', data, { loading: true });
+      await api.user.signIn(data);
+      nav('/home');
     } else {
       console.log('验证失败');
     }
