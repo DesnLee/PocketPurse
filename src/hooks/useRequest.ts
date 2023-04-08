@@ -25,15 +25,11 @@ export const useRequest = () => {
   const request: MyRequest = {
     get: (url, options) => {
       setIsLoading(!!options?.loading);
-      return axiosInstance
-        .get(url)
-        .finally(() => setIsLoading(!options?.loading));
+      return axiosInstance.get(url).finally(() => setIsLoading(false));
     },
     post: (url, data, options) => {
       setIsLoading(!!options?.loading);
-      return axiosInstance
-        .post(url, data)
-        .finally(() => setIsLoading(!options?.loading));
+      return axiosInstance.post(url, data).finally(() => setIsLoading(false));
     },
   };
 
