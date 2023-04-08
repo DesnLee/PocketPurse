@@ -2,6 +2,7 @@ import type { Partial } from '@react-spring/web';
 import { useEffect } from 'react';
 import type { FC } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import useSWR from 'swr';
 import { useApi } from '../../../api/useApi';
 import { Form, Input } from '../../../components';
 import { emojis } from '../../../lib/emojis';
@@ -36,34 +37,34 @@ export const TagEditor: FC<Props> = ({ type }) => {
 
   // 新建标签
   useEffect(() => {
-    if (type === 'new') {
-      const kind = urlSearchParams.get('kind');
-      if (!kind) {
-        throw new Error('kind is required');
-      }
-      if (kind !== 'expenses' && kind !== 'income') {
-        throw new Error('kind must be expenses or income');
-      }
-
-      const index = Math.floor(Math.random() * emojis[0].signs.length);
-      setData({ sign: emojis[0].signs[index], kind });
+    if (type !== 'new') return;
+    const kind = urlSearchParams.get('kind');
+    if (!kind) {
+      throw new Error('kind is required');
     }
+    if (kind !== 'expenses' && kind !== 'income') {
+      throw new Error('kind must be expenses or income');
+    }
+
+    const index = Math.floor(Math.random() * emojis[0].signs.length);
+    setData({ sign: emojis[0].signs[index], kind });
   }, [type, urlSearchParams]);
 
   // 编辑标签
+  const { data: tagData } = useSWR(type === 'edit' ? `tag_${id}` : null, () =>
+    api.tag.getTag(Number(id))
+  );
   useEffect(() => {
-    if (type === 'edit') {
-      api.tag.getTag(Number(id)).then(({ data }) => {
-        const { resource } = data;
-        setData({
-          id: resource.id,
-          name: resource.name,
-          sign: resource.sign,
-          kind: resource.kind,
-        });
-      });
-    }
-  }, [type, id]);
+    if (type !== 'edit') return;
+    if (!tagData) return;
+    const { resource } = tagData.data;
+    setData({
+      id: resource.id,
+      name: resource.name,
+      sign: resource.sign,
+      kind: resource.kind,
+    });
+  }, [tagData, type]);
 
   const { openToast } = useToastStore();
   const onSubmit = async () => {
