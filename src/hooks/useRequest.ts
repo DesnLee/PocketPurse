@@ -4,6 +4,7 @@ import { useToastStore } from '../stores/useToastStore';
 
 interface ExtraOptions {
   loading?: boolean;
+  loadingText?: string;
   handleError?: boolean;
 }
 
@@ -20,16 +21,20 @@ export interface MyRequest {
 }
 
 export const useRequest = () => {
-  const { setIsLoading } = useToastStore();
+  const { setToast } = useToastStore();
 
   const request: MyRequest = {
     get: (url, options) => {
-      setIsLoading(!!options?.loading);
-      return axiosInstance.get(url).finally(() => setIsLoading(false));
+      if (options?.loading) {
+        setToast(true, 'loading', options?.loadingText);
+      }
+      return axiosInstance.get(url).finally(() => setToast(false));
     },
     post: (url, data, options) => {
-      setIsLoading(!!options?.loading);
-      return axiosInstance.post(url, data).finally(() => setIsLoading(false));
+      if (options?.loading) {
+        setToast(true, 'loading', options?.loadingText);
+      }
+      return axiosInstance.post(url, data).finally(() => setToast(false));
     },
   };
 

@@ -1,12 +1,21 @@
 import { create } from 'zustand';
 
 interface ToastStore {
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
+  text: string;
+  type: 'error' | 'loading';
+  isOpen: boolean;
+  setToast: (isOpen: boolean, type?: ToastStore['type'], text?: string) => void;
 }
+
 export const useToastStore = create<ToastStore>((set) => ({
-  isLoading: false,
-  setIsLoading: (isLoading) => {
-    set({ isLoading });
+  text: '加载中...',
+  type: 'loading',
+  isOpen: false,
+  setToast: (isOpen, type, text) => {
+    set((oldState) => ({
+      isOpen,
+      type: type || oldState.type,
+      text: text || oldState.text,
+    }));
   },
 }));

@@ -12,10 +12,13 @@ export const useApi = () => {
         request.post<any>(
           '/api/v1/send_sms_code',
           { email },
-          { loading: true }
+          { loading: true, loadingText: '请求发送验证码...' }
         ),
       signIn: (data: SignInData) =>
-        request.post<any>('/api/v1/sign_in', data, { loading: true }),
+        request.post<any>('/api/v1/sign_in', data, {
+          loading: true,
+          loadingText: '登录中...',
+        }),
     },
     // item 系列接口
     item: {

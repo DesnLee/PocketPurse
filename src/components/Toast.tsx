@@ -2,10 +2,11 @@ import type { FC } from 'react';
 import { Icon } from './Icon';
 
 interface Props {
+  type: 'loading' | 'error';
   text?: string;
 }
 
-export const Loading: FC<Props> = ({ text = '加载中...' }) => {
+export const Toast: FC<Props> = ({ type, text = '加载中...' }) => {
   return (
     <div
       w-96px
@@ -17,10 +18,10 @@ export const Loading: FC<Props> = ({ text = '加载中...' }) => {
       items-center
       justify-center
       p-12px
-      className='pp-loading-wrapper'
+      className={type === 'loading' ? 'pp-loading-wrapper' : ''}
     >
-      <Icon name='loading' color='#fff' size='36px' />
-      <p mt-8px text-white text-14px>
+      <Icon name={type} color='#fff' size='36px' />
+      <p mt-8px text-white text-14px text-center>
         {text}
       </p>
     </div>
