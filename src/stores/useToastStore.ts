@@ -1,21 +1,42 @@
 import { create } from 'zustand';
 
+type ToastType = 'loading' | 'error';
 interface ToastStore {
-  text: string;
-  type: 'error' | 'loading';
-  isOpen: boolean;
-  setToast: (isOpen: boolean, type?: ToastStore['type'], text?: string) => void;
+  loading: {
+    text: string;
+    isOpen: boolean;
+  };
+  error: {
+    text: string;
+    isOpen: boolean;
+  };
+  openToast: (options: { type: ToastType; text?: string }) => void;
+  closeToast: (type: ToastType) => void;
 }
 
 export const useToastStore = create<ToastStore>((set) => ({
-  text: '加载中...',
-  type: 'loading',
-  isOpen: false,
-  setToast: (isOpen, type, text) => {
+  loading: {
+    text: '加载中...',
+    isOpen: false,
+  },
+  error: {
+    text: '出错了',
+    isOpen: false,
+  },
+  closeToast: (type) => {
     set((oldState) => ({
-      isOpen,
-      type: type || oldState.type,
-      text: text || oldState.text,
+      ...oldState,
+      [type]: { ...oldState[type], isOpen: false },
+    }));
+  },
+  openToast: ({ type, text }) => {
+    set((oldState) => ({
+      ...oldState,
+      [type]: {
+        ...oldState[type],
+        isOpen: true,
+        text: text || oldState[type].text,
+      },
     }));
   },
 }));

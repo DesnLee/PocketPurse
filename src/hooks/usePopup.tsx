@@ -7,14 +7,16 @@ interface PopupProps {
   isVisible: boolean;
   setVisible: (value: boolean) => void;
   children: ReactNode;
-  position?: 'center' | 'bottom';
+  position: 'center' | 'bottom';
+  closeOnClickMask: boolean;
 }
 
 const PopupElement: FC<PopupProps> = ({
   isVisible,
   setVisible,
   children,
-  position = 'bottom',
+  position,
+  closeOnClickMask,
 }) => {
   const panelAnimation = useSpring({
     opacity: isVisible ? 1 : 0,
@@ -80,7 +82,7 @@ const PopupElement: FC<PopupProps> = ({
         h-full
         className='bg-black:56'
         z='[calc(var(--z-index-popup)-1)]'
-        onClick={() => setVisible(false)}
+        onClick={() => closeOnClickMask && setVisible(false)}
         touch-none
       />
     </>
@@ -90,15 +92,21 @@ const PopupElement: FC<PopupProps> = ({
 interface UsePopupProps {
   children: ReactNode;
   position?: 'center' | 'bottom';
+  closeOnClickMask?: boolean;
 }
 
-export const usePopup = ({ children, position }: UsePopupProps) => {
+export const usePopup = ({
+  children,
+  position = 'bottom',
+  closeOnClickMask = true,
+}: UsePopupProps) => {
   const [isVisible, setVisible] = useState(false);
   const Popup = createPortal(
     <PopupElement
       position={position}
       isVisible={isVisible}
       setVisible={setVisible}
+      closeOnClickMask={closeOnClickMask}
     >
       {children}
     </PopupElement>,

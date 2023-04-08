@@ -15,15 +15,40 @@ export const App: FC = () => {
   );
 };
 
-// 全局 loading
+// 全局 Toast
 const GlobalToast = () => {
-  const { isOpen, type, text } = useToastStore();
-  const { open, close, Popup } = usePopup({
-    children: <Toast text={text} type={type} />,
+  const { loading, error } = useToastStore();
+  const {
+    open: loadingOpen,
+    close: LoadingClose,
+    Popup: LoadingPopup,
+  } = usePopup({
+    children: <Toast text={loading.text} type='loading' />,
     position: 'center',
+    closeOnClickMask: false,
   });
+  const {
+    open: errorOpen,
+    close: errorClose,
+    Popup: errorPopup,
+  } = usePopup({
+    children: <Toast text={error.text} type='error' />,
+    position: 'center',
+    closeOnClickMask: false,
+  });
+
   useEffect(() => {
-    isOpen ? open() : close();
-  }, [isOpen]);
-  return Popup;
+    loading.isOpen ? loadingOpen() : LoadingClose();
+  }, [loading.isOpen]);
+
+  useEffect(() => {
+    error.isOpen ? errorOpen() : errorClose();
+  }, [error.isOpen]);
+
+  return (
+    <>
+      {LoadingPopup}
+      {errorPopup}
+    </>
+  );
 };
