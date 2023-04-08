@@ -69,6 +69,20 @@ export const useApi = () => {
           handleError: true,
         }),
     },
+    statistics: {
+      getLineChartData: (params: {
+        kind: ItemModel['kind'];
+        start: string;
+        end: string;
+      }) =>
+        request.get<APIResponse.LineChartDataList>(
+          `/api/v1/statistics/line?kind=${params.kind}&start=${params.start}&end=${params.end}`,
+          {
+            loading: true,
+            handleError: true,
+          }
+        ),
+    },
   };
 
   return { api };

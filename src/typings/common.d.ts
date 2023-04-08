@@ -15,6 +15,10 @@ declare namespace API {
       total: number;
     };
   }
+
+  interface ResourcesWithoutPager<T> {
+    resources: T[];
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

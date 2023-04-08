@@ -2,11 +2,10 @@ import type { EChartsOption } from 'echarts';
 import { useEffect, useRef, useState } from 'react';
 import type { FC } from 'react';
 import * as echarts from 'echarts';
+import { time } from '../../lib/time';
 
-export type LineChartData = [string, number][];
-
-interface Props {
-  data: LineChartData;
+export interface Props {
+  data: LineChartData[];
   height?: string;
 }
 
@@ -17,7 +16,7 @@ export const LineChart: FC<Props> = ({ data, height }) => {
   // 设置图表
   const [options, _setOptions] = useState<EChartsOption>({});
   const setOptions = (
-    data: LineChartData,
+    data: LineChartData[],
     maxValue: number,
     left: number,
     needZoom: boolean
@@ -42,10 +41,10 @@ export const LineChart: FC<Props> = ({ data, height }) => {
         valueFormatter: (value) => `¥${value}`,
       },
       xAxis: {
-        data: data.map((item) => item[0]),
+        data: data.map((item) => time(item[0]).format('MM-dd')),
         axisLine: { lineStyle: { color: '#909399' } },
         axisLabel: {
-          formatter: (value: string) => value.slice(5),
+          // formatter: (value: string) => value.slice(5),
           color: '#909399',
           margin: 12,
         },
@@ -59,7 +58,7 @@ export const LineChart: FC<Props> = ({ data, height }) => {
           type: 'line',
           symbolSize: 6,
           showSymbol: false,
-          data: data.map((item) => item[1]),
+          data: data.map((item) => item[1] / 100),
           lineStyle: {
             width: 1.5,
           },
@@ -82,7 +81,7 @@ export const LineChart: FC<Props> = ({ data, height }) => {
   // data 变化时，更新 options
   useEffect(() => {
     if (data.length > 0) {
-      const maxValue = Math.max(...data.map((item) => item[1]));
+      const maxValue = Math.max(...data.map((item) => item[1] / 100));
       const left = (maxValue.toString().length + 1) * 16;
       const needZoom = data.length > 60;
       setOptions(data, maxValue, left, needZoom);
