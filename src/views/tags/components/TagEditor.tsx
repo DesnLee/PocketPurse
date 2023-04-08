@@ -99,7 +99,7 @@ export const TagEditor: FC<Props> = ({ type }) => {
         if (type === 'new') await api.tag.createTag(data);
         if (type === 'edit') await api.tag.updateTag(data);
         openToast({
-          text: '保存成功',
+          text: type === 'new' ? '创建成功' : '更新成功',
           type: 'success',
           duration: 800,
         });

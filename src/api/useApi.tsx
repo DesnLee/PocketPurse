@@ -34,6 +34,7 @@ export const useApi = () => {
       createItem: (data: Partial<ItemModel>) =>
         request.post<APIResponse.Item>('/api/v1/items', data, {
           loading: true,
+          loadingText: '记账中，请稍候...',
           handleError: true,
         }),
     },
