@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import useSWR from 'swr';
+import { useApi } from '../../api/useApi';
 import { Icon } from '../../components';
 
 const IconWrapper = styled.div<{ selected?: boolean }>`
@@ -21,9 +23,15 @@ const IconWrapper = styled.div<{ selected?: boolean }>`
 
 interface Props {
   currentType: ItemModel['kind'];
+  value?: ItemModel['tag_ids'];
+  onChange?: (value: ItemModel['tag_ids']) => void;
 }
-export const Tags: FC<Props> = ({ currentType }) => {
-  const tags = Array.from<string>({ length: 30 }).fill('😄');
+export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
+  const { api } = useApi();
+  const { data: tags } = useSWR(`tags_${currentType}`, () =>
+    api.tag.getTags(currentType)
+  );
+
   return (
     <ol
       grow-1
@@ -33,7 +41,6 @@ export const Tags: FC<Props> = ({ currentType }) => {
       grid-rows='[repeat(auto-fit,74px)]'
       gap-x-28px
       gap-y-20px
-      justify-center
       p-16px
       px-10px
     >
@@ -44,11 +51,20 @@ export const Tags: FC<Props> = ({ currentType }) => {
           </IconWrapper>
         </Link>
       </li>
-      {tags.map((tag, i) => (
-        <li w-56px key={i}>
-          <IconWrapper selected={false}>{tag}</IconWrapper>
-          <p text-12px leading-12px mt-6px text-center color='#606266'>
-            tag{i}
+      {tags?.data.resources.map((tag, i) => (
+        <li w-56px key={i} onClick={() => onChange?.([tag.id])}>
+          <IconWrapper selected={value?.includes(tag.id)}>
+            {tag.sign}
+          </IconWrapper>
+          <p
+            text-12px
+            leading-12px
+            mt-6px
+            text-center
+            color='#606266'
+            max-w-56px
+          >
+            {tag.name}
           </p>
         </li>
       ))}

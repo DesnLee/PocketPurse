@@ -29,6 +29,10 @@ export const useApi = () => {
     tag: {
       getTag: (id: number) =>
         request.get<APIResponse.Tag>(`/api/v1/tag?id=${id}`, { loading: true }),
+      getTags: (kind: ItemModel['kind']) =>
+        request.get<APIResponse.Tags>(`/api/v1/tags?kind=${kind}`, {
+          loading: true,
+        }),
     },
   };
 
