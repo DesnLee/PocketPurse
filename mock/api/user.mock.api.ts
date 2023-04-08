@@ -5,8 +5,8 @@ export const userAPI: MockMethod[] = [
   {
     url: '/api/v1/user',
     method: 'get',
-    statusCode: 200,
-    timeout: 5000,
+    statusCode: 401,
+    timeout: 1000,
     response: () => {
       return userData.succeed;
     },
@@ -15,7 +15,7 @@ export const userAPI: MockMethod[] = [
     url: '/api/v1/send_sms_code',
     method: 'post',
     statusCode: 204,
-    timeout: 2000,
+    timeout: 500,
   },
   {
     url: '/api/v1/sign_in',

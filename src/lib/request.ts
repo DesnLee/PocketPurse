@@ -19,14 +19,14 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  // (res) => {
-  //   return Promise.resolve(res.data);
-  // },
-  undefined,
-  (err) => {
-    return Promise.reject(err.response.data);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   // (res) => {
+//   //   return Promise.resolve(res.data);
+//   // },
+//   undefined,
+//   (err) => {
+//     return Promise.reject(err.response);
+//   }
+// );
 
 export { axiosInstance };

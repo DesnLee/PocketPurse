@@ -10,7 +10,7 @@ interface ToastStore {
     text: string;
     isOpen: boolean;
   };
-  openToast: (options: { type: ToastType; text?: string }) => void;
+  openToast: (options: { type: ToastType; text: string }) => void;
   closeToast: (type: ToastType) => void;
 }
 
@@ -35,7 +35,7 @@ export const useToastStore = create<ToastStore>((set) => ({
       [type]: {
         ...oldState[type],
         isOpen: true,
-        text: text || oldState[type].text,
+        text,
       },
     }));
   },

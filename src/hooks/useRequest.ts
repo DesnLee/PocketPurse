@@ -1,18 +1,22 @@
 import type { AxiosError, AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../lib/request';
 import { useToastStore } from '../stores/useToastStore';
 
-export const ERROR_MESSAGE = {
-  400: '请求参数错误',
-  401: '请先登录',
-  403: '拒绝访问',
-  404: '请求资源未找到',
-  500: '服务器错误',
-  501: '服务未实现',
-  502: '网关错误',
-  503: '服务不可用',
-  504: '网关超时',
-  505: 'HTTP版本不受支持',
+export const ERROR_MESSAGE: {
+  [key: number]: { text: string; jumpTo?: string };
+} = {
+  400: { text: '请求参数错误' },
+  401: { text: '请先登录', jumpTo: '/sign_in' },
+  403: { text: '拒绝访问' },
+  404: { text: '请求资源未找到' },
+  500: { text: '服务器错误' },
+  501: { text: '服务未实现' },
+  502: { text: '网关错误' },
+  503: { text: '服务不可用' },
+  504: { text: '网关超时' },
+  505: { text: 'HTTP版本不受支持' },
+  9999: { text: '未知错误' },
 };
 
 interface ExtraOptions {
@@ -34,16 +38,27 @@ export interface MyRequest {
 }
 
 export const useRequest = () => {
+  const nav = useNavigate();
   const { openToast, closeToast } = useToastStore();
+
   const errorHandler = (err: AxiosError) => {
-    const { response } = err;
-    openToast({
-      type: 'error',
-    });
-    const timer = setTimeout(() => {
-      closeToast('error');
-      clearTimeout(timer);
-    }, 2000);
+    if (err.response) {
+      const { text, jumpTo } =
+        ERROR_MESSAGE[err.response.status] ?? ERROR_MESSAGE[9999];
+      openToast({
+        type: 'error',
+        text,
+      });
+      const timer = setTimeout(() => {
+        closeToast('error');
+        clearTimeout(timer);
+      }, 2000);
+      // jump to
+      if (jumpTo) {
+        nav(jumpTo);
+      }
+    }
+
     throw err;
   };
 
@@ -52,7 +67,7 @@ export const useRequest = () => {
       if (options?.loading) {
         openToast({
           type: 'loading',
-          text: options?.loadingText,
+          text: options?.loadingText ?? '加载中...',
         });
       }
       return axiosInstance
@@ -64,7 +79,7 @@ export const useRequest = () => {
       if (options?.loading) {
         openToast({
           type: 'loading',
-          text: options?.loadingText,
+          text: options?.loadingText ?? '加载中...',
         });
       }
       return axiosInstance
