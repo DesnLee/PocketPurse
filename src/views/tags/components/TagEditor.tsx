@@ -107,11 +107,11 @@ export const TagEditor: FC<Props> = ({ type }) => {
         </p>
       </div>
 
-      <button pp-btn-primary mt-24px>
+      <button pp-btn-primary mt-24px type='submit'>
         保存
       </button>
       {type === 'edit' && (
-        <button pp-btn-info mt-24px>
+        <button pp-btn-info mt-24px type='button'>
           删除
         </button>
       )}
