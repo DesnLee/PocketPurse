@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { FC } from 'react';
 import {
   AddFloatBtn,
@@ -8,17 +7,18 @@ import {
   TopNav,
   TopNavGradient,
 } from '../../components';
-import type { TimeRange } from '../../components/TimeRangePicker';
 import { useTitle } from '../../hooks';
+import { useTimeRange } from '../../hooks/useTimeRange';
 import { useMenuStore } from '../../stores';
 import { ItemList } from './ItemList';
 import { ItemsSummary } from './ItemsSummary';
 
 export const Items: FC = () => {
   useTitle('账单列表');
-
-  const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
   const { isVisible, setVisible } = useMenuStore();
+
+  // 构造时间范围
+  const { start, end, currentRange, setCurrentRange } = useTimeRange();
 
   return (
     <div pp-page-wrapper>
@@ -31,7 +31,7 @@ export const Items: FC = () => {
       </TopNavGradient>
       <main grow-1 overflow-auto>
         <ItemsSummary />
-        <ItemList />
+        <ItemList start={start} end={end} />
       </main>
       <AddFloatBtn />
       <TopMenu />

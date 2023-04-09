@@ -22,8 +22,8 @@ interface Props {
 const defaultRanges: MyTimeRanges = [
   { key: 'thisMonth', label: '本月' },
   { key: 'lastMonth', label: '上月' },
-  { key: 'thisYear', label: '本年' },
-  { key: 'custom', label: '自定义时间' },
+  { key: 'pastThreeMonths', label: '近三个月' },
+  { key: 'thisYear', label: '近一年' },
 ];
 
 export const TimeRangePicker: FC<Props> = ({

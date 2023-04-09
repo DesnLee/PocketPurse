@@ -24,10 +24,16 @@ const BottomBlock: FC<BottomBlockProps> = ({ type, onClick }) => {
   );
 };
 
-const getKey = (pageIndex: number) => {
-  return `/api/v1/items?page=${pageIndex + 1}&limit=10`;
+interface Props {
+  start: string;
+  end: string;
+}
+const getKey = (start: string, end: string) => (pageIndex: number) => {
+  return `/api/v1/items?page=${
+    pageIndex + 1
+  }&limit=10&happened_after=${start}&happened_before=${end}`;
 };
-export const ItemList: FC = () => {
+export const ItemList: FC<Props> = ({ start, end }) => {
   // 加载更多状态
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -35,7 +41,7 @@ export const ItemList: FC = () => {
 
   // 请求数据
   const { data, error, size, setSize, isLoading } = useSWRInfinite(
-    getKey,
+    getKey(start, end),
     async (path) => {
       return new Promise<APIResponse.Items>((resolve, reject) => {
         request

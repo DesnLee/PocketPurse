@@ -11,15 +11,8 @@ import {
 import { LineChart } from '../../components/Charts/LineChart';
 import { PieChart } from '../../components/Charts/PieChart';
 import { RankChart } from '../../components/Charts/RankChart ';
-import type { MyTimeRanges, TimeRange } from '../../components/TimeRangePicker';
+import { useTimeRange } from '../../hooks/useTimeRange';
 import { time } from '../../lib/time';
-
-const ranges: MyTimeRanges = [
-  { key: 'thisMonth', label: '本月' },
-  { key: 'lastMonth', label: '上月' },
-  { key: 'pastThreeMonths', label: '近三个月' },
-  { key: 'thisYear', label: '近一年' },
-];
 
 export const Statistics: FC = () => {
   const { api } = useApi();
@@ -31,53 +24,15 @@ export const Statistics: FC = () => {
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
   // 构造时间范围
-  const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
-  const [startAndEnd, setStartAndEnd] = useState<{
-    start: string;
-    end: string;
-  }>({
-    start: time().add(-1, 'month').format(),
-    end: time().format(),
-  });
-  useEffect(() => {
-    const now = time();
-    let start = '';
-    let end = '';
-    switch (currentRange) {
-      case 'thisMonth':
-        start = now.add(-1, 'month').format();
-        end = now.format();
-        break;
-      case 'lastMonth':
-        start = now.add(-2, 'month').format();
-        end = now.add(-1, 'month').format();
-        break;
-      case 'pastThreeMonths':
-        start = now.add(-3, 'month').format();
-        end = now.format();
-        break;
-      case 'thisYear':
-        start = now.add(-1, 'year').format();
-        end = now.format();
-        break;
-      default:
-        break;
-    }
-    setStartAndEnd(() => ({ start, end }));
-  }, [currentRange]);
+  const { start, end, currentRange, setCurrentRange } = useTimeRange();
 
   // 请求折线图数据，并补充数据
   const [displayLineData, setDisplayLineData] = useState<SummaryByHappened[]>(
     []
   );
   const { data: lineChartData } = useSWRImmutable(
-    `lineChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
-    () =>
-      api.statistics.getLineData({
-        kind,
-        start: startAndEnd.start,
-        end: startAndEnd.end,
-      })
+    `lineChart_${kind}_${start}_${end}`,
+    () => api.statistics.getLineData({ kind, start, end })
   );
   useEffect(() => {
     if (!lineChartData || lineChartData.data.groups.length === 0) {
@@ -86,9 +41,9 @@ export const Statistics: FC = () => {
     const dataList = lineChartData.data.groups;
 
     const result: SummaryByHappened[] = [];
-    let current = new Date(startAndEnd.start);
-    const end = new Date(startAndEnd.end);
-    while (current <= end) {
+    let current = new Date(start);
+    const endTime = new Date(end);
+    while (current <= endTime) {
       const date = time(current).format('yyyy-MM-dd');
       const find = dataList.find(
         (item) => time(item.happened_at).format() === time(date).format()
@@ -110,13 +65,8 @@ export const Statistics: FC = () => {
 
   // 请求饼图数据
   const { data: pieChartData } = useSWRImmutable(
-    `pieChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
-    () =>
-      api.statistics.getPieData({
-        kind,
-        start: startAndEnd.start,
-        end: startAndEnd.end,
-      })
+    `pieChart_${kind}_${start}_${end}`,
+    () => api.statistics.getPieData({ kind, start, end })
   );
 
   return (
@@ -133,11 +83,7 @@ export const Statistics: FC = () => {
             />
           }
         />
-        <TimeRangePicker
-          current={currentRange}
-          onChange={setCurrentRange}
-          ranges={ranges}
-        />
+        <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
       </TopNavGradient>
 
       <main grow-1 overflow-auto pb-36px flex flex-col bg='#f4f4f4'>
