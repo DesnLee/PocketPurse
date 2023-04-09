@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Icon } from '../../components';
 import { usePopup } from '../../hooks';
 import { time } from '../../lib/time';
-import { DatePicker } from './DatePicker';
+import { DatePicker } from '../../components/DatePicker';
 
 interface Props {
   value?: Date;

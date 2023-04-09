@@ -87,10 +87,12 @@ export const useTimeRange: UseTimeRange = ({
 
   // 自定义时间弹窗
   const onConfirm = () => {
-    setStart(time());
-    setEnd(time());
+    setStart(customStart ?? time());
+    setEnd(customEnd ?? time());
     close();
     setCurrentRange('custom');
+    setCustomStart(null);
+    setCustomEnd(null);
   };
   const { open, close, Popup } = usePopup({
     children: (
@@ -102,13 +104,19 @@ export const useTimeRange: UseTimeRange = ({
           type='date'
           placeholder='请选择开始日期'
           align='center'
-          value={customStart?.format()}
+          value={customStart ? customStart.date : customStart}
+          onChange={(d) => {
+            setCustomStart(time(d));
+          }}
         />
         <Input
           type='date'
           placeholder='请选择结束日期'
           align='center'
-          value={customEnd?.format()}
+          value={customEnd ? customEnd.date : customEnd}
+          onChange={(d) => {
+            setCustomEnd(time(d));
+          }}
         />
         <button pp-btn-primary onClick={onConfirm}>
           确定
@@ -117,6 +125,7 @@ export const useTimeRange: UseTimeRange = ({
     ),
     position: 'center',
     closePointEvent: false,
+    zIndex: 'var(--z-index-dialog)',
   });
 
   // 拦截 custom 选项，不立即修改 tab 选中项

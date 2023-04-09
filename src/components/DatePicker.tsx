@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import type { FC } from 'react';
 import styled from 'styled-components';
-import { time } from '../../lib/time';
-import type { DateKind } from '../../lib/time';
-import { DatePickerColumn } from './DatePickerColumn';
+import { time } from '../lib/time';
+import type { DateKind } from '../lib/time';
+import { DatePickerColumn } from '../views/newItem/DatePickerColumn';
 
 interface Props {
   start?: Date;

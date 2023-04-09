@@ -1,13 +1,18 @@
+import React from 'react';
 import type { FC, ReactNode } from 'react';
 import styled from 'styled-components';
+import { usePopup } from '../../hooks';
+import { time } from '../../lib/time';
+import { DatePicker } from '../DatePicker';
 
 export interface DateInputProps {
   align?: 'left' | 'center';
   label?: string | ReactNode;
   labelWidth?: string;
-  value?: string;
+  value: Date | null;
   placeholder?: string;
   rightBtn?: ReactNode;
+  onChange?: (value: Date) => void;
 }
 
 export const DateInput: FC<DateInputProps> = ({
@@ -17,6 +22,7 @@ export const DateInput: FC<DateInputProps> = ({
   placeholder,
   rightBtn,
   labelWidth = '3em',
+  onChange,
 }) => {
   const labelNode = () => {
     if (!label) return null;
@@ -27,18 +33,33 @@ export const DateInput: FC<DateInputProps> = ({
     }
   };
 
+  const { Popup, open, close } = usePopup({
+    children: (
+      <DatePicker
+        defaultValue={value || undefined}
+        onConfirm={(v) => {
+          onChange?.(v);
+          close();
+        }}
+        onCancel={() => close()}
+      />
+    ),
+  });
+
   return (
     <div flex gap-12px items-center w-full relative mb-32px>
+      {Popup}
       {labelNode()}
       <div relative grow-1 shrink-1 w-full flex items-center>
         <MyInput
-          value={value}
+          value={value ? time(value).format() : ''}
           align={align}
           className='b-1 b-transparent p-y-4px p-l-12px min-h-48px leading-24px text-16px font-bold w-full rounded-8px bg-[#00000009] focus:bg-[#00000004] focus:b-1 focus:b-solid  focus:b-[var(--color-primary)]'
           type='text'
           placeholder={placeholder}
           color='#303133'
           readOnly={true}
+          onClick={open}
         />
       </div>
       {rightBtn && (

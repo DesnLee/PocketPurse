@@ -10,6 +10,7 @@ interface PopupProps {
   position: 'center' | 'bottom';
   closeOnClickMask: boolean;
   closePointEvent?: boolean;
+  zIndex: number | string;
 }
 
 const PopupElement: FC<PopupProps> = ({
@@ -19,6 +20,7 @@ const PopupElement: FC<PopupProps> = ({
   position,
   closeOnClickMask,
   closePointEvent,
+  zIndex,
 }) => {
   const panelAnimation = useSpring({
     opacity: isVisible ? 1 : 0,
@@ -35,7 +37,7 @@ const PopupElement: FC<PopupProps> = ({
     if (position === 'bottom') {
       return (
         <animated.div
-          style={panelAnimation}
+          style={{ ...panelAnimation, zIndex }}
           fixed
           bottom-0
           left-0
@@ -44,7 +46,6 @@ const PopupElement: FC<PopupProps> = ({
           min-w-16em
           flex
           flex-col
-          z='[var(--z-index-popup)]'
           touch-none
           rounded-t-12px
           overflow-hidden
@@ -58,13 +59,13 @@ const PopupElement: FC<PopupProps> = ({
           style={{
             ...panelAnimation,
             pointerEvents: closePointEvent ? 'none' : 'auto',
+            zIndex,
           }}
           fixed
           top='50%'
           left='50%'
           translate-x='-50%'
           translate-y='-50%'
-          z='[var(--z-index-popup)]'
           rounded-t-12px
           overflow-hidden
         >
@@ -78,14 +79,13 @@ const PopupElement: FC<PopupProps> = ({
     <>
       {panel()}
       <animated.div
-        style={maskAnimation}
+        style={{ ...maskAnimation, zIndex: `calc(${zIndex} - 1)` }}
         fixed
         top-0
         left-0
         w-full
         h-full
         className='bg-black:56'
-        z='[calc(var(--z-index-popup)-1)]'
         onClick={() => closeOnClickMask && setVisible(false)}
         touch-none
       />
@@ -98,6 +98,7 @@ interface UsePopupProps {
   position?: 'center' | 'bottom';
   closeOnClickMask?: boolean;
   closePointEvent?: boolean;
+  zIndex?: string | number;
 }
 
 export const usePopup = ({
@@ -105,6 +106,7 @@ export const usePopup = ({
   position = 'bottom',
   closeOnClickMask = true,
   closePointEvent = true,
+  zIndex = 'var(--z-index-popup)',
 }: UsePopupProps) => {
   const [isVisible, setVisible] = useState(false);
   const Popup = createPortal(
@@ -114,6 +116,7 @@ export const usePopup = ({
       setVisible={setVisible}
       closeOnClickMask={closeOnClickMask}
       closePointEvent={closePointEvent}
+      zIndex={zIndex}
     >
       {children}
     </PopupElement>,
