@@ -19,7 +19,9 @@ export const Statistics: FC = () => {
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
   // 构造时间范围
-  const { start, end, TimeRangePicker } = useTimeRange();
+  const { start, end, TimeRangePicker, customPopup } = useTimeRange({
+    custom: true,
+  });
 
   // 请求折线图数据，并补充数据
   const [displayLineData, setDisplayLineData] = useState<SummaryByHappened[]>(
@@ -76,6 +78,7 @@ export const Statistics: FC = () => {
 
   return (
     <div pp-page-wrapper bg='#f4f4f4'>
+      {customPopup}
       <TopNavGradient>
         <TopNav
           title='统计图表'

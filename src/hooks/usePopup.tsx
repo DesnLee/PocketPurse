@@ -9,6 +9,7 @@ interface PopupProps {
   children: ReactNode;
   position: 'center' | 'bottom';
   closeOnClickMask: boolean;
+  closePointEvent?: boolean;
 }
 
 const PopupElement: FC<PopupProps> = ({
@@ -17,6 +18,7 @@ const PopupElement: FC<PopupProps> = ({
   children,
   position,
   closeOnClickMask,
+  closePointEvent,
 }) => {
   const panelAnimation = useSpring({
     opacity: isVisible ? 1 : 0,
@@ -53,14 +55,16 @@ const PopupElement: FC<PopupProps> = ({
     } else if (position === 'center') {
       return (
         <animated.div
-          style={panelAnimation}
+          style={{
+            ...panelAnimation,
+            pointerEvents: closePointEvent ? 'none' : 'auto',
+          }}
           fixed
           top='50%'
           left='50%'
           translate-x='-50%'
           translate-y='-50%'
           z='[var(--z-index-popup)]'
-          pointer-events-none
           rounded-t-12px
           overflow-hidden
         >
@@ -93,12 +97,14 @@ interface UsePopupProps {
   children: ReactNode;
   position?: 'center' | 'bottom';
   closeOnClickMask?: boolean;
+  closePointEvent?: boolean;
 }
 
 export const usePopup = ({
   children,
   position = 'bottom',
   closeOnClickMask = true,
+  closePointEvent = true,
 }: UsePopupProps) => {
   const [isVisible, setVisible] = useState(false);
   const Popup = createPortal(
@@ -107,6 +113,7 @@ export const usePopup = ({
       isVisible={isVisible}
       setVisible={setVisible}
       closeOnClickMask={closeOnClickMask}
+      closePointEvent={closePointEvent}
     >
       {children}
     </PopupElement>,

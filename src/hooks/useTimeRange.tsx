@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab } from '../components';
 import { time } from '../lib/time';
 import type { Time } from '../lib/time';
+import { usePopup } from './usePopup';
 
 export type TimeRangeKeys =
   | 'thisMonth'
@@ -10,57 +11,100 @@ export type TimeRangeKeys =
   | 'thisYear'
   | 'custom';
 
-export type MyTimeRanges = {
+type TimeRanges = {
   key: TimeRangeKeys;
   label: string;
 }[];
 
-type UseTimeRange = (ranges?: MyTimeRanges) => {
+export type TimeRangesParams = {
+  key: Exclude<TimeRangeKeys, 'custom'>;
+  label: string;
+}[];
+
+interface Options {
+  ranges?: TimeRangesParams;
+  custom?: boolean;
+}
+type UseTimeRange = (options: Options) => {
   start: Time;
   end: Time;
   TimeRangePicker: JSX.Element;
+  customPopup: JSX.Element;
 };
 
-const defaultRanges: MyTimeRanges = [
+const defaultRanges: TimeRangesParams = [
   { key: 'thisMonth', label: '本月' },
   { key: 'lastMonth', label: '上月' },
   { key: 'pastThreeMonths', label: '近三个月' },
   { key: 'thisYear', label: '近一年' },
 ];
 
-export const useTimeRange: UseTimeRange = (ranges = defaultRanges) => {
-  const [currentRange, setCurrentRange] = useState<TimeRangeKeys>('thisMonth');
-  const [start, setStart] = useState<Time>(time().add(-1, 'month'));
-  const [end, setEnd] = useState<Time>(time());
+const getRanges = (key: TimeRangeKeys) => {
+  const now = time();
+  let start: Time;
+  let end = now;
+  switch (key) {
+    case 'thisMonth':
+      start = now.add(-1, 'month');
+      break;
+    case 'lastMonth':
+      start = now.add(-2, 'month');
+      end = now.add(-1, 'month');
+      break;
+    case 'pastThreeMonths':
+      start = now.add(-3, 'month');
+      break;
+    case 'thisYear':
+      start = now.add(-1, 'year');
+      break;
+    default:
+      start = now.add(-1, 'month');
+      break;
+  }
+  return { start, end };
+};
+
+export const useTimeRange: UseTimeRange = ({
+  ranges = defaultRanges,
+  custom = false,
+}) => {
+  // 是否开启自定义时间
+  const timeRanges: TimeRanges = [...ranges];
+  if (custom) {
+    timeRanges.push({ key: 'custom', label: '自定义时间' });
+  }
+
+  // 初始的时间范围
+  const key = timeRanges[0].key;
+  const [currentRange, setCurrentRange] = useState<TimeRangeKeys>(key);
+  const [start, setStart] = useState<Time>(getRanges(key).start);
+  const [end, setEnd] = useState<Time>(getRanges(key).end);
+
+  // 自定义时间弹窗
+  const onConfirm = () => {
+    setStart(time());
+    setEnd(time());
+    close();
+  };
+  const { open, close, Popup } = usePopup({
+    children: (
+      <div bg-white w-96px h-96px onClick={onConfirm}>
+        自定义时间
+      </div>
+    ),
+    position: 'center',
+    closeOnClickMask: false,
+    closePointEvent: false,
+  });
 
   useEffect(() => {
-    const now = time();
-    let start: Time;
-    let end: Time;
-    switch (currentRange) {
-      case 'thisMonth':
-        start = now.add(-1, 'month');
-        end = now;
-        break;
-      case 'lastMonth':
-        start = now.add(-2, 'month');
-        end = now.add(-1, 'month');
-        break;
-      case 'pastThreeMonths':
-        start = now.add(-3, 'month');
-        end = now;
-        break;
-      case 'thisYear':
-        start = now.add(-1, 'year');
-        end = now;
-        break;
-      default:
-        start = now.add(-1, 'month');
-        end = now;
-        break;
+    if (currentRange !== 'custom') {
+      const { start: newStart, end: newEnd } = getRanges(currentRange);
+      setStart(newStart);
+      setEnd(newEnd);
+    } else {
+      open();
     }
-    setStart(start);
-    setEnd(end);
   }, [currentRange]);
 
   return {
@@ -68,10 +112,11 @@ export const useTimeRange: UseTimeRange = (ranges = defaultRanges) => {
     end,
     TimeRangePicker: (
       <Tab
-        items={ranges || defaultRanges}
+        items={timeRanges}
         value={currentRange}
         onChange={(v) => setCurrentRange(v)}
       />
     ),
+    customPopup: Popup,
   };
 };
