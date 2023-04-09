@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tab } from '../components';
+import { Input, Tab } from '../components';
 import { time } from '../lib/time';
 import type { Time } from '../lib/time';
 import { usePopup } from './usePopup';
@@ -82,22 +82,51 @@ export const useTimeRange: UseTimeRange = ({
   const [start, setStart] = useState<Time>(getRanges(key).start);
   const [end, setEnd] = useState<Time>(getRanges(key).end);
 
+  const [customStart, setCustomStart] = useState<Time | null>(null);
+  const [customEnd, setCustomEnd] = useState<Time | null>(null);
+
   // 自定义时间弹窗
   const onConfirm = () => {
     setStart(time());
     setEnd(time());
     close();
+    setCurrentRange('custom');
   };
   const { open, close, Popup } = usePopup({
     children: (
-      <div bg-white w-96px h-96px onClick={onConfirm}>
-        自定义时间
+      <div bg-white p-16px rounded-12px w='72vw'>
+        <h1 text-16px font-bold text-center mb-24px>
+          请选择时间范围
+        </h1>
+        <Input
+          type='date'
+          placeholder='请选择开始日期'
+          align='center'
+          value={customStart?.format()}
+        />
+        <Input
+          type='date'
+          placeholder='请选择结束日期'
+          align='center'
+          value={customEnd?.format()}
+        />
+        <button pp-btn-primary onClick={onConfirm}>
+          确定
+        </button>
       </div>
     ),
     position: 'center',
-    closeOnClickMask: false,
     closePointEvent: false,
   });
+
+  // 拦截 custom 选项，不立即修改 tab 选中项
+  const changeCurrentRange = (key: TimeRangeKeys) => {
+    if (key === 'custom') {
+      open();
+    } else {
+      setCurrentRange(key);
+    }
+  };
 
   // 监听时间区间变化修改时间范围
   useEffect(() => {
@@ -105,8 +134,6 @@ export const useTimeRange: UseTimeRange = ({
       const { start: newStart, end: newEnd } = getRanges(currentRange);
       setStart(newStart);
       setEnd(newEnd);
-    } else {
-      open();
     }
   }, [currentRange]);
 
@@ -119,7 +146,7 @@ export const useTimeRange: UseTimeRange = ({
         <Tab
           items={timeRanges}
           value={currentRange}
-          onChange={(v) => setCurrentRange(v)}
+          onChange={changeCurrentRange}
         />
       </>
     ),

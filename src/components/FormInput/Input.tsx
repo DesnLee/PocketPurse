@@ -1,4 +1,6 @@
 import type { FC } from 'react';
+import { DateInput } from './DateInput';
+import type { DateInputProps } from './DateInput';
 import { EmojiInput } from './EmojiInput';
 import type { EmojiInputProps } from './EmojiInput';
 import { NavBarSelectInput } from './NavBarSelectInput';
@@ -14,6 +16,9 @@ type Props = {} & (
       type: 'text' | 'email' | 'number';
     } & TextInputProps)
   | ({
+      type: 'date';
+    } & DateInputProps)
+  | ({
       type: 'navSelect';
     } & SelectInputProps)
 );
@@ -23,6 +28,8 @@ export const Input: FC<Props> = (props) => {
     return <EmojiInput {...props} />;
   } else if (props.type === 'navSelect') {
     return <NavBarSelectInput {...props} />;
+  } else if (props.type === 'date') {
+    return <DateInput {...props} />;
   } else {
     return <TextInput {...props} />;
   }
