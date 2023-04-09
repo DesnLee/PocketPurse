@@ -60,7 +60,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
             rich: {
               name: {
                 color: '#909399',
-                fontSize: 12,
+                fontSize: 14,
                 lineHeight: 20,
               },
               value: {
@@ -83,7 +83,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
           emphasis: { label: { show: true } },
           labelLine: { show: false },
           data: data.map((item) => ({
-            name: item.tag.name,
+            name: `${item.tag.sign} ${item.tag.name}`,
             value: item.amount / 100,
           })),
         },
