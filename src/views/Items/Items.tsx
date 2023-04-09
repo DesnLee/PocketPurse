@@ -15,13 +15,12 @@ import { ItemsSummary } from './ItemsSummary';
 export const Items: FC = () => {
   useTitle('账单列表');
   const { isVisible, setVisible } = useMenuStore();
-  const { start, end, TimeRangePicker, customPopup } = useTimeRange({
+  const { start, end, TimeRangePicker } = useTimeRange({
     custom: true,
   });
 
   return (
     <div pp-page-wrapper>
-      {customPopup}
       <TopNavGradient>
         <TopNav
           title='账单列表'

@@ -19,7 +19,7 @@ export const Statistics: FC = () => {
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
   // 构造时间范围
-  const { start, end, TimeRangePicker, customPopup } = useTimeRange({
+  const { start, end, TimeRangePicker } = useTimeRange({
     custom: true,
   });
 
@@ -78,7 +78,6 @@ export const Statistics: FC = () => {
 
   return (
     <div pp-page-wrapper bg='#f4f4f4'>
-      {customPopup}
       <TopNavGradient>
         <TopNav
           title='统计图表'

@@ -25,13 +25,14 @@ interface Options {
   ranges?: TimeRangesParams;
   custom?: boolean;
 }
+
 type UseTimeRange = (options: Options) => {
   start: Time;
   end: Time;
   TimeRangePicker: JSX.Element;
-  customPopup: JSX.Element;
 };
 
+// 默认时间区间组
 const defaultRanges: TimeRangesParams = [
   { key: 'thisMonth', label: '本月' },
   { key: 'lastMonth', label: '上月' },
@@ -39,6 +40,7 @@ const defaultRanges: TimeRangesParams = [
   { key: 'thisYear', label: '近一年' },
 ];
 
+// 获取时间区间对应的时间范围
 const getRanges = (key: TimeRangeKeys) => {
   const now = time();
   let start: Time;
@@ -74,7 +76,7 @@ export const useTimeRange: UseTimeRange = ({
     timeRanges.push({ key: 'custom', label: '自定义时间' });
   }
 
-  // 初始的时间范围
+  // 初始化时间范围
   const key = timeRanges[0].key;
   const [currentRange, setCurrentRange] = useState<TimeRangeKeys>(key);
   const [start, setStart] = useState<Time>(getRanges(key).start);
@@ -97,6 +99,7 @@ export const useTimeRange: UseTimeRange = ({
     closePointEvent: false,
   });
 
+  // 监听时间区间变化修改时间范围
   useEffect(() => {
     if (currentRange !== 'custom') {
       const { start: newStart, end: newEnd } = getRanges(currentRange);
@@ -111,12 +114,14 @@ export const useTimeRange: UseTimeRange = ({
     start,
     end,
     TimeRangePicker: (
-      <Tab
-        items={timeRanges}
-        value={currentRange}
-        onChange={(v) => setCurrentRange(v)}
-      />
+      <>
+        {Popup}
+        <Tab
+          items={timeRanges}
+          value={currentRange}
+          onChange={(v) => setCurrentRange(v)}
+        />
+      </>
     ),
-    customPopup: Popup,
   };
 };
