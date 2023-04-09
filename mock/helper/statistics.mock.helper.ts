@@ -20,25 +20,29 @@ export const createStatisticsData = ({
   const groups = [];
   const startTime = new Date(start);
   const endTime = new Date(end);
-  // eslint-disable-next-line no-unmodified-loop-condition
-  while (startTime < endTime) {
-    startTime.setDate(startTime.getDate() + 1);
 
-    if (group_by === 'happened_at') {
+  // happened_at 分组
+  if (group_by === 'happened_at') {
+    // eslint-disable-next-line no-unmodified-loop-condition
+    while (startTime < endTime) {
+      startTime.setDate(startTime.getDate() + 1);
+
+      if (Math.random() > 0.3) continue;
       groups.push({
         happened_at: startTime.toISOString(),
         amount: faker.datatype.number(100000),
         tag: null,
       });
     }
-  }
 
-  if (group_by === 'happened_at') {
     return {
       groups,
       total: groups.reduce((acc, cur) => acc + cur.amount, 0),
     };
-  } else if (group_by === 'tag_id') {
+  }
+
+  // tag_id 分组
+  if (group_by === 'tag_id') {
     const tagNameList = tagNames[kind];
     const tags: TagModel[] = tagNameList.map((name) => ({
       ...createTag(kind),

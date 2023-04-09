@@ -3,13 +3,8 @@ import styled from 'styled-components';
 import { colorPalette } from '../../lib/colors';
 import { Money } from '../Money';
 
-export type RankChartData = {
-  tag: { name: string; sign: string };
-  amount: number;
-}[];
-
 interface Props {
-  data: RankChartData;
+  data: SummaryByTag[];
 }
 
 export const RankChart: FC<Props> = ({ data }) => {
