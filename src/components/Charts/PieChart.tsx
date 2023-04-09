@@ -28,17 +28,13 @@ export const PieChart: FC<Props> = ({ data, height }) => {
         top: 'center',
         left: '6px',
       },
-      grid: {
-        // top: '0px',
-        // bottom: '0px',
-        // left: '0px',
-        // right: '0px',
-      },
+      grid: {},
       series: [
         {
           type: 'pie',
           radius: ['52%', '80%'],
           avoidLabelOverlap: false,
+          center: ['64%', '50%'],
           itemStyle: {
             borderRadius: 8,
             borderColor: '#fff',
