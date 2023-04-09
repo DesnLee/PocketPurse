@@ -1,46 +1,77 @@
 import { useEffect, useState } from 'react';
-import type { TimeRange } from '../components/TimeRangePicker';
+import { Tab } from '../components';
 import { time } from '../lib/time';
+import type { Time } from '../lib/time';
 
-export const useTimeRange = () => {
-  // 构造时间范围
-  const [currentRange, setCurrentRange] = useState<TimeRange>('thisMonth');
-  const [start, setStart] = useState<string>(time().add(-1, 'month').format());
-  const [end, setEnd] = useState<string>(time().format());
+export type TimeRangeKeys =
+  | 'thisMonth'
+  | 'lastMonth'
+  | 'pastThreeMonths'
+  | 'thisYear'
+  | 'custom';
 
-  // 根据当前时间范围，计算开始时间和结束时间
+export type MyTimeRanges = {
+  key: TimeRangeKeys;
+  label: string;
+}[];
+
+type UseTimeRange = (ranges?: MyTimeRanges) => {
+  start: Time;
+  end: Time;
+  TimeRangePicker: JSX.Element;
+};
+
+const defaultRanges: MyTimeRanges = [
+  { key: 'thisMonth', label: '本月' },
+  { key: 'lastMonth', label: '上月' },
+  { key: 'pastThreeMonths', label: '近三个月' },
+  { key: 'thisYear', label: '近一年' },
+];
+
+export const useTimeRange: UseTimeRange = (ranges = defaultRanges) => {
+  const [currentRange, setCurrentRange] = useState<TimeRangeKeys>('thisMonth');
+  const [start, setStart] = useState<Time>(time().add(-1, 'month'));
+  const [end, setEnd] = useState<Time>(time());
+
   useEffect(() => {
     const now = time();
-    let start = '';
-    let end = '';
+    let start: Time;
+    let end: Time;
     switch (currentRange) {
       case 'thisMonth':
-        start = now.add(-1, 'month').format();
-        end = now.format();
+        start = now.add(-1, 'month');
+        end = now;
         break;
       case 'lastMonth':
-        start = now.add(-2, 'month').format();
-        end = now.add(-1, 'month').format();
+        start = now.add(-2, 'month');
+        end = now.add(-1, 'month');
         break;
       case 'pastThreeMonths':
-        start = now.add(-3, 'month').format();
-        end = now.format();
+        start = now.add(-3, 'month');
+        end = now;
         break;
       case 'thisYear':
-        start = now.add(-1, 'year').format();
-        end = now.format();
+        start = now.add(-1, 'year');
+        end = now;
         break;
       default:
+        start = now.add(-1, 'month');
+        end = now;
         break;
     }
-    setStart(() => start);
-    setEnd(() => end);
+    setStart(start);
+    setEnd(end);
   }, [currentRange]);
 
   return {
-    currentRange,
-    setCurrentRange,
     start,
     end,
+    TimeRangePicker: (
+      <Tab
+        items={ranges || defaultRanges}
+        value={currentRange}
+        onChange={(v) => setCurrentRange(v)}
+      />
+    ),
   };
 };

@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { useApi } from '../../api/useApi';
-import {
-  Input,
-  TimeRangePicker,
-  TopNav,
-  TopNavGradient,
-} from '../../components';
+import { Input, TopNav, TopNavGradient } from '../../components';
 import { LineChart } from '../../components/Charts/LineChart';
 import { PieChart } from '../../components/Charts/PieChart';
 import { RankChart } from '../../components/Charts/RankChart ';
@@ -24,15 +19,20 @@ export const Statistics: FC = () => {
   const [kind, setKind] = useState<ItemModel['kind']>('expenses');
 
   // 构造时间范围
-  const { start, end, currentRange, setCurrentRange } = useTimeRange();
+  const { start, end, TimeRangePicker } = useTimeRange();
 
   // 请求折线图数据，并补充数据
   const [displayLineData, setDisplayLineData] = useState<SummaryByHappened[]>(
     []
   );
   const { data: lineChartData } = useSWRImmutable(
-    `lineChart_${kind}_${start}_${end}`,
-    () => api.statistics.getLineData({ kind, start, end })
+    `lineChart_${kind}_${start.format()}_${end.format()}`,
+    () =>
+      api.statistics.getLineData({
+        kind,
+        start: start.format(),
+        end: end.format(),
+      })
   );
   useEffect(() => {
     if (!lineChartData || lineChartData.data.groups.length === 0) {
@@ -41,8 +41,8 @@ export const Statistics: FC = () => {
     const dataList = lineChartData.data.groups;
 
     const result: SummaryByHappened[] = [];
-    let current = new Date(start);
-    const endTime = new Date(end);
+    let current = new Date(start.date);
+    const endTime = new Date(end.date);
     while (current <= endTime) {
       const date = time(current).format('yyyy-MM-dd');
       const find = dataList.find(
@@ -65,8 +65,13 @@ export const Statistics: FC = () => {
 
   // 请求饼图数据
   const { data: pieChartData } = useSWRImmutable(
-    `pieChart_${kind}_${start}_${end}`,
-    () => api.statistics.getPieData({ kind, start, end })
+    `pieChart_${kind}_${start.format()}_${end.format()}`,
+    () =>
+      api.statistics.getPieData({
+        kind,
+        start: start.format(),
+        end: end.format(),
+      })
   );
 
   return (
@@ -83,7 +88,7 @@ export const Statistics: FC = () => {
             />
           }
         />
-        <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
+        {TimeRangePicker}
       </TopNavGradient>
 
       <main grow-1 overflow-auto pb-36px flex flex-col bg='#f4f4f4'>

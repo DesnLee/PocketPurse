@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import {
   AddFloatBtn,
   Icon,
-  TimeRangePicker,
   TopMenu,
   TopNav,
   TopNavGradient,
@@ -16,9 +15,7 @@ import { ItemsSummary } from './ItemsSummary';
 export const Items: FC = () => {
   useTitle('账单列表');
   const { isVisible, setVisible } = useMenuStore();
-
-  // 构造时间范围
-  const { start, end, currentRange, setCurrentRange } = useTimeRange();
+  const { start, end, TimeRangePicker } = useTimeRange();
 
   return (
     <div pp-page-wrapper>
@@ -27,11 +24,11 @@ export const Items: FC = () => {
           title='账单列表'
           leftIcon={<Icon name='menu' onClick={() => setVisible(!isVisible)} />}
         />
-        <TimeRangePicker current={currentRange} onChange={setCurrentRange} />
+        {TimeRangePicker}
       </TopNavGradient>
       <main grow-1 overflow-auto>
         <ItemsSummary />
-        <ItemList start={start} end={end} />
+        <ItemList start={start.format()} end={end.format()} />
       </main>
       <AddFloatBtn />
       <TopMenu />

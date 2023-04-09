@@ -1,6 +1,5 @@
 export { AddFloatBtn } from './AddFloatBtn';
 export { Icon } from './Icon';
-export { TimeRangePicker } from './TimeRangePicker';
 export { TopNav } from './TopNav/TopNav';
 export { Tab } from './TopNav/Tab';
 export { TopNavGradient, TopNavTransparent } from './TopNav/TopNavWrapper';
