@@ -11,7 +11,6 @@ import {
 import { LineChart } from '../../components/Charts/LineChart';
 import { PieChart } from '../../components/Charts/PieChart';
 import { RankChart } from '../../components/Charts/RankChart ';
-import type { RankChartData } from '../../components/Charts/RankChart ';
 import type { MyTimeRanges, TimeRange } from '../../components/TimeRangePicker';
 import { time } from '../../lib/time';
 
@@ -67,7 +66,10 @@ export const Statistics: FC = () => {
     setStartAndEnd(() => ({ start, end }));
   }, [currentRange]);
 
-  // 请求折线图数据
+  // 请求折线图数据，并补充数据
+  const [displayLineData, setDisplayLineData] = useState<SummaryByHappened[]>(
+    []
+  );
   const { data: lineChartData } = useSWRImmutable(
     `lineChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
     () =>
@@ -77,6 +79,34 @@ export const Statistics: FC = () => {
         end: startAndEnd.end,
       })
   );
+  useEffect(() => {
+    if (!lineChartData || lineChartData.data.groups.length === 0) {
+      return;
+    }
+    const dataList = lineChartData.data.groups;
+
+    const result: SummaryByHappened[] = [];
+    let current = new Date(startAndEnd.start);
+    const end = new Date(startAndEnd.end);
+    while (current <= end) {
+      const date = time(current).format('yyyy-MM-dd');
+      const find = dataList.find(
+        (item) => time(item.happened_at).format() === time(date).format()
+      );
+      if (find) {
+        result.push(find);
+      } else {
+        result.push({
+          happened_at: date,
+          tag: null,
+          amount: 0,
+        });
+      }
+      current = new Date(current.getTime() + 24 * 60 * 60 * 1000);
+    }
+
+    setDisplayLineData(result);
+  }, [lineChartData]);
 
   // 请求饼图数据
   const { data: pieChartData } = useSWRImmutable(
@@ -88,13 +118,6 @@ export const Statistics: FC = () => {
         end: startAndEnd.end,
       })
   );
-
-  const data3: RankChartData = [
-    { tag: { name: '房贷', sign: '🏠' }, amount: 400000 },
-    { tag: { name: '车贷', sign: '🚗' }, amount: 200000 },
-    { tag: { name: '吃饭', sign: '🥣' }, amount: 120000 },
-    { tag: { name: '通勤', sign: '🚇' }, amount: 54000 },
-  ];
 
   return (
     <div pp-page-wrapper bg='#f4f4f4'>
@@ -120,26 +143,24 @@ export const Statistics: FC = () => {
       <main grow-1 overflow-auto pb-36px flex flex-col bg='#f4f4f4'>
         <section mt-12px m-x-12px py-12px bg-white rounded-12px>
           <h1 text-18px font-bold ml-12px>
-            消费趋势
+            {kind === 'expenses' ? '消费' : '收入'}趋势
           </h1>
-          <LineChart data={lineChartData?.data.groups ?? []} />
+          <LineChart data={displayLineData} />
         </section>
 
         <section mt-12px m-x-12px py-12px bg-white rounded-12px>
           <h1 text-18px font-bold ml-12px>
-            消费占比
+            {kind === 'expenses' ? '消费' : '收入'}占比
           </h1>
           <PieChart data={pieChartData?.data.groups ?? []} />
         </section>
 
-        {data3?.length > 0 && (
-          <section mt-12px m-x-12px py-12px bg-white rounded-12px>
-            <h1 text-18px font-bold ml-12px>
-              消费排行
-            </h1>
-            <RankChart data={data3} />
-          </section>
-        )}
+        <section mt-12px m-x-12px py-12px bg-white rounded-12px>
+          <h1 text-18px font-bold ml-12px>
+            {kind === 'expenses' ? '消费' : '收入'}排行
+          </h1>
+          <RankChart data={pieChartData?.data.groups ?? []} />
+        </section>
       </main>
     </div>
   );
