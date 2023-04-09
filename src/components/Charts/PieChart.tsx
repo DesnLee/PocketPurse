@@ -4,9 +4,8 @@ import type { FC } from 'react';
 import * as echarts from 'echarts';
 import { colorPalette } from '../../lib/colors';
 
-export type PieChartData = [string, number][];
 interface Props {
-  data: PieChartData;
+  data: SummaryByTag[];
   height?: string;
 }
 
@@ -16,7 +15,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
 
   // 设置图表
   const [options, _setOptions] = useState<EChartsOption>({});
-  const setOptions = (data: PieChartData) => {
+  const setOptions = (data: SummaryByTag[]) => {
     const newOptions: EChartsOption = {
       color: colorPalette,
       // backgroundColor: '#fff',
@@ -83,7 +82,10 @@ export const PieChart: FC<Props> = ({ data, height }) => {
           },
           emphasis: { label: { show: true } },
           labelLine: { show: false },
-          data: data.map(([name, value]) => ({ value, name })),
+          data: data.map((item) => ({
+            name: item.tag.name,
+            value: item.amount / 100,
+          })),
         },
       ],
     };

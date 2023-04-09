@@ -70,13 +70,25 @@ export const useApi = () => {
         }),
     },
     statistics: {
-      getLineChartData: (params: {
+      getLineData: (params: {
         kind: ItemModel['kind'];
         start: string;
         end: string;
       }) =>
-        request.get<APIResponse.LineChartDataList>(
-          `/api/v1/statistics/line?kind=${params.kind}&start=${params.start}&end=${params.end}`,
+        request.get<APIResponse.SummaryLine>(
+          `/api/v1/items/summary?kind=${params.kind}&happened_after=${params.start}&happened_before=${params.end}&group_by=happened_at`,
+          {
+            loading: true,
+            handleError: true,
+          }
+        ),
+      getPieData: (params: {
+        kind: ItemModel['kind'];
+        start: string;
+        end: string;
+      }) =>
+        request.get<APIResponse.SummaryPie>(
+          `/api/v1/items/summary?kind=${params.kind}&happened_after=${params.start}&happened_before=${params.end}&group_by=tag_id`,
           {
             loading: true,
             handleError: true,

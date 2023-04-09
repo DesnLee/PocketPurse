@@ -10,7 +10,6 @@ import {
 } from '../../components';
 import { LineChart } from '../../components/Charts/LineChart';
 import { PieChart } from '../../components/Charts/PieChart';
-import type { PieChartData } from '../../components/Charts/PieChart';
 import { RankChart } from '../../components/Charts/RankChart ';
 import type { RankChartData } from '../../components/Charts/RankChart ';
 import type { MyTimeRanges, TimeRange } from '../../components/TimeRangePicker';
@@ -72,20 +71,23 @@ export const Statistics: FC = () => {
   const { data: lineChartData } = useSWRImmutable(
     `lineChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
     () =>
-      api.statistics.getLineChartData({
+      api.statistics.getLineData({
         kind,
         start: startAndEnd.start,
         end: startAndEnd.end,
       })
   );
 
-  const data2: PieChartData = [
-    ['吃饭', 480],
-    ['买衣服', 1200],
-    ['买皮肤', 648],
-    ['房贷', 648],
-    ['车贷', 648],
-  ];
+  // 请求饼图数据
+  const { data: pieChartData } = useSWRImmutable(
+    `pieChart_${kind}_${startAndEnd.start}_${startAndEnd.end}`,
+    () =>
+      api.statistics.getPieData({
+        kind,
+        start: startAndEnd.start,
+        end: startAndEnd.end,
+      })
+  );
 
   const data3: RankChartData = [
     { tag: { name: '房贷', sign: '🏠' }, amount: 400000 },
@@ -120,14 +122,14 @@ export const Statistics: FC = () => {
           <h1 text-18px font-bold ml-12px>
             消费趋势
           </h1>
-          <LineChart data={lineChartData?.data.resources ?? []} />
+          <LineChart data={lineChartData?.data.groups ?? []} />
         </section>
 
         <section mt-12px m-x-12px py-12px bg-white rounded-12px>
           <h1 text-18px font-bold ml-12px>
             消费占比
           </h1>
-          <PieChart data={data2} />
+          <PieChart data={pieChartData?.data.groups ?? []} />
         </section>
 
         {data3?.length > 0 && (

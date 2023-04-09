@@ -16,8 +16,9 @@ declare namespace API {
     };
   }
 
-  interface ResourcesWithoutPager<T> {
-    resources: T[];
+  interface Summary<T> {
+    groups: T[];
+    total: number;
   }
 }
 
