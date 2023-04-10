@@ -21,5 +21,6 @@ declare module 'react' {
     block?: boolean;
     b?: string;
     top?: string;
+    mt?: string;
   }
 }

@@ -144,7 +144,9 @@ export const useTimeRange: UseTimeRange = ({
           }}
         />
         {outOfRange && (
-          <span>时间范围最大为{rangeTimestamp / (60 * 60 * 24 * 1000)}天</span>
+          <p text-center color='#f56c6c' leading-32px mt='-32px'>
+            时间范围最大为{rangeTimestamp / (60 * 60 * 24 * 1000)}天
+          </p>
         )}
         <button pp-btn-primary onClick={onConfirm} disabled={!canConfirm}>
           确定
