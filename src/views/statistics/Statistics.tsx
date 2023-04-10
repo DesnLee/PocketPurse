@@ -37,7 +37,7 @@ export const Statistics: FC = () => {
       })
   );
   useEffect(() => {
-    if (!lineChartData || lineChartData.data.groups.length === 0) {
+    if (!lineChartData || !Array.isArray(lineChartData.data.groups)) {
       return;
     }
     const dataList = lineChartData.data.groups;
