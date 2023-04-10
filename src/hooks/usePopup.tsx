@@ -24,6 +24,7 @@ const PopupElement: FC<PopupProps> = ({
 }) => {
   const panelAnimation = useSpring({
     opacity: isVisible ? 1 : 0,
+    visibility: (isVisible ? 'visible' : 'hidden') as 'visible' | 'hidden',
     transform:
       position === 'bottom' ? `translateY(${isVisible ? '0%' : '100%'})` : '',
   });
