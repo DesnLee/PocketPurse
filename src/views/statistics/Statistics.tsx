@@ -28,12 +28,12 @@ export const Statistics: FC = () => {
     []
   );
   const { data: lineChartData } = useSWRImmutable(
-    `lineChart_${kind}_${start.format()}_${end.format()}`,
+    `lineChart_${kind}_${start.format()}_${end.add(1, 'day').format()}`,
     () =>
       api.statistics.getLineData({
         kind,
         start: start.format(),
-        end: end.format(),
+        end: end.add(1, 'day').format(),
       })
   );
   useEffect(() => {
@@ -66,12 +66,12 @@ export const Statistics: FC = () => {
 
   // 请求饼图数据
   const { data: pieChartData } = useSWRImmutable(
-    `pieChart_${kind}_${start.format()}_${end.format()}`,
+    `pieChart_${kind}_${start.format()}_${end.add(1, 'day').format()}`,
     () =>
       api.statistics.getPieData({
         kind,
         start: start.format(),
-        end: end.format(),
+        end: end.add(1, 'day').format(),
       })
   );
 

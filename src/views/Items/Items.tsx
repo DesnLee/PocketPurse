@@ -30,7 +30,7 @@ export const Items: FC = () => {
       </TopNavGradient>
       <main grow-1 overflow-auto>
         <ItemsSummary />
-        <ItemList start={start.format()} end={end.format()} />
+        <ItemList start={start.format()} end={end.add(1, 'day').format()} />
       </main>
       <AddFloatBtn />
       <TopMenu />
