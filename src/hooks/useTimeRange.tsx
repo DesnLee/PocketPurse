@@ -24,6 +24,7 @@ export type TimeRangesParams = {
 interface Options {
   ranges?: TimeRangesParams;
   custom?: boolean;
+  rangeTimestamp?: number;
 }
 
 type UseTimeRange = (options: Options) => {
@@ -69,6 +70,7 @@ const getRanges = (key: TimeRangeKeys) => {
 export const useTimeRange: UseTimeRange = ({
   ranges = defaultRanges,
   custom = false,
+  rangeTimestamp = 60 * 60 * 24 * 365 * 1000,
 }) => {
   // 是否开启自定义时间
   const timeRanges: TimeRanges = [...ranges];
@@ -84,7 +86,30 @@ export const useTimeRange: UseTimeRange = ({
 
   const [customStart, setCustomStart] = useState<Time | null>(null);
   const [customEnd, setCustomEnd] = useState<Time | null>(null);
+  const [outOfRange, setOutOfRange] = useState(false);
+  const [canConfirm, setCanConfirm] = useState(false);
 
+  // 限制时间范围
+  useEffect(() => {
+    if (!customStart || !customEnd) {
+      setCanConfirm(false);
+      setOutOfRange(false);
+      return;
+    }
+
+    const diff =
+      customEnd.setDate({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .timestamp -
+      customStart.setDate({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .timestamp;
+    if (Math.abs(diff) > rangeTimestamp + 86400000) {
+      setOutOfRange(true);
+      setCanConfirm(false);
+    } else {
+      setOutOfRange(false);
+      setCanConfirm(true);
+    }
+  }, [customStart, customEnd, rangeTimestamp]);
   // 自定义时间弹窗
   const onConfirm = () => {
     setStart(customStart ?? time());
@@ -118,7 +143,10 @@ export const useTimeRange: UseTimeRange = ({
             setCustomEnd(time(d));
           }}
         />
-        <button pp-btn-primary onClick={onConfirm}>
+        {outOfRange && (
+          <span>时间范围最大为{rangeTimestamp / (60 * 60 * 24 * 1000)}天</span>
+        )}
+        <button pp-btn-primary onClick={onConfirm} disabled={!canConfirm}>
           确定
         </button>
       </div>

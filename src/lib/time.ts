@@ -42,6 +42,17 @@ export class Time {
     return new Date(this.#date);
   }
 
+  setDate(d: Partial<Record<DateKind, number>>) {
+    this.year = d.year ?? this.year;
+    this.month = d.month ?? this.month;
+    this.day = d.day ?? this.day;
+    this.hour = d.hour ?? this.hour;
+    this.minute = d.minute ?? this.minute;
+    this.second = d.second ?? this.second;
+    this.millisecond = d.millisecond ?? this.millisecond;
+    return this;
+  }
+
   get lastDayOfMonth() {
     return new Time(new Date(this.year, this.month, 0));
   }
