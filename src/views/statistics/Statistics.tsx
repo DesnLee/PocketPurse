@@ -50,15 +50,14 @@ export const Statistics: FC = () => {
       const find = dataList.find(
         (item) => time(item.happened_at).format() === time(date).format()
       );
-      if (find) {
-        result.push(find);
-      } else {
-        result.push({
+
+      result.push(
+        find ?? {
           happened_at: date,
           tag: null,
           amount: 0,
-        });
-      }
+        }
+      );
       current = new Date(current.getTime() + 24 * 60 * 60 * 1000);
     }
 
