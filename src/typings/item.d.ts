@@ -11,7 +11,14 @@ interface ItemModel {
   kind: 'expenses' | 'income';
 }
 
+interface BalanceModel {
+  balance: number;
+  income: number;
+  expenses: number;
+}
+
 declare namespace APIResponse {
   type Item = API.Resource<ItemModel>;
   type Items = API.Resources<ItemModel>;
+  type Balance = API.Resource<BalanceModel>;
 }

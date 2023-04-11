@@ -37,6 +37,14 @@ export const useApi = () => {
           loadingText: '记账中，请稍候...',
           handleError: true,
         }),
+      getBalance: (start: string, end: string) =>
+        request.get<APIResponse.Balance>(
+          `/api/v1/balance?happened_after=${start}&happened_before=${end}`,
+          {
+            loading: false,
+            handleError: true,
+          }
+        ),
     },
     // tag 系列接口
     tag: {

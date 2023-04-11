@@ -29,7 +29,7 @@ export const Items: FC = () => {
         {TimeRangePicker}
       </TopNavGradient>
       <main grow-1 overflow-auto>
-        <ItemsSummary />
+        <ItemsSummary start={start.format()} end={end.add(1, 'day').format()} />
         <ItemList start={start.format()} end={end.add(1, 'day').format()} />
       </main>
       <AddFloatBtn />

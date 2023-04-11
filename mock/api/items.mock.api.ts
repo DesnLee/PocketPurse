@@ -25,4 +25,19 @@ export const itemsAPI: MockMethod[] = [
       return { resource: { ...createItem(), ...body } };
     },
   },
+  {
+    url: '/api/v1/balance',
+    method: 'get',
+    statusCode: 200,
+    timeout: 1000,
+    response: (): APIResponse.Balance => {
+      return {
+        resource: {
+          balance: 751700,
+          expenses: 248300,
+          income: 100000,
+        },
+      };
+    },
+  },
 ];

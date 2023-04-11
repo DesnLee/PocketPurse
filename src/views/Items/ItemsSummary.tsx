@@ -1,6 +1,18 @@
 import type { FC } from 'react';
+import useSWR from 'swr';
+import { useApi } from '../../api/useApi';
 
-export const ItemsSummary: FC = () => {
+interface Props {
+  start: string;
+  end: string;
+}
+
+export const ItemsSummary: FC<Props> = ({ start, end }) => {
+  const { api } = useApi();
+  const { data } = useSWR(`balance_${start}_${end}`, () =>
+    api.item.getBalance(start, end)
+  );
+
   return (
     <ul
       flex
@@ -22,7 +34,7 @@ export const ItemsSummary: FC = () => {
           收入
         </h3>
         <p text-20px color='#22ba58' font-bold>
-          100
+          {data ? `¥${data?.data.resource.income / 100}` : '-'}
         </p>
       </li>
       <li>
@@ -30,7 +42,7 @@ export const ItemsSummary: FC = () => {
           支出
         </h3>
         <p text-20px font-bold color='#dd400f'>
-          100
+          {data ? `¥${data.data.resource.expenses / 100}` : '-'}
         </p>
       </li>
       <li>
@@ -38,7 +50,7 @@ export const ItemsSummary: FC = () => {
           结余
         </h3>
         <p text-20px font-bold color='#606266'>
-          100
+          {data ? `¥${data.data.resource.balance / 100}` : '-'}
         </p>
       </li>
     </ul>
