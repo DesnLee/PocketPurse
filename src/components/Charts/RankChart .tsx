@@ -8,7 +8,16 @@ interface Props {
 }
 
 export const RankChart: FC<Props> = ({ data }) => {
-  if (data.length === 0) return null;
+  if (data.length === 0) {
+    return (
+      <div mt-16px flex flex-col gap-24px>
+        <p text-center leading-72px color='#909399' text-14px>
+          暂无数据
+        </p>
+      </div>
+    );
+  }
+
   // 排序
   data.sort((a, b) => b.amount - a.amount);
   // 计算总额

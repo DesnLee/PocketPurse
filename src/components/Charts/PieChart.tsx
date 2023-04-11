@@ -35,6 +35,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
           radius: ['52%', '80%'],
           avoidLabelOverlap: false,
           center: ['64%', '50%'],
+          showEmptyCircle: false,
           itemStyle: {
             borderRadius: 8,
             borderColor: '#fff',
@@ -91,9 +92,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
 
   // data 变化时，更新 options
   useEffect(() => {
-    if (data.length > 0) {
-      setOptions(data);
-    }
+    setOptions(data);
   }, [data]);
 
   // options 变化时，更新图表
@@ -116,5 +115,21 @@ export const PieChart: FC<Props> = ({ data, height }) => {
     };
   }, []);
 
-  return <div w-full style={{ height: height ?? '30vh' }} ref={pie} />;
+  return (
+    <div relative>
+      {data.length === 0 && (
+        <p
+          absolute
+          text-center
+          w-full
+          style={{ top: `calc(height / 2)` ?? '15vh' }}
+          text-14px
+          color='#909399'
+        >
+          暂无数据
+        </p>
+      )}
+      <div w-full style={{ height: height ?? '30vh' }} ref={pie} />
+    </div>
+  );
 };
