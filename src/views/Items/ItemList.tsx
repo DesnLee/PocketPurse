@@ -31,7 +31,7 @@ interface Props {
 const getKey = (start: string, end: string) => (pageIndex: number) => {
   return `/api/v1/items?page=${
     pageIndex + 1
-  }&limit=10&happened_after=${start}&happened_before=${end}`;
+  }&limit=30&happened_after=${start}&happened_before=${end}`;
 };
 export const ItemList: FC<Props> = ({ start, end }) => {
   // 加载更多状态
@@ -52,7 +52,8 @@ export const ItemList: FC<Props> = ({ start, end }) => {
           .catch((err) => reject(err))
           .finally(() => setLoadingMore(false));
       });
-    }
+    },
+    { revalidateAll: true }
   );
 
   // 加载数据

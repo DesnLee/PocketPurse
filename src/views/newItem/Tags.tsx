@@ -55,7 +55,7 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
   // 加载更多状态
   const [loadingMore, setLoadingMore] = useState(false);
   const getKey = (pageIndex: number) => {
-    return `/api/v1/tags?page=${pageIndex + 1}&limit=10&kind=${currentType}`;
+    return `/api/v1/tags?page=${pageIndex + 1}&limit=20&kind=${currentType}`;
   };
   // 请求数据
   const { data, error, size, setSize, isLoading } = useSWRInfinite(
@@ -70,7 +70,8 @@ export const Tags: FC<Props> = ({ currentType, value, onChange }) => {
           .catch((err) => reject(err))
           .finally(() => setLoadingMore(false));
       });
-    }
+    },
+    { revalidateAll: true }
   );
 
   // 加载数据
