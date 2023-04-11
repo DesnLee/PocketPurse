@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import { Icon } from '../../components';
 import { useRequest } from '../../hooks';
+import { time } from '../../lib/time';
 
 interface BottomBlockProps {
   type: 'error' | 'next' | 'loading' | 'noMore' | 'noData';
@@ -128,7 +129,7 @@ export const ItemList: FC<Props> = ({ start, end }) => {
                     leading-12px
                     color='#909399'
                   >
-                    {item.happen_at}
+                    {time(item.happen_at).format('yyyy-MM-dd HH:mm')}
                   </p>
                   <p
                     grid-row-start-1
