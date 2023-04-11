@@ -17,12 +17,16 @@ export const useApi = () => {
           { email },
           { loading: true, loadingText: '请求发送验证码...', handleError: true }
         ),
-      signIn: (data: SignInData) =>
-        request.post<APIResponse.LoginSucceed>('/api/v1/sign_in', data, {
-          loading: true,
-          loadingText: '登录中...',
-          handleError: true,
-        }),
+      signIn: ({ email, authCode }: SignInData) =>
+        request.post<APIResponse.LoginSucceed>(
+          '/api/v1/sign_in',
+          { email, code: authCode },
+          {
+            loading: true,
+            loadingText: '登录中...',
+            handleError: true,
+          }
+        ),
     },
     // item 系列接口
     item: {

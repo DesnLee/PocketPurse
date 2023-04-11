@@ -50,11 +50,11 @@ export const useRequest = () => {
       let jumpTo = '';
 
       // 统一错误提示，如果前端预设了错误提示，则使用预设的，否则使用后端返回的，后端也没有返回则使用未知错误
-      if (error) {
+      if (error && err.response.config.url !== '/api/v1/sign_in') {
         text = error.text;
         jumpTo = error.jumpTo ?? '';
-      } else if (err.response.data && err.response.data.msg) {
-        text = err.response.data.msg;
+      } else if (err.response.data && err.response.data.reason) {
+        text = err.response.data.reason;
       } else {
         text = ERROR_MESSAGE[9999].text;
       }

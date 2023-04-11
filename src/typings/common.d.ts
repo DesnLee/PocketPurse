@@ -1,6 +1,6 @@
 declare namespace API {
   interface Error {
-    msg: string;
+    reason: string;
   }
 
   interface Resource<T> {
