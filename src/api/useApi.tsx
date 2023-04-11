@@ -7,19 +7,19 @@ export const useApi = () => {
     // user 系列接口
     user: {
       getUser: () =>
-        request.get<APIResponse.User>('/api/v1/user', {
+        request.get<APIResponse.User>('/api/v1/me', {
           loading: true,
           handleError: true,
         }),
       getSmsCode: (email: string) =>
         request.post<any>(
-          '/api/v1/send_sms_code',
+          '/api/v1/validation_codes',
           { email },
           { loading: true, loadingText: '请求发送验证码...', handleError: true }
         ),
       signIn: ({ email, authCode }: SignInData) =>
         request.post<APIResponse.LoginSucceed>(
-          '/api/v1/sign_in',
+          '/api/v1/session',
           { email, code: authCode },
           {
             loading: true,

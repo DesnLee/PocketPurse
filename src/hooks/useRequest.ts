@@ -11,6 +11,8 @@ export const ERROR_MESSAGE: {
   9999: { text: '未知错误' },
 };
 
+const noCheck401 = ['/api/v1/sign_in', '/api/v1/send_sms_code'];
+
 interface ExtraOptions {
   loading?: boolean;
   loadingText?: string;
@@ -50,7 +52,7 @@ export const useRequest = () => {
       let jumpTo = '';
 
       // 统一错误提示，如果前端预设了错误提示，则使用预设的，否则使用后端返回的，后端也没有返回则使用未知错误
-      if (error && err.response.config.url !== '/api/v1/sign_in') {
+      if (error && !noCheck401.includes(err.response.config.url ?? '')) {
         text = error.text;
         jumpTo = error.jumpTo ?? '';
       } else if (err.response.data && err.response.data.reason) {
