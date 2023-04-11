@@ -41,7 +41,6 @@ export const Statistics: FC = () => {
       return;
     }
     const dataList = lineChartData.data.groups;
-    console.log(dataList);
 
     const result: SummaryByHappened[] = [];
     let current = new Date(start.date);
