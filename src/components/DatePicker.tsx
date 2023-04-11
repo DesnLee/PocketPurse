@@ -186,7 +186,7 @@ export const DatePicker: FC<Props> = (props) => {
         mt='[-6px]'
       >
         {column.map((key) => (
-          <li>{titleMap[key]}</li>
+          <li key={key}>{titleMap[key]}</li>
         ))}
       </ol>
 
@@ -194,7 +194,7 @@ export const DatePicker: FC<Props> = (props) => {
         <PickerMask />
         <Selector style={{ '--items-height': itemsHeight }} />
         {
-          // 三个选择器
+          // 选择器
           column.map((key) => (
             <DatePickerColumn
               key={key}
