@@ -7,6 +7,20 @@ interface Props {
   end: string;
 }
 
+const getMoney = (money?: number) => {
+  if (money === undefined) return '-';
+
+  const sign = money >= 0 ? '' : '-';
+
+  const yuan = Math.abs(money / 100);
+  // 是整数
+  if (yuan === parseInt(`${yuan}`)) {
+    return `${sign}¥${yuan}`;
+  } else {
+    return `${sign}¥${yuan.toFixed(2)}`;
+  }
+};
+
 export const ItemsSummary: FC<Props> = ({ start, end }) => {
   const { api } = useApi();
   const { data } = useSWR(`balance_${start}_${end}`, () =>
@@ -34,7 +48,7 @@ export const ItemsSummary: FC<Props> = ({ start, end }) => {
           收入
         </h3>
         <p text-20px color='#22ba58' font-bold>
-          {data ? `¥${data?.data.resource.income / 100}` : '-'}
+          {getMoney(data?.data.income)}
         </p>
       </li>
       <li>
@@ -42,7 +56,7 @@ export const ItemsSummary: FC<Props> = ({ start, end }) => {
           支出
         </h3>
         <p text-20px font-bold color='#dd400f'>
-          {data ? `¥${data.data.resource.expenses / 100}` : '-'}
+          {getMoney(data?.data.expenses)}
         </p>
       </li>
       <li>
@@ -50,7 +64,7 @@ export const ItemsSummary: FC<Props> = ({ start, end }) => {
           结余
         </h3>
         <p text-20px font-bold color='#606266'>
-          {data ? `¥${data.data.resource.balance / 100}` : '-'}
+          {getMoney(data?.data.balance)}
         </p>
       </li>
     </ul>

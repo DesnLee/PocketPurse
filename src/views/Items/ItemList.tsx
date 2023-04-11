@@ -107,7 +107,7 @@ export const ItemList: FC<Props> = ({ start, end }) => {
                     bg='#00000009'
                     rounded-24px
                   >
-                    💋
+                    {item.tags[0].sign}
                   </div>
                   <p
                     grid-row-start-1
@@ -118,7 +118,7 @@ export const ItemList: FC<Props> = ({ start, end }) => {
                     leading-14px
                     color='#303133'
                   >
-                    {item.note}
+                    {item.tags[0].name}
                   </p>
                   <p
                     grid-row-start-2
@@ -129,7 +129,7 @@ export const ItemList: FC<Props> = ({ start, end }) => {
                     leading-12px
                     color='#909399'
                   >
-                    {time(item.happen_at).format('yyyy-MM-dd HH:mm')}
+                    {time(item.happened_at).format('yyyy-MM-dd HH:mm')}
                   </p>
                   <p
                     grid-row-start-1
