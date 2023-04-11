@@ -35,7 +35,7 @@ export const DatePicker: FC<Props> = (props) => {
   const [, update] = useState({});
   const valueTime = useRef(time(defaultValue ?? new Date()));
   const _onChange = (newValue: number, key: DateKind) => {
-    // 如果日期变化，看日是否超出范围，超出则置为最后一天
+    // 如果日期变化，看日是否超出范围，超出则置为月份最后一天
     let maxDay = 31;
     if (key === 'month' || key === 'year') {
       const newDate = time();
@@ -87,10 +87,37 @@ export const DatePicker: FC<Props> = (props) => {
     );
   }
 
+  // 计算时列表，今天之前
+  let hourList: number[];
+  if (
+    valueTime.current.year === endTime.year &&
+    valueTime.current.month === endTime.month &&
+    valueTime.current.day === endTime.day
+  ) {
+    hourList = Array.from({ length: endTime.hour + 1 }, (_, i) => i);
+  } else {
+    hourList = Array.from({ length: 24 }, (_, i) => i);
+  }
+
+  // 计算分列表，今天之前
+  let minuteList: number[];
+  if (
+    valueTime.current.year === endTime.year &&
+    valueTime.current.month === endTime.month &&
+    valueTime.current.day === endTime.day &&
+    valueTime.current.hour === endTime.hour
+  ) {
+    minuteList = Array.from({ length: endTime.minute + 1 }, (_, i) => i);
+  } else {
+    minuteList = Array.from({ length: 60 }, (_, i) => i);
+  }
+
   const dataList = {
     year: yearList,
     month: monthList,
     day: dayList,
+    hour: hourList,
+    minute: minuteList,
   };
 
   return (
@@ -124,7 +151,7 @@ export const DatePicker: FC<Props> = (props) => {
           font-bold
           text-16px
         >
-          日期选择
+          选择时间
         </span>
         <span
           px-20px
@@ -140,12 +167,27 @@ export const DatePicker: FC<Props> = (props) => {
         </span>
       </div>
 
+      <ol
+        flex
+        text-center
+        children-flex-1
+        text-12px
+        color='#c0c4cc'
+        mt='[-6px]'
+      >
+        <li>年</li>
+        <li>月</li>
+        <li>日</li>
+        <li>时</li>
+        <li>分</li>
+      </ol>
+
       <div flex grow-1 relative>
         <PickerMask />
         <Selector style={{ '--items-height': itemsHeight }} />
         {
           // 三个选择器
-          (['year', 'month', 'day'] as const).map((key) => (
+          (['year', 'month', 'day', 'hour', 'minute'] as const).map((key) => (
             <DatePickerColumn
               key={key}
               itemsHeight={itemsHeight}

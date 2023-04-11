@@ -29,7 +29,7 @@ export const Calendar: FC<Props> = ({ value, onChange }) => {
       {Popup}
       <CalendarWrapper onClick={open}>
         <Icon name='calendar' size='16px' color='[var(--color-primary)]' />
-        <span>{time(value).format()}</span>
+        <span>{time(value).format('yyyy-MM-dd HH:mm')}</span>
         <Icon name='arrow_right' size='16px' color='#c0c4cc' />
       </CalendarWrapper>
     </>
