@@ -147,7 +147,7 @@ export const ItemList: FC<Props> = ({ start, end }) => {
                     {item.kind === 'expenses' ? (
                       <Icon name='minus' size='10px' />
                     ) : null}
-                    <span>{`${item.amount / 100}`}</span>
+                    <span ml='[-2px]'>{`${item.amount / 100}`}</span>
                   </p>
                 </li>
               ))}

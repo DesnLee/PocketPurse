@@ -22,5 +22,6 @@ declare module 'react' {
     b?: string;
     top?: string;
     mt?: string;
+    ml?: string;
   }
 }
