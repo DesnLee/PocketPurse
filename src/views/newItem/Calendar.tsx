@@ -20,6 +20,7 @@ export const Calendar: FC<Props> = ({ value, onChange }) => {
           close();
         }}
         onCancel={() => close()}
+        column={['year', 'month', 'day', 'hour', 'minute']}
       />
     ),
   });

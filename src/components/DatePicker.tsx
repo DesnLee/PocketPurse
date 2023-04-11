@@ -5,6 +5,14 @@ import { time } from '../lib/time';
 import type { DateKind } from '../lib/time';
 import { DatePickerColumn } from '../views/newItem/DatePickerColumn';
 
+type ColumnKeys = 'year' | 'month' | 'day' | 'hour' | 'minute';
+const titleMap: Record<ColumnKeys, string> = {
+  year: '年',
+  month: '月',
+  day: '日',
+  hour: '时',
+  minute: '分',
+};
 interface Props {
   start?: Date;
   end?: Date;
@@ -13,6 +21,7 @@ interface Props {
   pickerHeight?: string;
   onConfirm?: (value: Date) => void;
   onCancel?: () => void;
+  column?: ColumnKeys[];
 }
 export const DatePicker: FC<Props> = (props) => {
   const {
@@ -23,6 +32,7 @@ export const DatePicker: FC<Props> = (props) => {
     onConfirm,
     onCancel,
     itemsHeight = 44,
+    column = ['year', 'month', 'day'],
   } = props;
 
   // 获取三个时间的 Time 对象，默认年份往前推 5 年
@@ -175,11 +185,9 @@ export const DatePicker: FC<Props> = (props) => {
         color='#c0c4cc'
         mt='[-6px]'
       >
-        <li>年</li>
-        <li>月</li>
-        <li>日</li>
-        <li>时</li>
-        <li>分</li>
+        {column.map((key) => (
+          <li>{titleMap[key]}</li>
+        ))}
       </ol>
 
       <div flex grow-1 relative>
@@ -187,7 +195,7 @@ export const DatePicker: FC<Props> = (props) => {
         <Selector style={{ '--items-height': itemsHeight }} />
         {
           // 三个选择器
-          (['year', 'month', 'day', 'hour', 'minute'] as const).map((key) => (
+          column.map((key) => (
             <DatePickerColumn
               key={key}
               itemsHeight={itemsHeight}
