@@ -15,7 +15,7 @@ const tabs: { key: ItemModel['kind']; label: string }[] = [
   { key: 'income', label: '收入' },
 ];
 
-const rules: Rules<ItemModel> = [
+const rules: Rules<CreateItem> = [
   { key: 'kind', type: 'required', message: '账单类型不能为空' },
   { key: 'tag_ids', type: 'required', message: '标签不能为空' },
   { key: 'happen_at', type: 'required', message: '账单日期不能为空' },

@@ -30,13 +30,11 @@ export const itemsAPI: MockMethod[] = [
     method: 'get',
     statusCode: 200,
     timeout: 1000,
-    response: (): APIResponse.Balance => {
+    response: (): Balance => {
       return {
-        resource: {
-          balance: 751700,
-          expenses: 248300,
-          income: 100000,
-        },
+        balance: 751700,
+        expenses: 248300,
+        income: 100000,
       };
     },
   },

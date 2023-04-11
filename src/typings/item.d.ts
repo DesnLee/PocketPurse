@@ -12,6 +12,13 @@ interface ItemModel {
   kind: 'expenses' | 'income';
 }
 
+type CreateItem = {
+  amount: number;
+  tag_ids: number[];
+  happen_at: string;
+  kind: 'expenses' | 'income';
+};
+
 interface Balance {
   balance: number;
   income: number;

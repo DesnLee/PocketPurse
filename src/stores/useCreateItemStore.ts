@@ -3,10 +3,10 @@ import { create } from 'zustand';
 import type { FormErrors } from '../lib/validate';
 
 interface EditCreateItemStore {
-  data: Partial<ItemModel>;
-  errors: Partial<FormErrors<ItemModel>>;
-  setData: (data: Partial<ItemModel>) => void;
-  setErrors: (errors: FormErrors<Partial<ItemModel>>) => void;
+  data: CreateItem;
+  errors: FormErrors<CreateItem>;
+  setData: (data: Partial<CreateItem>) => void;
+  setErrors: (errors: FormErrors<Partial<CreateItem>>) => void;
   resetData: () => void;
 }
 

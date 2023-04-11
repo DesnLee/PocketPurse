@@ -19,7 +19,7 @@ export const tagData: TagData = {
     },
   }),
   failed: {
-    msg: '请求失败',
+    reason: '请求失败',
   },
 };
 
@@ -42,6 +42,6 @@ export const tagsData: TagsData = {
       total,
     }),
   failed: {
-    msg: '请求失败',
+    reason: '请求失败',
   },
 };

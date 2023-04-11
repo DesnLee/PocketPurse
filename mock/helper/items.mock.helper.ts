@@ -1,6 +1,7 @@
 // 创建 item id
 
 import { faker } from '@faker-js/faker';
+import { createTag } from './tags.mock.helper';
 
 let itemId = 0;
 const getItemId = (): number => {
@@ -24,7 +25,8 @@ export const createItem = (): ItemModel => {
     }),
     note: faker.word.verb(),
     tag_ids: [1],
-    happen_at: faker.date.recent().toISOString(),
+    tags: [createTag(kind)],
+    happened_at: faker.date.recent().toISOString(),
     created_at: faker.date.recent().toISOString(),
     updated_at: faker.date.recent().toISOString(),
     kind,

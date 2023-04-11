@@ -14,6 +14,6 @@ export const userData: UserData = {
     },
   },
   failed: {
-    msg: '请求失败',
+    reason: '请求失败',
   },
 };
