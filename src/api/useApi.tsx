@@ -42,8 +42,8 @@ export const useApi = () => {
           handleError: true,
         }),
       getBalance: (start: string, end: string) =>
-        request.get<APIResponse.Balance>(
-          `/api/v1/balance?happened_after=${start}&happened_before=${end}`,
+        request.get<Balance>(
+          `/api/v1/items/balance?happened_after=${start}&happened_before=${end}`,
           {
             loading: false,
             handleError: true,
