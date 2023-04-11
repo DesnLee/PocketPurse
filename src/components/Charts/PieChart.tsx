@@ -122,7 +122,7 @@ export const PieChart: FC<Props> = ({ data, height }) => {
           absolute
           text-center
           w-full
-          style={{ top: `calc(height / 2)` ?? '15vh' }}
+          style={{ top: height ? `calc(${height} / 2)` : '15vh' }}
           text-14px
           color='#909399'
         >
