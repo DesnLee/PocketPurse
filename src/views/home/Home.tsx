@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import { useApi } from '../../api/useApi';
 import { useTitle } from '../../hooks';
@@ -7,13 +7,14 @@ import { useLocalStorageStore } from '../../stores';
 import noDataSvg from '../../assets/images/home/no_data.svg';
 
 const EmptyView: FC = () => {
+  const nav = useNavigate();
   return (
     <main pp-page-wrapper items-center justify-center px-16px gradient-primary>
       <img w-180px src={noDataSvg} alt='no data' />
       <h1 mt-32px font-bold text='#000a'>
         Welcome!
       </h1>
-      <button pp-btn-primary mt-48px>
+      <button pp-btn-primary mt-48px onClick={() => nav('/items/new')}>
         记一笔
       </button>
     </main>
