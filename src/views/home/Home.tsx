@@ -1,8 +1,7 @@
 import type { FC } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { useApi } from '../../api/useApi';
-import { useTitle } from '../../hooks';
+import { useRequest, useTitle } from '../../hooks';
 import { useLocalStorageStore } from '../../stores';
 import noDataSvg from '../../assets/images/home/no_data.svg';
 
@@ -22,7 +21,7 @@ const EmptyView: FC = () => {
 };
 
 export const Home: FC = () => {
-  const { api } = useApi();
+  const { request } = useRequest();
   const { hasRead, setHasRead } = useLocalStorageStore();
   if (!hasRead) {
     setHasRead(true);
@@ -31,12 +30,19 @@ export const Home: FC = () => {
   useTitle('首页');
 
   const { data: userData, isLoading: userLoading } = useSWR('user', () =>
-    api.user.getUser()
+    request.get<APIResponse.User>('/api/v1/me', {
+      loading: true,
+      handleError: false,
+    })
   );
 
   const { data: itemsData, isLoading: itemsLoading } = useSWR(
     userData?.data ? 'items' : null,
-    () => api.item.getItems()
+    () =>
+      request.get<APIResponse.Items>('/api/v1/items', {
+        loading: true,
+        handleError: false,
+      })
   );
 
   if (userLoading || itemsLoading) return null;
