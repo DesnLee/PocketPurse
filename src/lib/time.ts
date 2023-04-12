@@ -133,4 +133,8 @@ export class Time {
       .replace(/ss/g, this.second.toString().padStart(2, '0'))
       .replace(/SSS/g, this.millisecond.toString().padStart(3, '0'));
   }
+
+  clone() {
+    return new Time(this.#date);
+  }
 }

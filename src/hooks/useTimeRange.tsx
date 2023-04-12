@@ -37,31 +37,49 @@ type UseTimeRange = (options: Options) => {
 const defaultRanges: TimeRangesParams = [
   { key: 'thisMonth', label: '本月' },
   { key: 'lastMonth', label: '上月' },
-  { key: 'pastThreeMonths', label: '近三个月' },
-  { key: 'thisYear', label: '近一年' },
+  { key: 'pastThreeMonths', label: '近 90 天' },
+  { key: 'thisYear', label: '本年' },
 ];
 
 // 获取时间区间对应的时间范围
 const getRanges = (key: TimeRangeKeys) => {
-  const now = time();
-  let start: Time;
-  let end = now;
+  let start = time();
+  let end = time();
   switch (key) {
     case 'thisMonth':
-      start = now.add(-1, 'month');
+      start = start.setDate({
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
       break;
     case 'lastMonth':
-      start = now.add(-2, 'month');
-      end = now.add(-1, 'month');
+      start = start.add(-1, 'month').setDate({
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+      end = end.add(-1, 'month').lastDayOfMonth;
       break;
     case 'pastThreeMonths':
-      start = now.add(-3, 'month');
+      start = start.add(-3, 'month');
       break;
     case 'thisYear':
-      start = now.add(-1, 'year');
+      start = start.setDate({
+        month: 1,
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
       break;
     default:
-      start = now.add(-1, 'month');
+      start = start.add(-1, 'month');
       break;
   }
   return { start, end };
@@ -144,7 +162,7 @@ export const useTimeRange: UseTimeRange = ({
           }}
         />
         {outOfRange && (
-          <p text-center color='#f56c6c' leading-32px mt='-32px'>
+          <p text-center color='#f56c6c' leading-32px mt='-32px' text-12px>
             时间范围最大为{rangeTimestamp / (60 * 60 * 24 * 1000)}天
           </p>
         )}
