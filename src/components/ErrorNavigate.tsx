@@ -15,7 +15,7 @@ export const ErrorUnAuthorized: FC = () => {
       duration: 1000,
     });
     const redirect = encodeURIComponent(`${pathname}${search}`);
-    return <Navigate to={`/sign_in?redirect=${redirect}`} />;
+    return <Navigate to={`/sign_in?redirect=${redirect}`} replace={true} />;
   }
   return null;
 };

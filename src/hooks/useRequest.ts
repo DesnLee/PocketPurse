@@ -70,7 +70,7 @@ export const useRequest = () => {
         // 如果是 401 错误，则跳转时带上当前页面的地址，登录后跳转回来
         if (err.response.status === 401) {
           const redirect = encodeURIComponent(`${pathname}${search}`);
-          nav(`${jumpTo}?redirect=${redirect}`);
+          nav(`${jumpTo}?redirect=${redirect}`, { replace: true });
         } else {
           nav(jumpTo);
         }
