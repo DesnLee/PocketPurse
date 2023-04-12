@@ -44,7 +44,7 @@ export const NewItem: FC = () => {
         text: '记账成功',
         duration: 800,
       });
-      nav(-1);
+      nav('/items');
       resetData(); // 成功后重置数据
     }
   };
