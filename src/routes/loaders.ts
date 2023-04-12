@@ -1,23 +1,25 @@
-import { preload } from 'swr';
 import { axiosInstance } from '../lib/request';
 import { ErrorNoData, ErrorUnauthorized } from '../vars/errors';
 
 export const isEmptyData = () => {
-  return preload(`/api/v1/items`, async (path) => {
-    const response = await axiosInstance.get<APIResponse.Items>(path);
-    if (response.data.resources.length === 0) {
-      throw new ErrorNoData();
-    }
-    return response;
-  });
+  return axiosInstance
+    .get<APIResponse.Items>('/api/v1/items?pre_check=1')
+    .then((res) => {
+      if (res.data.resources.length === 0) {
+        throw new ErrorNoData();
+      }
+      return null;
+    })
+    .catch(() => null);
 };
 
 export const isUnaAuthorizedLoader = () => {
-  return preload(`/api/v1/me`, async (path) => {
-    const response = await axiosInstance.get<APIResponse.User>(path);
-    if (response.status === 401) {
-      throw new ErrorUnauthorized();
-    }
-    return response;
-  });
+  return axiosInstance
+    .get<APIResponse.User>('/api/v1/me?pre_check=1')
+    .then(() => null)
+    .catch((e) => {
+      if (e.response.status === 401) {
+        throw new ErrorUnauthorized();
+      }
+    });
 };
